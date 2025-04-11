@@ -27,8 +27,6 @@ public class Utente {
 	
 	@OneToMany
 	private List<Ricetta> myRecipe;
-	
-	public 
 
 	public Long getId() {
 		return id;

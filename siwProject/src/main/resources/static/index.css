@@ -1,0 +1,15 @@
+header{
+	height: 70px;
+	background-color: slateblue;
+	margin-bottom: 10px;
+}
+
+section{
+	height: 900px;
+	background-color: cornflowerblue;
+}
+
+footer{
+	height: 50px;
+	background-color: blueviolet;
+}

@@ -1,5 +1,10 @@
 package it.uniroma3.siw.model;
 
-public class Ingrediente {
+import jakarta.persistence.*;
 
+@Entity
+public class Ingrediente {
+	@Id
+	@GeneratedValue (strategy = GenerationType.AUTO)
+	private Long id;
 }

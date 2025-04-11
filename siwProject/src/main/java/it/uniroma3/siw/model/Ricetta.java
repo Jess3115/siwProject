@@ -1,5 +1,12 @@
 package it.uniroma3.siw.model;
 
-public class Ricetta {
+import jakarta.persistence.*;
 
+@Entity
+public class Ricetta {
+	@Id
+	@GeneratedValue (strategy = GenerationType.AUTO)
+	private Long id;
+	
+	
 }
