@@ -6,14 +6,14 @@ import java.util.Objects;
 import jakarta.persistence.*;
 
 @Entity
-public class Utente {
+public class User {
 	@Id
 	@GeneratedValue (strategy = GenerationType.AUTO)
 	private Long id;
 	
 	private String firstName;
 	private String lastName;
-	private Spesa shoppingList;
+	private ShoppingList shoppingList;
 	
 	@Column(nullable = false)
 	private String email;
@@ -23,10 +23,10 @@ public class Utente {
 	private String password;
 	
 	@ManyToMany
-	private List<Ricetta> otherRecipe;
+	private List<Recipe> otherRecipe;
 	
 	@OneToMany
-	private List<Ricetta> myRecipe;
+	private List<Recipe> myRecipe;
 
 	public Long getId() {
 		return id;
@@ -52,11 +52,11 @@ public class Utente {
 		this.lastName = lastName;
 	}
 
-	public Spesa getShoppingList() {
+	public ShoppingList getShoppingList() {
 		return shoppingList;
 	}
 
-	public void setShoppingList(Spesa shoppingList) {
+	public void setShoppingList(ShoppingList shoppingList) {
 		this.shoppingList = shoppingList;
 	}
 
@@ -84,19 +84,19 @@ public class Utente {
 		this.password = password;
 	}
 
-	public List<Ricetta> getOtherRecipe() {
+	public List<Recipe> getOtherRecipe() {
 		return otherRecipe;
 	}
 
-	public void setOtherRecipe(List<Ricetta> otherRecipe) {
+	public void setOtherRecipe(List<Recipe> otherRecipe) {
 		this.otherRecipe = otherRecipe;
 	}
 
-	public List<Ricetta> getMyRecipe() {
+	public List<Recipe> getMyRecipe() {
 		return myRecipe;
 	}
 
-	public void setMyRecipe(List<Ricetta> myRecipe) {
+	public void setMyRecipe(List<Recipe> myRecipe) {
 		this.myRecipe = myRecipe;
 	}
 
@@ -113,7 +113,7 @@ public class Utente {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Utente other = (Utente) obj;
+		User other = (User) obj;
 		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
 				&& Objects.equals(id, other.id) && Objects.equals(lastName, other.lastName)
 				&& Objects.equals(myRecipe, other.myRecipe) && Objects.equals(otherRecipe, other.otherRecipe)
