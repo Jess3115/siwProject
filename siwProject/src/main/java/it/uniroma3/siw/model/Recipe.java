@@ -8,5 +8,11 @@ public class Recipe {
 	@GeneratedValue (strategy = GenerationType.AUTO)
 	private Long id;
 	
+	private String name;
+	
+	@ManyToOne
+	private User creator;
+	
+	
 	
 }
