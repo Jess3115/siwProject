@@ -1,31 +1,41 @@
 package it.uniroma3.siw.model;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
-public class User {
+@Table(name = "app_user")
+public class EndUser  {
 	@Id
-	@GeneratedValue (strategy = GenerationType.AUTO)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank
 	private String firstName;
+	@NotBlank
 	private String lastName;
+	@NotNull
+	@PastOrPresent
+	private Date dateOfBirth;
+	
+	@OneToOne(mappedBy = "owner")
 	private ShoppingList shoppingList;
 	
-	@Column(nullable = false)
+	@NotNull
 	private String email;
-	@Column(nullable = false)
+	@NotNull
 	private String username;
-	@Column(nullable = false)
+	@NotNull
 	private String password;
 	
-	@ManyToMany
-	private List<Recipe> otherRecipe;
+	@ManyToMany(mappedBy = "savers")
+	private List<Recipe> savedRecipes;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "creator")
 	private List<Recipe> myRecipe;
 
 	public Long getId() {
@@ -85,11 +95,11 @@ public class User {
 	}
 
 	public List<Recipe> getOtherRecipe() {
-		return otherRecipe;
+		return savedRecipes;
 	}
 
 	public void setOtherRecipe(List<Recipe> otherRecipe) {
-		this.otherRecipe = otherRecipe;
+		this.savedRecipes = otherRecipe;
 	}
 
 	public List<Recipe> getMyRecipe() {
@@ -102,7 +112,7 @@ public class User {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, firstName, id, lastName, myRecipe, otherRecipe, password, shoppingList, username);
+		return Objects.hash(email, firstName, id, lastName, myRecipe, savedRecipes, password, shoppingList, username);
 	}
 
 	@Override
@@ -113,10 +123,10 @@ public class User {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		EndUser  other = (EndUser ) obj;
 		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
 				&& Objects.equals(id, other.id) && Objects.equals(lastName, other.lastName)
-				&& Objects.equals(myRecipe, other.myRecipe) && Objects.equals(otherRecipe, other.otherRecipe)
+				&& Objects.equals(myRecipe, other.myRecipe) && Objects.equals(savedRecipes, other.savedRecipes)
 				&& Objects.equals(password, other.password) && Objects.equals(shoppingList, other.shoppingList)
 				&& Objects.equals(username, other.username);
 	}
@@ -125,6 +135,6 @@ public class User {
 	public String toString() {
 		return "Utente [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", shoppingList="
 				+ shoppingList + ", email=" + email + ", username=" + username + ", password=" + password
-				+ ", otherRecipe=" + otherRecipe + ", myRecipe=" + myRecipe + "]";
+				+ ", otherRecipe=" + savedRecipes + ", myRecipe=" + myRecipe + "]";
 	}
 }
