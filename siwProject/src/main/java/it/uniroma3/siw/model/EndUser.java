@@ -8,16 +8,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
-@Table(name = "app_user")
 public class EndUser  {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@NotBlank
-	private String firstName;
+	private String name;
 	@NotBlank
-	private String lastName;
+	private String surname;
 	@NotNull
 	@PastOrPresent
 	private Date dateOfBirth;
@@ -26,6 +25,7 @@ public class EndUser  {
 	private ShoppingList shoppingList;
 	
 	@NotNull
+	@Email
 	private String email;
 	@NotNull
 	private String username;
@@ -47,19 +47,19 @@ public class EndUser  {
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return name;
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.name = firstName;
 	}
 
 	public String getLastName() {
-		return lastName;
+		return surname;
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.surname = lastName;
 	}
 
 	public ShoppingList getShoppingList() {
@@ -112,7 +112,7 @@ public class EndUser  {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, firstName, id, lastName, myRecipe, savedRecipes, password, shoppingList, username);
+		return Objects.hash(email, name, id, surname, myRecipe, savedRecipes, password, shoppingList, username);
 	}
 
 	@Override
@@ -124,8 +124,8 @@ public class EndUser  {
 		if (getClass() != obj.getClass())
 			return false;
 		EndUser  other = (EndUser ) obj;
-		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
-				&& Objects.equals(id, other.id) && Objects.equals(lastName, other.lastName)
+		return Objects.equals(email, other.email) && Objects.equals(name, other.name)
+				&& Objects.equals(id, other.id) && Objects.equals(surname, other.surname)
 				&& Objects.equals(myRecipe, other.myRecipe) && Objects.equals(savedRecipes, other.savedRecipes)
 				&& Objects.equals(password, other.password) && Objects.equals(shoppingList, other.shoppingList)
 				&& Objects.equals(username, other.username);
@@ -133,7 +133,7 @@ public class EndUser  {
 
 	@Override
 	public String toString() {
-		return "Utente [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", shoppingList="
+		return "Utente [id=" + id + ", firstName=" + name + ", lastName=" + surname + ", shoppingList="
 				+ shoppingList + ", email=" + email + ", username=" + username + ", password=" + password
 				+ ", otherRecipe=" + savedRecipes + ", myRecipe=" + myRecipe + "]";
 	}

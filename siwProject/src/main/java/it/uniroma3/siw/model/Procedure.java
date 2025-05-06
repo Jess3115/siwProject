@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class Procedure {
 	@Id
-	@GeneratedValue (strategy = GenerationType.AUTO)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
 
 }

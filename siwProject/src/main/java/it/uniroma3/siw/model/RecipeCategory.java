@@ -15,7 +15,7 @@ public class RecipeCategory {
 	@NotNull
 	private String name;
 	
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "category")
+	@ManyToMany
 	private List<Recipe> recipes;
 
 	public Long getId() {
