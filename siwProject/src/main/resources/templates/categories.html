@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Categorie</title>
+		<link rel="stylesheet" href="/stile.css?version=2" />
+	</head>
+	
+	<body>
+		<div><a href="/">Home</a></div>
+		<h1></h1>
+		<div th:if="${categories.isEmpty()}">Non ci sono film nel sistema</div>
+		<ul>
+			<li th:each="category : ${categories}">
+				<a th:href="@{'/category' + '/' + ${category.id}}" th:text="${category.name}"></a>
+			</li>
+		</ul>
+	</body>
+</html>
