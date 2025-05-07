@@ -12,4 +12,9 @@ public class GradingController {
 
 	@Autowired GradingService gradingService;
 
+	@GetMapping("/grading")
+	public String showGradings(Model model) {
+		model.addAttribute("gradings", this.gradingService.getAllGrading());
+		return "gradings.html";
+	}
 }
