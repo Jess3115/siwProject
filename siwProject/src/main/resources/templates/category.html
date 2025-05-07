@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Categoria</title>
+		<link rel="stylesheet" th:href="@{/main-style.css?version=2}">
+	</head>
+
+	<body>
+		<!-- barra superiore -->
+		<header>
+			<h1><a th:href="@{/}">Home</a></h1>
+		</header>
+
+		<!-- parte centrale del sito -->
+		<section>
+			<div th:if="${recipes.isEmpty()}">
+				<h2>Non ci sono ricette per questa categoria nel sistema</h2>
+			</div>
+			<ul>
+				<li th:each="recipe : ${recipes}">
+					<a th:href="@{'/recipe' + '/' + ${recipe.id}}">
+						<span th:text="${recipe.name} + ' ' + ${recipe.grading.value} "></span>
+					</a>
+				</li>
+			</ul>
+		</section>
+
+		<!-- riga in fondo -->
+		<footer>
+
+		</footer>
+	</body>
+
+</html>
