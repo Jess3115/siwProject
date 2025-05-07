@@ -16,4 +16,12 @@ public class RecipeCategoryService {
 	public Iterable<RecipeCategory> getAllCategories() {
 		return this.recipeCategoryRepository.findAll();
 	}
+
+	public RecipeCategory getCategoryById(Long id) {
+		return this.recipeCategoryRepository.findById(id).orElse(null);
+	}
+
+	public void save(RecipeCategory recipeCategory) {
+		this.recipeCategoryRepository.save(recipeCategory);
+	}
 }
