@@ -1,15 +1,19 @@
-header{
-	height: 70px;
-	background-color: slateblue;
-	margin-bottom: 10px;
+header {
+  display: flex;               /* Rende il header un contenitore flex */
+  align-items: center;         /* Centra gli elementi verticalmente */
+  justify-content: center;     /* Centra gli elementi orizzontalmente */
+  height: 70px;
+  background-color: slateblue;
+  margin-bottom: 10px;
 }
 
-section{
-	height: 900px;
-	background-color: cornflowerblue;
+section {
+  height: 900px;
+  background-color: cornflowerblue;
+  margin-bottom: 10px;
 }
 
-footer{
-	height: 50px;
-	background-color: blueviolet;
+footer {
+  height: 50px;
+  background-color: blueviolet;
 }
