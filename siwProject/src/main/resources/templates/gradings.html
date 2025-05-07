@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Valutazioni</title>
+		<link rel="stylesheet" href="index.css?version=2">
+	</head>
+
+	<body>
+		<!-- barra superiore -->
+		<header>
+			<h1><a th:href="@{/}">Home</a></h1>
+		</header>
+
+		<!-- parte centrale del sito -->
+		<section>
+			<div th:if="${gradings.isEmpty()}">Non ci sono film nel sistema</div>
+			<ul>
+				<li th:each="grading : ${gradings}">
+					<a th:href="@{'/grading' + '/' + ${grading.id}}">
+						Numero di stelle: <span th:text="${grading.value}"></span>
+					</a>
+				</li>
+			</ul>
+		</section>
+
+		<!-- riga in fondo -->
+		<footer>
+
+		</footer>
+	</body>
+
+</html>
