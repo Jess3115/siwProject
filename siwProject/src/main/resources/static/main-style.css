@@ -1,21 +1,30 @@
-header {
-  display: flex;               /* Rende il header un contenitore flex */
-  align-items: center;         /* Centra gli elementi verticalmente */
-  justify-content: center;     /* Centra gli elementi orizzontalmente */
-  height: 70px;
-  background-color: slateblue;
-  margin-bottom: 10px;
+header, .headerNavbar {
+  	display: flex;              		 	/* Rende il header un contenitore flex */
+  	align-items: center;         			/* Centra gli elementi verticalmente */
+  	justify-content: space-between;     	/*  */
+  	height: 70px;
+  	padding: 15px;
+  	background-color: slateblue;
+  	margin: 10px;
+}
+
+header, .headerNavbar, .navigationButton {
+	font-size: 1.3em;
+	color: black;
 }
 
 section {
-  height: 900px;
-  background-color: cornflowerblue;
-  margin-bottom: 10px;
+  	height: 900px;
+  	background-color: cornflowerblue;
+  	margin: 10px;
 }
 
-footer {
-  height: 50px;
-  background-color: blueviolet;
+.footerBar {
+	display: flex;
+	justify-content: space-around;
+  	height: 50px;
+  	margin: 10px;
+  	background-color: blueviolet;
 }
 
 /*
