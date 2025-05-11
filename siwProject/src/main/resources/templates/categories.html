@@ -9,13 +9,11 @@
 
 	<body>
 		<!-- barra superiore -->
-		<header>
-			<h1 class="homeButton"><a th:href="@{/}">Home</a></h1>
-		</header>
+		<div th:insert="~{fragments/header :: header}"></div>
 
 		<!-- parte centrale del sito -->
 		<section>
-			<div th:if="${categories.isEmpty()}">Non ci sono film nel sistema</div>
+			<div th:if="${categories.isEmpty()}">Non ci sono categorie nel sistema</div>
 			<ul>
 				<li th:each="category : ${categories}">
 					<a th:href="@{'/category' + '/' + ${category.id}}" th:text="${category.name}"></a>
@@ -24,9 +22,7 @@
 		</section>
 
 		<!-- riga in fondo -->
-		<footer>
-
-		</footer>
+		<div th:insert="~{fragments/footer :: footer}"></div>
 	</body>
 
 </html>

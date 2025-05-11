@@ -22,9 +22,8 @@ public class RecipeCategoryController {
 	
 	@GetMapping("/category/{categoryID}")
 	public String getCategory(@PathVariable("categoryID") Long categoryID, Model model) {
-		RecipeCategory category = this.recipeCategoryService.getCategoryById(categoryID);
-		model.addAttribute("category", category);
-		model.addAttribute("recipes", category.getRecipes());
+		model.addAttribute("category", this.recipeCategoryService.getCategoryById(categoryID));
+		model.addAttribute("recipes", this.recipeCategoryService.findRecipesByCategoryId(categoryID));
 		return "category.html";
 	}
 }

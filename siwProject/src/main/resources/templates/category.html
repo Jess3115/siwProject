@@ -9,12 +9,11 @@
 
 	<body>
 		<!-- barra superiore -->
-		<header>
-			<h1 class="homeButton"><a th:href="@{/}">Home</a></h1>
-		</header>
+		<div th:insert="~{fragments/header :: header}"></div>
 
 		<!-- parte centrale del sito -->
 		<section>
+			<h1 >Ricette con categoria: <span th:text="${category.name}"></span></h1>
 			<div th:if="${recipes.isEmpty()}">
 				<h2>Non ci sono ricette per questa categoria nel sistema</h2>
 			</div>
@@ -28,9 +27,7 @@
 		</section>
 
 		<!-- riga in fondo -->
-		<footer>
-
-		</footer>
+		<div th:insert="~{fragments/footer :: footer}"></div>
 	</body>
 
 </html>
