@@ -9,13 +9,11 @@
 
 	<body>
 		<!-- barra superiore -->
-		<header>
-			<h1 class="homeButton"><a th:href="@{/}">Home</a></h1>
-		</header>
+		<div th:insert="~{fragments/header :: header}"></div>
 
 		<!-- parte centrale del sito -->
 		<section>
-			<div th:if="${gradings.isEmpty()}">Non ci sono film nel sistema</div>
+			<div th:if="${gradings.isEmpty()}">Non ci sono valutazioni nel sistema</div>
 			<ul>
 				<li th:each="grading : ${gradings}">
 					<a th:href="@{'/grading' + '/' + ${grading.id}}">
@@ -26,9 +24,7 @@
 		</section>
 
 		<!-- riga in fondo -->
-		<footer>
-
-		</footer>
+		<div th:insert="~{fragments/footer :: footer}"></div>
 	</body>
 
 </html>

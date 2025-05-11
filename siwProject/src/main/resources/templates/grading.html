@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Valutazione</title>
+		<link rel="stylesheet" th:href="@{/main-style.css?version=2}">
+	</head>
+
+	<body>
+		<!-- barra superiore -->
+		<div th:insert="~{fragments/header :: header}"></div>
+
+		<!-- parte centrale del sito -->
+		<section>
+			<h1 >Ricette con valutazione <span th:text="${grading.value}"></span></h1>
+			<div th:if="${recipes.isEmpty()}">
+				<h2>Non ci sono ricette per questa valutazione nel sistema</h2>
+			</div>
+			<ul>
+				<li th:each="recipe : ${recipes}">
+					<a th:href="@{'/recipe' + '/' + ${recipe.id}}">
+						<span th:text="${recipe.name} + ' ' + ${recipe.grading.value} "></span>
+					</a>
+				</li>
+			</ul>
+		</section>
+
+		<!-- riga in fondo -->
+		<div th:insert="~{fragments/footer :: footer}"></div>
+	</body>
+
+</html>
