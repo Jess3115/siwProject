@@ -3,6 +3,7 @@ package it.uniroma3.siw.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.uniroma3.siw.model.EndUser;
 import it.uniroma3.siw.model.Grading;
 import it.uniroma3.siw.model.Recipe;
 import it.uniroma3.siw.repository.GradingRepository;
@@ -14,8 +15,8 @@ public class GradingService {
 	
 	@Autowired GradingRepository gradingRepository;
 
-	public Iterable<Grading> getAllGrading() {
-		return this.gradingRepository.findAll();
+	public Iterable<Grading> getAllGradingByValue(int value) {
+		return this.gradingRepository.findAllByValue(value);
 	}
 
 	public Grading getGradingById(Long gradingId) {
@@ -25,5 +26,11 @@ public class GradingService {
 	public Iterable<Recipe> findRecipesByGradingId(Long gradingId) {
 		return this.gradingRepository.findRecipesByGradingId(gradingId);
 	}
-	
+
+	public void addOrUpdateGrading(Recipe recipe, EndUser user, int value) {
+        Grading grading = gradingRepository.findByRecipeAndVoter(recipe, user).orElse(new Grading(recipe, user, value));
+
+        grading.setValue(value);  // Aggiorna il voto
+        gradingRepository.save(grading);
+    }
 }

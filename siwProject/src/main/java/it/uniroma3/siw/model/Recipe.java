@@ -22,8 +22,8 @@ public class Recipe {
 	@ManyToMany
 	private List<EndUser> savers;
 	
-	@ManyToOne
-	private Grading grading;
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Grading> gradings;
 	
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "recipes")
 	private List<RecipeCategory> categories;
@@ -60,12 +60,12 @@ public class Recipe {
 		this.savers = savers;
 	}
 
-	public Grading getGrading() {
-		return grading;
+	public List<Grading> getGradings() {
+		return gradings;
 	}
 
-	public void setGrading(Grading grading) {
-		this.grading = grading;
+	public void setGradings(List<Grading> gradings) {
+		this.gradings = gradings;
 	}
 
 	public List<RecipeCategory> getCategories() {
@@ -78,7 +78,7 @@ public class Recipe {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(categories, creator, grading, id, name, savers);
+		return Objects.hash(categories, creator, gradings, id, name, savers);
 	}
 
 	@Override
@@ -91,14 +91,14 @@ public class Recipe {
 			return false;
 		Recipe other = (Recipe) obj;
 		return Objects.equals(categories, other.categories) && Objects.equals(creator, other.creator)
-				&& Objects.equals(grading, other.grading) && Objects.equals(id, other.id)
+				&& Objects.equals(gradings, other.gradings) && Objects.equals(id, other.id)
 				&& Objects.equals(name, other.name) && Objects.equals(savers, other.savers);
 	}
 
 	@Override
 	public String toString() {
 		return "Recipe [id=" + id + ", name=" + name + ", creator=" + creator + ", savers=" + savers + ", grading="
-				+ grading + ", categories=" + categories + "]";
+				+ gradings + ", categories=" + categories + "]";
 	}
 	
 	

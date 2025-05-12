@@ -12,15 +12,20 @@ import it.uniroma3.siw.service.GradingService;
 public class GradingController {
 
 	@Autowired GradingService gradingService;
-
+	
 	@GetMapping("/grading")
-	public String showGradings(Model model) {
-		model.addAttribute("gradings", this.gradingService.getAllGrading());
+	public String showGradings() {
 		return "gradings.html";
 	}
+
+	@GetMapping("/grading/{value}")
+	public String showGradingsByValue(@PathVariable("value") int value, Model model) {
+		model.addAttribute("gradings", this.gradingService.getAllGradingByValue(value));
+		return "gradingsValue.html";
+	}
 	
-	@GetMapping("/grading/{gradingId}")
-	public String getGrading(@PathVariable("gradingId") Long gradingId, Model model) {
+	@GetMapping("/grading/{value}/{gradingId}")
+	public String getGrading(@PathVariable("value") int value, @PathVariable("gradingId") Long gradingId, Model model) {
 		model.addAttribute("grading", this.gradingService.getGradingById(gradingId));
 		model.addAttribute("recipes", this.gradingService.findRecipesByGradingId(gradingId));
 		return "grading.html";

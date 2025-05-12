@@ -11,18 +11,10 @@ INSERT INTO recipe_category (name) VALUES ('Beverages');
 INSERT INTO recipe_category (name) VALUES ('Side Dishes');
 INSERT INTO recipe_category (name) VALUES ('Grills');
 INSERT INTO recipe_category (name) VALUES ('Pasta');
--- ============================================================================
--- Inserimento di 5 voti
--- ============================================================================
-INSERT INTO grading (value) VALUES (1);
-INSERT INTO grading (value) VALUES (2);
-INSERT INTO grading (value) VALUES (3);
-INSERT INTO grading (value) VALUES (4);
-INSERT INTO grading (value) VALUES (5);
+
 -- ============================================================================
 -- Inserimento di 5 utenti
 -- ============================================================================
--- Inserimento di 5 utenti
 INSERT INTO end_user (name, surname, date_of_birth, email, username, password) VALUES ('John', 'Doe', '1985-10-20', 'john.doe@example.com', 'john_doe', 'password123');
 INSERT INTO end_user (name, surname, date_of_birth, email, username, password) VALUES ('Alice', 'Smith', '1990-04-15', 'alice.smith@example.com', 'alice_smith', 'password456');
 INSERT INTO end_user (name, surname, date_of_birth, email, username, password) VALUES ('Bob', 'Johnson', '1987-07-30', 'bob.johnson@example.com', 'bob_johnson', 'password789');

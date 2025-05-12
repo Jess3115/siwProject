@@ -12,7 +12,7 @@ public class EndUser  {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank
 	private String name;
 	@NotBlank
@@ -20,10 +20,10 @@ public class EndUser  {
 	@NotNull
 	@PastOrPresent
 	private Date dateOfBirth;
-	
+
 	@OneToOne(mappedBy = "owner")
 	private ShoppingList shoppingList;
-	
+
 	@NotNull
 	@Email
 	private String email;
@@ -31,15 +31,58 @@ public class EndUser  {
 	private String username;
 	@NotNull
 	private String password;
-	
+
+	@OneToMany(mappedBy = "voter")
+	private List<Grading> gradings;
+
 	@ManyToMany(mappedBy = "savers")
 	private List<Recipe> savedRecipes;
-	
+
 	@OneToMany(mappedBy = "creator")
 	private List<Recipe> myRecipe;
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public List<Grading> getGradings() {
+		return gradings;
+	}
+
+	public void setGradings(List<Grading> gradings) {
+		this.gradings = gradings;
+	}
+
+	public List<Recipe> getSavedRecipes() {
+		return savedRecipes;
+	}
+
+	public void setSavedRecipes(List<Recipe> savedRecipes) {
+		this.savedRecipes = savedRecipes;
 	}
 
 	public void setId(Long id) {
@@ -112,7 +155,8 @@ public class EndUser  {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, name, id, surname, myRecipe, savedRecipes, password, shoppingList, username);
+		return Objects.hash(dateOfBirth, email, gradings, id, myRecipe, name, password, savedRecipes, shoppingList,
+				surname, username);
 	}
 
 	@Override
@@ -123,18 +167,20 @@ public class EndUser  {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EndUser  other = (EndUser ) obj;
-		return Objects.equals(email, other.email) && Objects.equals(name, other.name)
-				&& Objects.equals(id, other.id) && Objects.equals(surname, other.surname)
-				&& Objects.equals(myRecipe, other.myRecipe) && Objects.equals(savedRecipes, other.savedRecipes)
-				&& Objects.equals(password, other.password) && Objects.equals(shoppingList, other.shoppingList)
+		EndUser other = (EndUser) obj;
+		return Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(email, other.email)
+				&& Objects.equals(gradings, other.gradings) && Objects.equals(id, other.id)
+				&& Objects.equals(myRecipe, other.myRecipe) && Objects.equals(name, other.name)
+				&& Objects.equals(password, other.password) && Objects.equals(savedRecipes, other.savedRecipes)
+				&& Objects.equals(shoppingList, other.shoppingList) && Objects.equals(surname, other.surname)
 				&& Objects.equals(username, other.username);
 	}
 
 	@Override
 	public String toString() {
-		return "Utente [id=" + id + ", firstName=" + name + ", lastName=" + surname + ", shoppingList="
-				+ shoppingList + ", email=" + email + ", username=" + username + ", password=" + password
-				+ ", otherRecipe=" + savedRecipes + ", myRecipe=" + myRecipe + "]";
+		return "EndUser [id=" + id + ", name=" + name + ", surname=" + surname + ", dateOfBirth=" + dateOfBirth
+				+ ", shoppingList=" + shoppingList + ", email=" + email + ", username=" + username + ", password="
+				+ password + ", gradings=" + gradings + ", savedRecipes=" + savedRecipes + ", myRecipe=" + myRecipe
+				+ "]";
 	}
 }

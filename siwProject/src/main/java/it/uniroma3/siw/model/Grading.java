@@ -1,69 +1,89 @@
 package it.uniroma3.siw.model;
 
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.Objects;
+
 @Entity
 public class Grading {
-	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Min(1)
-	@Max(5)
-	private int value;
-	
-	@OneToMany(mappedBy = "grading")
-	private List<Recipe> recipes;
 
-	public Long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @ManyToOne(optional = false)
+    private Recipe recipe;  // La ricetta che riceve il voto
 
-	public int getValue() {
-		return value;
-	}
+    @ManyToOne(optional = false)
+    private EndUser voter;  // L'utente che vota
 
-	public void setValue(int value) {
-		this.value = value;
-	}
+    @Min(1)
+    @Max(5)
+    private int value;  // Il valore del voto (1-5)
 
-	public List<Recipe> getRecipes() {
-		return recipes;
-	}
+    // Costruttori
+    public Grading() {}
 
-	public void setRecipes(List<Recipe> recipes) {
-		this.recipes = recipes;
-	}
+    public Grading(Recipe recipe, EndUser voter, int value) {
+        this.recipe = recipe;
+        this.voter = voter;
+        this.value = value;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, recipes, value);
-	}
+    // Getter e Setter
+    public Long getId() {
+        return id;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Grading other = (Grading) obj;
-		return Objects.equals(id, other.id) && Objects.equals(recipes, other.recipes) && value == other.value;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	@Override
-	public String toString() {
-		return "Grading [id=" + id + ", value=" + value + ", recipes=" + recipes + "]";
-	}
-	
-	
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public EndUser getVoter() {
+        return voter;
+    }
+
+    public void setVoter(EndUser voter) {
+        this.voter = voter;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, recipe, voter, value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Grading other = (Grading) obj;
+        return Objects.equals(id, other.id) && Objects.equals(recipe, other.recipe)
+                && Objects.equals(voter, other.voter) && value == other.value;
+    }
+
+    @Override
+    public String toString() {
+        return "Grading [id=" + id + ", recipe=" + recipe + ", voter=" + voter + ", value=" + value + "]";
+    }
 }
