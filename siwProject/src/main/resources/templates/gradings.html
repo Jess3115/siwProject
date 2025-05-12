@@ -2,29 +2,39 @@
 
 <html>
 
-	<head>
-		<title>Valutazioni</title>
-		<link rel="stylesheet" th:href="@{/main-style.css?version=2}">
-	</head>
+<head>
+	<title>Valutazioni</title>
+	<link rel="stylesheet" th:href="@{/main-style.css?version=2}">
+</head>
 
-	<body>
-		<!-- barra superiore -->
-		<div th:insert="~{fragments/header :: header}"></div>
+<body>
+	<!-- barra superiore -->
+	<div th:insert="~{fragments/header :: header}"></div>
 
-		<!-- parte centrale del sito -->
-		<section>
-			<div th:if="${gradings.isEmpty()}">Non ci sono valutazioni nel sistema</div>
-			<ul>
-				<li th:each="grading : ${gradings}">
-					<a th:href="@{'/grading' + '/' + ${grading.id}}">
-						Numero di stelle: <span th:text="${grading.value}"></span>
-					</a>
-				</li>
-			</ul>
-		</section>
+	<!-- parte centrale del sito -->
+	<section>
+		<ul>
+			<h1>Valutazioni</h1>
+			<li>
+				<a th:href="@{'/grading/1'}">Numero di stelle: 1</a>
+			</li>
+			<li>
+				<a th:href="@{'/grading/2'}">Numero di stelle: 2</a>
+			</li>
+			<li>
+				<a th:href="@{'/grading/3'}">Numero di stelle: 3</a>
+			</li>
+			<li>
+				<a th:href="@{'/grading/4'}">Numero di stelle: 4</a>
+			</li>
+			<li>
+				<a th:href="@{'/grading/5'}">Numero di stelle: 5</a>
+			</li>
+		</ul>
+	</section>
 
-		<!-- riga in fondo -->
-		<div th:insert="~{fragments/footer :: footer}"></div>
-	</body>
+	<!-- riga in fondo -->
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
 
 </html>

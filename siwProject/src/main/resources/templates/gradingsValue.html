@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Valutazioni</title>
+		<link rel="stylesheet" th:href="@{/main-style.css?version=2}">
+	</head>
+
+	<body>
+		<!-- barra superiore -->
+		<div th:insert="~{fragments/header :: header}"></div>
+
+		<!-- parte centrale del sito -->
+		<section>
+			<div th:if="${gradings.isEmpty()}">Non ci sono valutazioni nel sistema</div>
+			<ul>
+				<li th:each="grading : ${gradings}">
+					<a th:href="@{'/grading/1'}" th:text="${grading.value} "></a>
+				</li>
+			</ul>
+		</section>
+
+		<!-- riga in fondo -->
+		<div th:insert="~{fragments/footer :: footer}"></div>
+	</body>
+
+</html>
