@@ -1,32 +1,91 @@
+/*
+-----------------------------------------------HEADER-------------------------------------------------------------------------
+*/
+
 header, .headerNavbar {
-  	display: flex;              		 	/* Rende il header un contenitore flex */
-  	align-items: center;         			/* Centra gli elementi verticalmente */
-  	justify-content: space-between;     	/*  */
-  	height: 70px;
-  	padding: 15px;
-  	background-color: slateblue;
-  	margin: 10px;
+    display: flex;                 /* Dispone gli elementi figli in riga */
+    padding: 15px;                /* Spaziatura interna */
+    background-color: slateblue;  /* Colore di sfondo */
+    margin: 10px;                 /* Spaziatura esterna */
 }
 
-header, .headerNavbar, .navigationButton {
-	font-size: 1.3em;
-	color: black;
+/* Lista dei menu nella barra di navigazione */
+.menu {
+    list-style: none;             /* Rimuove i punti elenco */
+    display: flex;                /* Dispone gli <li> in riga */
+    width: 100%;                  /* Occupa tutta la larghezza disponibile */
+    margin: 0;
+    padding: 0;
 }
 
-section {
-  	height: 900px;
-  	background-color: cornflowerblue;
-  	margin: 10px;
+/* Ogni voce del menu */
+.menu li {
+    flex: 1;                      /* Ogni voce occupa spazio uguale */
+    text-align: center;           /* Centra il testo */
+    position: relative;           /* Permette il posizionamento assoluto dei dropdown */
 }
 
-.footerBar {
-	display: flex;
-	justify-content: space-around;
-  	height: 50px;
-  	margin: 10px;
-  	background-color: blueviolet;
+/* Collegamenti di navigazione */
+.navigationButton {
+    display: inline-block;
+    font-size: 1.3em;
+    color: white;
+    text-decoration: none;        /* Rimuove la sottolineatura */
+    padding: 15px 0;
+    width: 100%;                  /* Si estende per tutta la larghezza della <li> */
+}
+
+/* Effetto hover sui collegamenti */
+.navigationButton:hover {
+    background-color: #555;       /* Cambia colore al passaggio del mouse */
+}
+
+/* Menu a tendina (nascosto di default) */
+.dropdown-menu {
+    display: none;                /* Inizialmente nascosto */
+    position: absolute;           /* Posizionato rispetto al contenitore .menu li */
+    top: 100%;                    /* Appena sotto la voce di menu principale */
+    left: 0;
+    background-color: #444;
+    min-width: 160px;
+    align-items: center;          /* Centra verticalmente (utile se visibile) */
+    flex-direction: column;       /* Le voci del dropdown in colonna */
+    z-index: 1;                   /* Si posiziona sopra altri elementi */
+}
+
+/* Stile dei link all'interno del dropdown */
+.dropdown-menu li a {
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+/* Mostra il dropdown al passaggio del mouse */
+.dropdown:hover .dropdown-menu {
+    display: flex;
 }
 
 /*
-=======================================================================================
+-----------------------------------------------SECTION-------------------------------------------------------------------------
 */
+
+section {
+  height: 900px;
+  background-color: cornflowerblue;
+  margin: 10px;
+}
+
+/*
+-----------------------------------------------FOOTER-------------------------------------------------------------------------
+*/
+
+.footerBar {
+  display: flex;
+  justify-content: space-around;
+  height: 50px;
+  margin: 10px;
+  background-color: blueviolet;
+}
