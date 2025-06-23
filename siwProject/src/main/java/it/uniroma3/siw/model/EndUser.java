@@ -21,9 +21,6 @@ public class EndUser  {
 	@PastOrPresent
 	private Date dateOfBirth;
 
-	@OneToOne(mappedBy = "owner")
-	private ShoppingList shoppingList;
-
 	@NotNull
 	@Email
 	private String email;
@@ -105,14 +102,6 @@ public class EndUser  {
 		this.surname = lastName;
 	}
 
-	public ShoppingList getShoppingList() {
-		return shoppingList;
-	}
-
-	public void setShoppingList(ShoppingList shoppingList) {
-		this.shoppingList = shoppingList;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -155,8 +144,7 @@ public class EndUser  {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(dateOfBirth, email, gradings, id, myRecipe, name, password, savedRecipes, shoppingList,
-				surname, username);
+		return Objects.hash(dateOfBirth, email, gradings, id, myRecipe, name, password, savedRecipes, surname, username);
 	}
 
 	@Override
@@ -172,14 +160,14 @@ public class EndUser  {
 				&& Objects.equals(gradings, other.gradings) && Objects.equals(id, other.id)
 				&& Objects.equals(myRecipe, other.myRecipe) && Objects.equals(name, other.name)
 				&& Objects.equals(password, other.password) && Objects.equals(savedRecipes, other.savedRecipes)
-				&& Objects.equals(shoppingList, other.shoppingList) && Objects.equals(surname, other.surname)
+				&& Objects.equals(surname, other.surname)
 				&& Objects.equals(username, other.username);
 	}
 
 	@Override
 	public String toString() {
 		return "EndUser [id=" + id + ", name=" + name + ", surname=" + surname + ", dateOfBirth=" + dateOfBirth
-				+ ", shoppingList=" + shoppingList + ", email=" + email + ", username=" + username + ", password="
+				+ ", email=" + email + ", username=" + username + ", password="
 				+ password + ", gradings=" + gradings + ", savedRecipes=" + savedRecipes + ", myRecipe=" + myRecipe
 				+ "]";
 	}
