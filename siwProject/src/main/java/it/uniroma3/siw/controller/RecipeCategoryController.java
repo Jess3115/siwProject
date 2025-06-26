@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import it.uniroma3.siw.model.RecipeCategory;
 import it.uniroma3.siw.service.RecipeCategoryService;
 
 @Controller
