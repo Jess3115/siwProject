@@ -17,10 +17,10 @@ public class Recipe {
 	private String name;
 
 	@ManyToOne
-	private EndUser creator;
+	private User creator;
 	
 	@ManyToMany
-	private List<EndUser> savers;
+	private List<User> savers;
 	
 	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Grading> gradings;
@@ -44,19 +44,19 @@ public class Recipe {
 		this.name = name;
 	}
 
-	public EndUser getCreator() {
+	public User getCreator() {
 		return creator;
 	}
 
-	public void setCreator(EndUser creator) {
+	public void setCreator(User creator) {
 		this.creator = creator;
 	}
 
-	public List<EndUser> getSavers() {
+	public List<User> getSavers() {
 		return savers;
 	}
 
-	public void setSavers(List<EndUser> savers) {
+	public void setSavers(List<User> savers) {
 		this.savers = savers;
 	}
 

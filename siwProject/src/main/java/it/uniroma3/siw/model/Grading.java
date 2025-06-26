@@ -16,7 +16,7 @@ public class Grading {
     private Recipe recipe;  // La ricetta che riceve il voto
 
     @ManyToOne(optional = false)
-    private EndUser voter;  // L'utente che vota
+    private User voter;  // L'utente che vota
 
     @Min(1)
     @Max(5)
@@ -25,7 +25,7 @@ public class Grading {
     // Costruttori
     public Grading() {}
 
-    public Grading(Recipe recipe, EndUser voter, int value) {
+    public Grading(Recipe recipe, User voter, int value) {
         this.recipe = recipe;
         this.voter = voter;
         this.value = value;
@@ -48,11 +48,11 @@ public class Grading {
         this.recipe = recipe;
     }
 
-    public EndUser getVoter() {
+    public User getVoter() {
         return voter;
     }
 
-    public void setVoter(EndUser voter) {
+    public void setVoter(User voter) {
         this.voter = voter;
     }
 

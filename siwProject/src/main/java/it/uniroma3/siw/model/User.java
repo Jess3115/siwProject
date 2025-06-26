@@ -7,8 +7,8 @@ import java.util.Objects;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-@Entity
-public class EndUser  {
+@Entity(name = "EndUser")
+public class User  {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -155,7 +155,7 @@ public class EndUser  {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EndUser other = (EndUser) obj;
+		User other = (User) obj;
 		return Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(email, other.email)
 				&& Objects.equals(gradings, other.gradings) && Objects.equals(id, other.id)
 				&& Objects.equals(myRecipe, other.myRecipe) && Objects.equals(name, other.name)
