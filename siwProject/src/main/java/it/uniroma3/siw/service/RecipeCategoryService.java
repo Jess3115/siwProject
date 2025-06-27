@@ -29,4 +29,8 @@ public class RecipeCategoryService {
 	public Iterable<Recipe> findRecipesByCategoryId(Long categoryID) {
 		return this.recipeCategoryRepository.findRecipesByCategoryId(categoryID);
 	}
+
+    public void deleteCategoryById(Long categoryID) {
+		recipeCategoryRepository.deleteById(categoryID);
+    }
 }

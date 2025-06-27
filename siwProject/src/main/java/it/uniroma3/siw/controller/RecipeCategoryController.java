@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import it.uniroma3.siw.model.RecipeCategory;
 import it.uniroma3.siw.service.RecipeCategoryService;
 
 @Controller
@@ -24,5 +27,33 @@ public class RecipeCategoryController {
 		model.addAttribute("category", this.recipeCategoryService.getCategoryById(categoryID));
 		model.addAttribute("recipes", this.recipeCategoryService.findRecipesByCategoryId(categoryID));
 		return "category.html";
+	}
+
+	@GetMapping("/admin/newCategory")
+	public String formNewCategory(Model model) {
+		model.addAttribute("newCategory", new RecipeCategory());
+		return "admin/formNewCategory.html";
+	}
+
+	@PostMapping("/admin/newCategory")
+	public String newCategory(@ModelAttribute("newCategory") RecipeCategory newCategory, Model model) {
+		this.recipeCategoryService.save(newCategory);
+		model.addAttribute("categories", this.recipeCategoryService.getAllCategories());
+		return "redirect:/category" + newCategory.getId();
+	}
+
+	//da controllare eliminazione bidirezionale
+	@PostMapping("/admin/deleteCategory/{categoryID}")
+	public String deleteCategory(@PathVariable("categoryID") Long categoryID, Model model) {
+		this.recipeCategoryService.deleteCategoryById(categoryID);
+		model.addAttribute("categories", this.recipeCategoryService.getAllCategories());
+		return "redirect:/category";
+	}
+
+	@GetMapping("/admin/editCategory/{categoryID}")
+	public String formEditCategory(@PathVariable("categoryID") Long categoryID, Model model) {
+		model.addAttribute("category", this.recipeCategoryService.getCategoryById(categoryID));
+		return "admin/formEditCategory.html";
+		
 	}
 }

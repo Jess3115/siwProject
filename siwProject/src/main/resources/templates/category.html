@@ -24,6 +24,24 @@
 					</a>
 				</li>
 			</ul>
+
+			<!-- Pulsanti per tornare indietro -->
+			<a th:href="backUrl" class="button">
+				<i class="fa-solid fa-arrow-left"></i>
+				<span th:text="${backUrl == '/category' ? 'Torna alle categorie' : 'Torna indietro'}"></span>
+			</a>
+			<!-- Pulsante per modificare la categoria -->
+			<a th:href="@{'/admin/edit/category/' + ${category.id}}" sec:authorize="hasAuthority('ADMIN')" class="button">
+				<i class="fa-solid fa-pen"></i> Modifica Informazioni
+				<span th:text="${backUrl == '/category' ? 'Torna alle categorie' : 'Torna indietro'}"></span>
+			</a>
+			<!-- Pulsante per eliminare la categoria -->
+			<form th:action="@{'/admin/deleteCategory/' + ${category.id}'}" th:object="${newCategory}" method="post" sec:authorize="hasAuthority('ADMIN')">
+                <button type="submit">
+                    <i class="fa-solid fa-trash-can"></i>Elimina Categoria
+                </button>
+            </form>
+
 		</section>
 
 		<!-- riga in fondo -->
