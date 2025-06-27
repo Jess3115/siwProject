@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.model.RecipeCategory;
 import it.uniroma3.siw.service.RecipeCategoryService;
@@ -23,9 +24,10 @@ public class RecipeCategoryController {
 	}
 	
 	@GetMapping("/category/{categoryID}")
-	public String getCategory(@PathVariable("categoryID") Long categoryID, Model model) {
+	public String getCategory(@PathVariable("categoryID") Long categoryID, @RequestParam(name = "from", defaultValue = "/book") String from, Model model) {
 		model.addAttribute("category", this.recipeCategoryService.getCategoryById(categoryID));
 		model.addAttribute("recipes", this.recipeCategoryService.findRecipesByCategoryId(categoryID));
+		model.addAttribute("backUrl", from);
 		return "category.html";
 	}
 
@@ -55,5 +57,14 @@ public class RecipeCategoryController {
 		model.addAttribute("category", this.recipeCategoryService.getCategoryById(categoryID));
 		return "admin/formEditCategory.html";
 		
+	}
+
+	@PostMapping("/admin/editCategory/{categoryID}")
+	public String editCategory(@PathVariable("categoryID") Long categoryID, @ModelAttribute("category") RecipeCategory category, Model model) {
+		RecipeCategory existingCategory = this.recipeCategoryService.getCategoryById(categoryID);
+		existingCategory.setName(category.getName());
+		this.recipeCategoryService.save(existingCategory);
+		model.addAttribute("category", this.recipeCategoryService.getAllCategories());
+		return "redirect:/category/" + existingCategory.getId();
 	}
 }
