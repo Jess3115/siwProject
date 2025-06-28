@@ -129,4 +129,8 @@ public class Recipe {
 		return "Recipe{id=" + id + ", name='" + name + "'}";
 	}
 
+    public void addImage(Image image) {
+        this.images.add(image);
+    }
+
 }

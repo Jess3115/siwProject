@@ -12,7 +12,7 @@ public class ProcedureStep {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Lob
+
 	private String description;
 
 	@Min(1)

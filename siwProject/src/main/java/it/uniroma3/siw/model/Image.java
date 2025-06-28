@@ -12,6 +12,7 @@ public class Image {
 	private Long id;
 
 	private String name; // Nome del file originale, utile per info
+	
 	@Lob
 	@Column(nullable = false)
 	private byte[] data; // Contenuto dell'immagine
@@ -41,6 +42,14 @@ public class Image {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Recipe getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
 	}
 
 	@Override
