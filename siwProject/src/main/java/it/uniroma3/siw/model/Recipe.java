@@ -28,7 +28,7 @@ public class Recipe {
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "recipes")
 	private List<RecipeCategory> categories;
 
-	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Image> images;
 
 	public Long getId() {
