@@ -12,16 +12,17 @@ public class Grading {
     private Long id;
 
     @ManyToOne(optional = false)
-    private Recipe recipe;  // La ricetta che riceve il voto
+    private Recipe recipe; // La ricetta che riceve il voto
 
     @ManyToOne(optional = false)
-    private User voter;  // L'utente che vota
+    private User voter; // L'utente che vota
 
     @ValidGrading
-    private int value;  // Il valore del voto (1-5)
+    private int value; // Il valore del voto (1-5)
 
     // Costruttori
-    public Grading() {}
+    public Grading() {
+    }
 
     public Grading(Recipe recipe, User voter, int value) {
         this.recipe = recipe;
@@ -64,24 +65,24 @@ public class Grading {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, recipe, voter, value);
+        return Objects.hash(id);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
+        if (obj == null || getClass() != obj.getClass())
             return false;
         Grading other = (Grading) obj;
-        return Objects.equals(id, other.id) && Objects.equals(recipe, other.recipe)
-                && Objects.equals(voter, other.voter) && value == other.value;
+        return Objects.equals(id, other.id);
     }
 
     @Override
     public String toString() {
-        return "Grading [id=" + id + ", recipe=" + recipe + ", voter=" + voter + ", value=" + value + "]";
+        return "Grading{" +
+                "id=" + id +
+                ", value=" + value +
+                '}';
     }
 }

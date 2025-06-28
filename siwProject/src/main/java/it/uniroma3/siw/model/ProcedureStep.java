@@ -4,20 +4,27 @@ import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 @Entity
 public class ProcedureStep {
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String description; // Descrizione della procedura
+	@Lob
+	private String description;
 
-	private int step; // Numero del passo nella procedura
+	@Min(1)
+	private int step;
 
-	private List<Ingredient> ingredients; // Ingredienti necessari per questo passo
+	@ManyToMany
+	private List<RecipeIngredient> ingredients;
 
-	private String note; // Note aggiuntive per questo passo
+	private String note;
+
+	@ManyToOne(optional = false)
+	private Recipe recipe;
 
 	public Long getId() {
 		return id;
@@ -43,11 +50,11 @@ public class ProcedureStep {
 		this.step = step;
 	}
 
-	public List<Ingredient> getIngredients() {
+	public List<RecipeIngredient> getIngredients() {
 		return ingredients;
 	}
 
-	public void setIngredients(List<Ingredient> ingredients) {
+	public void setIngredients(List<RecipeIngredient> ingredients) {
 		this.ingredients = ingredients;
 	}
 
@@ -62,29 +69,19 @@ public class ProcedureStep {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof ProcedureStep)) return false;
+		if (o == null || getClass() != o.getClass()) return false;
 		ProcedureStep that = (ProcedureStep) o;
-		return step == that.step &&
-				id.equals(that.id) &&
-				description.equals(that.description) &&
-				ingredients.equals(that.ingredients) &&
-				note.equals(that.note);
+		return Objects.equals(id, that.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, description, step, ingredients, note);
+		return Objects.hash(id);
 	}
 
 	@Override
 	public String toString() {
-		return "ProcedureStep{" +
-				"id=" + id +
-				", description='" + description + '\'' +
-				", step=" + step +
-				", ingredients=" + ingredients +
-				", note='" + note + '\'' +
-				'}';
+		return "ProcedureStep{id=" + id + ", step=" + step + "}";
 	}
 
 }

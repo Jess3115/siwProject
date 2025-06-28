@@ -8,13 +8,16 @@ import jakarta.persistence.*;
 public class Image {
 
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private String name; 		// Nome del file originale, utile per info
-    @Lob
-    @Column(nullable = false)
-    private byte[] data; 		// Contenuto dell'immagine
+
+	private String name; // Nome del file originale, utile per info
+	@Lob
+	@Column(nullable = false)
+	private byte[] data; // Contenuto dell'immagine
+
+	@ManyToOne
+	private Recipe recipe;
 
 	public byte[] getData() {
 		return data;
@@ -42,24 +45,25 @@ public class Image {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name);
+		return Objects.hash(id);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Image other = (Image) obj;
-		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
-		return "Image [id=" + id + ", name=" + name + "]";
+		return "Image{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				'}';
 	}
 
 }

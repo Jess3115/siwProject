@@ -4,20 +4,19 @@ import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Ingredient {
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String name; // Nome dell'ingrediente
+	@NotBlank
+	private String name;
 
-	private double quantity; // Quantità dell'ingrediente
-
-	private String unit; // Unità di misura (es. grammi, litri, cucchiai)
-
-	private List<Recipe> recipes; // Ricette che utilizzano questo ingrediente
+	@ManyToMany
+	private List<Recipe> recipes;
 
 	public Long getId() {
 		return id;
@@ -35,22 +34,6 @@ public class Ingredient {
 		this.name = name;
 	}
 
-	public double getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(double quantity) {
-		this.quantity = quantity;
-	}
-
-	public String getUnit() {
-		return unit;
-	}
-
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
-
 	public List<Recipe> getRecipes() {
 		return recipes;
 	}
@@ -62,26 +45,18 @@ public class Ingredient {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Ingredient)) return false;
+		if (o == null || getClass() != o.getClass()) return false;
 		Ingredient that = (Ingredient) o;
-		return Double.compare(that.quantity, quantity) == 0 &&
-				id.equals(that.id) &&
-				name.equals(that.name) &&
-				unit.equals(that.unit);
+		return Objects.equals(id, that.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, quantity, unit);
+		return Objects.hash(id);
 	}
 
 	@Override
 	public String toString() {
-		return "Ingredient{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", quantity=" + quantity +
-				", unit='" + unit + '\'' +
-				'}';
+		return "Ingredient{id=" + id + ", name='" + name + "'}";
 	}
 }

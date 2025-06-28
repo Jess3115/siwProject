@@ -45,7 +45,7 @@ public class ImageLoader implements ApplicationListener<ApplicationReadyEvent> {
         for (int i = 0; i < recipes.size() && i < imageFiles.size(); i++) {
             Recipe recipe = recipes.get(i);
             File imageFile = imageFiles.get(i);
-            processImage(recipe::setImage, imageFile);
+            processImage(recipe.getImages()::add, imageFile);
             recipeRepository.save(recipe);
         }
         System.out.println("Immagini ricette associate con successo!");

@@ -7,33 +7,35 @@ import java.util.Set;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-
 @Entity
 public class Recipe {
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank
 	private String name;
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private User creator;
-	
-	@ManyToMany
+
+	@ManyToMany(mappedBy = "savedRecipes")
 	private Set<User> savers;
-	
-	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true) //orphanRemoval to delete gradings when is removed from the collection
+
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Grading> gradings;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "recipes")
 	private List<RecipeCategory> categories;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Image> images;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<ProcedureStep> procedures;
+
+	@ManyToMany(mappedBy = "recipes", fetch = FetchType.LAZY)
+	private List<Ingredient> ingredients;
 
 	public Long getId() {
 		return id;
@@ -99,37 +101,32 @@ public class Recipe {
 		this.procedures = procedures;
 	}
 
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
+
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Recipe)) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		Recipe recipe = (Recipe) o;
-		return id.equals(recipe.id) &&
-				name.equals(recipe.name) &&
-				Objects.equals(creator, recipe.creator) &&
-				Objects.equals(savers, recipe.savers) &&
-				Objects.equals(gradings, recipe.gradings) &&
-				Objects.equals(categories, recipe.categories) &&
-				Objects.equals(images, recipe.images) &&
-				Objects.equals(procedures, recipe.procedures);
+		return Objects.equals(id, recipe.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name);
+		return Objects.hash(id);
 	}
 
 	@Override
-	public String toString() {	
-		return "Recipe{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", creator=" + creator +
-				", gradings=" + gradings +
-				", categories=" + categories +
-				'}';
+	public String toString() {
+		return "Recipe{id=" + id + ", name='" + name + "'}";
 	}
-	
-	
 
 }

@@ -9,12 +9,12 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class RecipeCategory {
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotNull
 	private String name;
-	
+
 	@ManyToMany
 	private List<Recipe> recipes;
 
@@ -44,26 +44,25 @@ public class RecipeCategory {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, recipes);
+		return Objects.hash(id);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		RecipeCategory other = (RecipeCategory) obj;
-		return Objects.equals(id, other.id) && Objects.equals(name, other.name)
-				&& Objects.equals(recipes, other.recipes);
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
-		return "RecipeCategory [id=" + id + ", name=" + name + ", recipes=" + recipes + "]";
+		return "RecipeCategory{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				'}';
 	}
-	
-	
+
 }

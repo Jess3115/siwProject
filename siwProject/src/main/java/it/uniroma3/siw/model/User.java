@@ -8,9 +8,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity(name = "users")
-public class User  {
+public class User {
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank
@@ -28,11 +28,11 @@ public class User  {
 	@OneToMany(mappedBy = "voter")
 	private List<Grading> gradings;
 
-	@ManyToMany(mappedBy = "savers")
+	@ManyToMany
 	private List<Recipe> savedRecipes;
 
 	@OneToMany(mappedBy = "creator")
-	private List<Recipe> myRecipe;
+	private List<Recipe> createdRecipes;
 
 	public Long getId() {
 		return id;
@@ -115,38 +115,36 @@ public class User  {
 	}
 
 	public List<Recipe> getMyRecipe() {
-		return myRecipe;
+		return createdRecipes;
 	}
 
-	public void setMyRecipe(List<Recipe> myRecipe) {
-		this.myRecipe = myRecipe;
+	public void setMyRecipe(List<Recipe> createdRecipes) {
+		this.createdRecipes = createdRecipes;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(dateOfBirth, email, gradings, id, myRecipe, name, savedRecipes, surname);
+		return Objects.hash(id, email);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(email, other.email)
-				&& Objects.equals(gradings, other.gradings) && Objects.equals(id, other.id)
-				&& Objects.equals(myRecipe, other.myRecipe) && Objects.equals(name, other.name)
-				&& Objects.equals(savedRecipes, other.savedRecipes)
-				&& Objects.equals(surname, other.surname);
+		return Objects.equals(id, other.id) &&
+				Objects.equals(email, other.email);
 	}
 
 	@Override
 	public String toString() {
-		return "EndUser [id=" + id + ", name=" + name + ", surname=" + surname + ", dateOfBirth=" + dateOfBirth
-				+ ", email=" + email + ", gradings=" + gradings + ", savedRecipes=" + savedRecipes + ", myRecipe=" + myRecipe
-				+ "]";
+		return "User{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", surname='" + surname + '\'' +
+				", email='" + email + '\'' +
+				'}';
 	}
 }
