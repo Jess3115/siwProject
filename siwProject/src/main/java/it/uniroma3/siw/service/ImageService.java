@@ -3,7 +3,7 @@ package it.uniroma3.siw.service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class ImageService {
 
 
 	public void uploadImagesFromFolder(String folderPath) throws IOException {
-		Files.list(Paths.get(folderPath))
+		Files.list(Path.of(folderPath))
 		.filter(Files::isRegularFile)
 		.forEach(filePath -> {
 			try {

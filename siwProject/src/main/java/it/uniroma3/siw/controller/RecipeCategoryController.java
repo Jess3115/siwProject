@@ -24,7 +24,7 @@ public class RecipeCategoryController {
 	}
 	
 	@GetMapping("/category/{categoryID}")
-	public String getCategory(@PathVariable("categoryID") Long categoryID, @RequestParam(name = "from", defaultValue = "/book") String from, Model model) {
+	public String getCategory(@PathVariable Long categoryID, @RequestParam(defaultValue = "/book") String from, Model model) {
 		model.addAttribute("category", this.recipeCategoryService.getCategoryById(categoryID));
 		model.addAttribute("recipes", this.recipeCategoryService.findRecipesByCategoryId(categoryID));
 		model.addAttribute("backUrl", from);
@@ -38,7 +38,7 @@ public class RecipeCategoryController {
 	}
 
 	@PostMapping("/admin/newCategory")
-	public String newCategory(@ModelAttribute("newCategory") RecipeCategory newCategory, Model model) {
+	public String newCategory(@ModelAttribute RecipeCategory newCategory, Model model) {
 		this.recipeCategoryService.save(newCategory);
 		model.addAttribute("categories", this.recipeCategoryService.getAllCategories());
 		return "redirect:/category" + newCategory.getId();
@@ -46,21 +46,21 @@ public class RecipeCategoryController {
 
 	//da controllare eliminazione bidirezionale
 	@PostMapping("/admin/deleteCategory/{categoryID}")
-	public String deleteCategory(@PathVariable("categoryID") Long categoryID, Model model) {
+	public String deleteCategory(@PathVariable Long categoryID, Model model) {
 		this.recipeCategoryService.deleteCategoryById(categoryID);
 		model.addAttribute("categories", this.recipeCategoryService.getAllCategories());
 		return "redirect:/category";
 	}
 
 	@GetMapping("/admin/editCategory/{categoryID}")
-	public String formEditCategory(@PathVariable("categoryID") Long categoryID, Model model) {
+	public String formEditCategory(@PathVariable Long categoryID, Model model) {
 		model.addAttribute("category", this.recipeCategoryService.getCategoryById(categoryID));
 		return "admin/formEditCategory.html";
 		
 	}
 
 	@PostMapping("/admin/editCategory/{categoryID}")
-	public String editCategory(@PathVariable("categoryID") Long categoryID, @ModelAttribute("category") RecipeCategory category, Model model) {
+	public String editCategory(@PathVariable Long categoryID, @ModelAttribute RecipeCategory category, Model model) {
 		RecipeCategory existingCategory = this.recipeCategoryService.getCategoryById(categoryID);
 		existingCategory.setName(category.getName());
 		this.recipeCategoryService.save(existingCategory);

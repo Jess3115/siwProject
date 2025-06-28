@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,7 +51,7 @@ public class ImageLoader implements ApplicationListener<ApplicationReadyEvent> {
     }
 
     private List<File> getImageFilesFromFolder(String folderPath) throws IOException {
-        return Files.list(Paths.get(folderPath))
+        return Files.list(Path.of(folderPath))
                    .filter(Files::isRegularFile)
                    .map(Path::toFile)
                    .collect(Collectors.toList());
