@@ -113,3 +113,22 @@ INSERT INTO grading (value, recipe_id, voter_id) VALUES (4, 1, 3);
 INSERT INTO grading (value, recipe_id, voter_id) VALUES (5, 2, 2);
 INSERT INTO grading (value, recipe_id, voter_id) VALUES (3, 3, 4);
 INSERT INTO grading (value, recipe_id, voter_id) VALUES (4, 4, 5);
+
+--=======================================================================================================
+-- =========================== ingredient_recipes 
+--=======================================================================================================
+-- Ingredienti per Pizza Margherita (recipe_id = 1)
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (1, 1); -- Farina
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (2, 1); -- Uova
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (8, 1); -- Olio d'oliva
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (4, 1); -- Mozzarella
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (5, 1); -- Basilico
+
+-- Ingredienti per Tiramisù Classico (recipe_id = 2)
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (6, 2); -- Zucchero
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (5, 2); -- Basilico
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (10, 2); -- Latte
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (7, 2); -- Sale
+
+-- Ingredienti per Spaghetti al Pomodoro (recipe_id = 3)
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (3, 3); -- Pomodoro
