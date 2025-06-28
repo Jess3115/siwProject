@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ricetta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/main-style.css?version=2}">
+</head>
+<body>
+    <!-- Header -->
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <!-- Main Content -->
+    <section>
+        <h1 th:text="${recipe.name}"></h1>
+        <p th:text="'Creatore: ' + ${recipe.creator.name} + ' ' + ${recipe.creator.surname}"></p>
+        
+        <h2>Ingredienti:</h2>
+        <ul>
+            <li th:each="ing : ${recipe.ingredients}">
+                <span th:text="${ing.name}"></span>
+            </li>
+        </ul>
+        
+        <h2>Procedimento:</h2>
+        <ol>
+            <li th:each="step : ${recipe.procedures}">
+                <span th:text="${step.description}"></span>
+            </li>
+        </ol>
+        
+        <h2>Valutazione Media: 
+            <span th:text="${#numbers.formatDecimal(averageRating, 1, 1)}"></span>/5
+        </h2>
+
+        <!-- Back Button -->
+        <a th:href="@{/recipe}" class="button">
+            <i class="fa-solid fa-arrow-left"></i> Torna alle ricette
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>
