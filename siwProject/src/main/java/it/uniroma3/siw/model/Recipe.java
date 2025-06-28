@@ -22,11 +22,14 @@ public class Recipe {
 	@ManyToMany
 	private List<User> savers;
 	
-	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true) //orphanRemoval to delete gradings when is removed from the collection
 	private List<Grading> gradings;
 	
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "recipes")
 	private List<RecipeCategory> categories;
+
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Image> images;
 
 	public Long getId() {
 		return id;
@@ -74,6 +77,18 @@ public class Recipe {
 
 	public void setCategories(List<RecipeCategory> categories) {
 		this.categories = categories;
+	}
+
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImage(Image image) {
+		this.images.add(image);
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 
 	@Override
