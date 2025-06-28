@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ricette in Tendenza</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/main-style.css?version=2}">
+    <link rel="stylesheet" th:href="@{/css/authenticated/trending.css?version=1}">
+</head>
+<body>
+    <!-- Header -->
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <!-- Main Content -->
+    <section class="container">
+        <h1><i class="fas fa-fire"></i> Ricette in Tendenza</h1>
+        
+        <div th:if="${topRecipes == null or topRecipes.isEmpty()}">
+            <p>Nessuna ricetta trovata</p>
+        </div>
+        
+        <div th:each="recipe : ${topRecipes}" class="recipe-card">
+            <div class="recipe-header">
+                <a th:href="@{'/recipe/' + ${recipe.id}}" 
+                   th:text="${recipe.name}" class="recipe-title"></a>
+                <div class="recipe-rating">
+                    <span th:text="${recipeService.calculateAverageRating(recipe)}"></span>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            
+            <div class="recipe-meta">
+                <span th:text="'di ' + ${recipe.creator.name} + ' ' + ${recipe.creator.surname}"></span>
+                <span th:text="'★ ' + ${recipe.gradings.size()} + ' valutazioni'"></span>
+            </div>
+            
+            <div>
+                <span th:each="category : ${recipe.categories}" 
+                      class="recipe-category"
+                      th:text="${category.name}"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

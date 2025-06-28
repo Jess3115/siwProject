@@ -9,19 +9,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableWebSecurity
-//public  class WebSecurityConfig {
-	public class AuthConfiguration {
+public class AuthConfiguration {
 
     @Autowired
     private DataSource dataSource;
@@ -31,46 +28,83 @@ import static org.springframework.security.config.Customizer.withDefaults;
             throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .authoritiesByUsernameQuery("SELECT username, role from credentials WHERE username=?")
+                .authoritiesByUsernameQuery("SELECT username, role FROM credentials WHERE username=?")
                 .usersByUsernameQuery("SELECT username, password, 1 as enabled FROM credentials WHERE username=?");
     }
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception{
+    SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().and().cors().disable()
+                .cors().disable()
+                .csrf().disable()
                 .authorizeHttpRequests(requests -> requests
-                .requestMatchers("/**").permitAll()
-                        // chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
-                        .requestMatchers(HttpMethod.GET, "/", "/recipe/**", "/category/**", "/css/**", "/recipeImages/**", "/images/**", "/favicon.ico").permitAll()
-                        // chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register
-                        .requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority("ADMIN")
-                        // tutti gli utenti autenticati possono accedere alle pagine rimanenti
-                        .anyRequest().authenticated()).formLogin(login -> login
-                .loginPage("/login")
-                .permitAll()
-                .defaultSuccessUrl("/success", true)
-                .failureUrl("/login?error=true"))
+                        // Accesso pubblico
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/",
+                                "/index",
+                                "/recipe",
+                                "/recipe/**",
+                                "/category",
+                                "/category/**",
+                                "/ingredient",
+                                "/ingredient/**",
+                                "/login",
+                                "/register")
+                        .permitAll()
+
+                        // Accesso pubblico alle risorse statiche
+                        .requestMatchers(
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/static/**",
+                                "/recipeImages/**",
+                                "/favicon.ico",
+                                "/webjars/**")
+                        .permitAll()
+
+                        // Accesso solo per ADMIN
+                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+
+                        // Tutte le altre richieste richiedono autenticazione
+                        .anyRequest().authenticated())
+                .formLogin(login -> login
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/", true) // Reindirizzamento alla home dopo login
+                        .failureUrl("/login?error=true"))
                 .logout(logout -> logout
-                        // il logout è attivato con una richiesta GET a "/logout"
                         .logoutUrl("/logout")
-                        // in caso di successo, si viene reindirizzati alla home
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .clearAuthentication(true).permitAll());
+                        .permitAll());
+
         return httpSecurity.build();
+    }
+
+    // Ignora completamente la sicurezza per le risorse statiche
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers(
+                "/css/**",
+                "/js/**",
+                "/images/**",
+                "/static/**",
+                "/recipeImages/**",
+                "/favicon.ico",
+                "/webjars/**");
     }
 }

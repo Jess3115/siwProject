@@ -17,9 +17,12 @@ import it.uniroma3.siw.service.RecipeService;
 @Controller
 public class RecipeController {
 
-    @Autowired RecipeService recipeService;
-	@Autowired RecipeCategoryService categoryService;
-	@Autowired IngredientService ingredientService;
+    @Autowired
+    RecipeService recipeService;
+    @Autowired
+    RecipeCategoryService categoryService;
+    @Autowired
+    IngredientService ingredientService;
 
     @GetMapping("/recipe")
     public String showRecipes(Model model) {
@@ -28,7 +31,8 @@ public class RecipeController {
     }
 
     @GetMapping("/recipe/{recipeID}")
-    public String getRecipe(@PathVariable Long recipeID, @RequestParam(defaultValue = "/recipe") String from, Model model) {
+    public String getRecipe(@PathVariable Long recipeID, @RequestParam(defaultValue = "/recipe") String from,
+            Model model) {
         Recipe recipe = recipeService.getRecipeById(recipeID);
         model.addAttribute("recipe", recipe);
         model.addAttribute("averageRating", recipeService.calculateAverageRating(recipe));
@@ -71,5 +75,26 @@ public class RecipeController {
         // Aggiorna altri campi necessari
         recipeService.saveRecipe(existingRecipe);
         return "redirect:/recipe/" + existingRecipe.getId();
+    }
+
+    @GetMapping("/trending")
+    public String showTrendingRecipes(Model model) {
+        model.addAttribute("topRecipes", recipeService.getTopRatedRecipes());
+        model.addAttribute("recipeService", recipeService);
+        return "authenticated/trending.html";
+    }
+
+    @GetMapping("/search")
+    public String searchRecipes(
+            @RequestParam(value = "query", required = false) String query,
+            Model model) {
+
+        if (query != null && !query.trim().isEmpty()) {
+            model.addAttribute("results", recipeService.searchRecipes(query));
+        }
+
+        model.addAttribute("query", query);
+        model.addAttribute("recipeService", recipeService);
+        return "authenticated/search.html";
     }
 }
