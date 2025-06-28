@@ -1,9 +1,8 @@
 package it.uniroma3.siw.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-
 import java.util.Objects;
+import it.uniroma3.siw.validation.ValidGrading;
 
 @Entity
 public class Grading {
@@ -18,8 +17,7 @@ public class Grading {
     @ManyToOne(optional = false)
     private User voter;  // L'utente che vota
 
-    @Min(1)
-    @Max(5)
+    @ValidGrading
     private int value;  // Il valore del voto (1-5)
 
     // Costruttori

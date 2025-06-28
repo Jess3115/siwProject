@@ -4,6 +4,7 @@
 
 	<head>
 		<title>Categoria</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 		<link rel="stylesheet" th:href="@{/main-style.css?version=2}">
 	</head>
 
@@ -24,6 +25,23 @@
 					</a>
 				</li>
 			</ul>
+
+			<!-- Pulsanti per tornare indietro -->
+			<a th:href=@{${backUrl}} class="button">
+				<i class="fa-solid fa-arrow-left"></i>
+				<span th:text="${backUrl == '/category' ? 'Torna alle categorie' : 'Torna indietro'}"></span>
+			</a>
+			<!-- Pulsante per modificare la categoria -->
+			<a th:href="@{'/admin/editCategory/' + ${category.id}}"  class="button">
+				<i class="fa-solid fa-pen"></i> Modifica Informazioni
+			</a>
+			<!-- Pulsante per eliminare la categoria -->
+			<form th:action="@{'/admin/deleteCategory/' + ${category.id}'}" th:object="${newCategory}" method="post" >
+                <button type="submit">
+                    <i class="fa-solid fa-trash-can"></i>Elimina Categoria
+                </button>
+            </form>
+
 		</section>
 
 		<!-- riga in fondo -->

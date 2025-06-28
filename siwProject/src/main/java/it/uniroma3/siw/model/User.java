@@ -7,7 +7,7 @@ import java.util.Objects;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-@Entity(name = "EndUser")
+@Entity(name = "users")
 public class User  {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -24,10 +24,6 @@ public class User  {
 	@NotNull
 	@Email
 	private String email;
-	@NotNull
-	private String username;
-	@NotNull
-	private String password;
 
 	@OneToMany(mappedBy = "voter")
 	private List<Grading> gradings;
@@ -110,22 +106,6 @@ public class User  {
 		this.email = email;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public List<Recipe> getOtherRecipe() {
 		return savedRecipes;
 	}
@@ -144,7 +124,7 @@ public class User  {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(dateOfBirth, email, gradings, id, myRecipe, name, password, savedRecipes, surname, username);
+		return Objects.hash(dateOfBirth, email, gradings, id, myRecipe, name, savedRecipes, surname);
 	}
 
 	@Override
@@ -159,16 +139,14 @@ public class User  {
 		return Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(email, other.email)
 				&& Objects.equals(gradings, other.gradings) && Objects.equals(id, other.id)
 				&& Objects.equals(myRecipe, other.myRecipe) && Objects.equals(name, other.name)
-				&& Objects.equals(password, other.password) && Objects.equals(savedRecipes, other.savedRecipes)
-				&& Objects.equals(surname, other.surname)
-				&& Objects.equals(username, other.username);
+				&& Objects.equals(savedRecipes, other.savedRecipes)
+				&& Objects.equals(surname, other.surname);
 	}
 
 	@Override
 	public String toString() {
 		return "EndUser [id=" + id + ", name=" + name + ", surname=" + surname + ", dateOfBirth=" + dateOfBirth
-				+ ", email=" + email + ", username=" + username + ", password="
-				+ password + ", gradings=" + gradings + ", savedRecipes=" + savedRecipes + ", myRecipe=" + myRecipe
+				+ ", email=" + email + ", gradings=" + gradings + ", savedRecipes=" + savedRecipes + ", myRecipe=" + myRecipe
 				+ "]";
 	}
 }

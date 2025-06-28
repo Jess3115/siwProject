@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crea Nuova Categoria | Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/main-style.css?version=2}" />
+    <link rel="stylesheet" th:href="@{/admin/formNewCategory.css?version=2}" />
+</head>
+
+<body>
+    <!-- Barra superiore -->
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <!-- Contenitore principale -->
+    <main class="container">
+        <section class="form-card">
+            <h1>Crea Nuova Categoria</h1>
+            <form th:action="@{/admin/newCategory}" th:object="${newCategory}" method="post">
+                <div class="form-group">
+                    <label for="name">Nome Categoria</label>
+                    <input type="text" th:field="*{name}" placeholder="Inserisci il nome della categoria"/>
+                </div>
+                <button type="submit">Crea Categoria</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

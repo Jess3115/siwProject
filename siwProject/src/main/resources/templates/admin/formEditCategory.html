@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Modifica categoria</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+	<link rel="stylesheet" th:href="@{/main-style.css?version=2}">
+</head>
+
+<body>
+	<!-- barra superiore -->
+	<div th:insert="~{fragments/header :: header}"></div>
+
+	<!-- parte centrale del sito -->
+	<section>
+		<form th:action="@{'/admin/editCategory/' + ${category.id}}" th:object="${category}" method="post"
+			enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="name">Nome Categoria:</label>
+				<input type="text" th:field="*{name}" placeholder="Inserisci il nome della categoria" />
+			</div>
+
+			<div class="form-group">
+				<!-- Fare la aggiunta ed eliminazione delle ricette dalla categoria -->
+			</div>
+			<button type="submit">Modifica Categoria</button>
+	</section>
+
+	<!-- riga in fondo -->
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>
