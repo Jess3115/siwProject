@@ -48,9 +48,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
     @Bean
     SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception{
         httpSecurity
-                .csrf(withDefaults()).cors(cors -> cors.disable())
+                .csrf().and().cors().disable()
                 .authorizeHttpRequests(requests -> requests
-//                .requestMatchers("/**").permitAll()
+                .requestMatchers("/**").permitAll()
                         // chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
                         .requestMatchers(HttpMethod.GET, "/", "/recipe/**", "/category/**", "/css/**", "/recipeImages/**", "/images/**", "/favicon.ico").permitAll()
                         // chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register
