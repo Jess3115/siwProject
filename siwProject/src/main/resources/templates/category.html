@@ -21,13 +21,13 @@
 			<ul>
 				<li th:each="recipe : ${recipes}">
 					<a th:href="@{'/recipe' + '/' + ${recipe.id}}">
-						<span th:text="${recipe.name} + ' ' + ${recipe.grading.value} "></span>
+						<span th:text="${recipe.name}"></span>
 					</a>
 				</li>
 			</ul>
 
 			<!-- Pulsanti per tornare indietro -->
-			<a th:href=@{${backUrl}} class="button">
+			<a th:href="@{${backUrl}}" class="button">
 				<i class="fa-solid fa-arrow-left"></i>
 				<span th:text="${backUrl == '/category' ? 'Torna alle categorie' : 'Torna indietro'}"></span>
 			</a>

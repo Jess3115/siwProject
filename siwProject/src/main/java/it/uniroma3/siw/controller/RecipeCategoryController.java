@@ -41,7 +41,7 @@ public class RecipeCategoryController {
 	public String newCategory(@ModelAttribute RecipeCategory newCategory, Model model) {
 		this.recipeCategoryService.save(newCategory);
 		model.addAttribute("categories", this.recipeCategoryService.getAllCategories());
-		return "redirect:/category" + newCategory.getId();
+		return "redirect:/category/" + newCategory.getId();
 	}
 
 	//da controllare eliminazione bidirezionale
