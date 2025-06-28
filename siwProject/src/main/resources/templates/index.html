@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Home</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/main-style.css?version=2}">
+</head>
+<body>
+    <!-- Header -->
+    <div th:insert="~{fragments/header :: header}"></div>
 
-	<head>
-		<title>Home</title>
-		<link rel="stylesheet" th:href="@{/main-style.css?version=2}">
-	</head>
+    <!-- Main Content -->
+    <section>
+        <h1>Benvenuto nella Piattaforma di Ricette</h1>
+        
+        <div class="card-container">
+            <a th:href="@{/recipe}" class="card">
+                <i class="fa-solid fa-book-open"></i>
+                <h2>Ricette</h2>
+            </a>
 
-	<body>
-		<!-- barra superiore -->
-		<div th:insert="~{fragments/header :: header}"></div>
-		
-		<!-- parte centrale del sito -->
-		<section>
-			<h1>Liste</h1>
-			<h2>
-				<a th:href="@{'/category'}">Categorie ricette</a>
-			</h2>
-			<h2>
-				<a th:href="@{'/grading'}">Valutazioni</a>
-			</h2>
-		</section>
+            <a th:href="@{/ingredient}" class="card">
+                <i class="fa-solid fa-carrot"></i>
+                <h2>Ingredienti</h2>
+            </a>
 
-		<!-- riga in fondo -->
-		<div th:insert="~{fragments/footer :: footer}"></div>
-	</body>
+            <a th:href="@{/category}" class="card">
+                <i class="fa-solid fa-tags"></i>
+                <h2>Categorie</h2>
+            </a>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
 </html>

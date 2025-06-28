@@ -19,13 +19,13 @@ public class GradingController {
 	}
 
 	@GetMapping("/grading/{value}")
-	public String showGradingsByValue(@PathVariable("value") int value, Model model) {
+	public String showGradingsByValue(@PathVariable int value, Model model) {
 		model.addAttribute("gradings", this.gradingService.getAllGradingByValue(value));
 		return "gradingsValue.html";
 	}
 	
 	@GetMapping("/grading/{value}/{gradingId}")
-	public String getGrading(@PathVariable("value") int value, @PathVariable("gradingId") Long gradingId, Model model) {
+	public String getGrading(@PathVariable int value, @PathVariable Long gradingId, Model model) {
 		model.addAttribute("grading", this.gradingService.getGradingById(gradingId));
 		model.addAttribute("recipes", this.gradingService.findRecipesByGradingId(gradingId));
 		return "grading.html";

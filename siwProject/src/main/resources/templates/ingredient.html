@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ingrediente</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/main-style.css?version=2}">
+</head>
+<body>
+    <!-- Header -->
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <!-- Main Content -->
+    <section>
+        <h1 th:text="'Ingrediente: ' + ${ingredient.name}"></h1>
+        
+        <h2>Ricette che usano questo ingrediente:</h2>
+        <div th:if="${recipes.isEmpty()}">
+            Nessuna ricetta trovata
+        </div>
+        <ul>
+            <li th:each="recipe : ${recipes}">
+                <a th:href="@{'/recipe/' + ${recipe.id}}" 
+                   th:text="${recipe.name}"></a>
+            </li>
+        </ul>
+
+        <!-- Back Button -->
+        <a th:href="@{/ingredient}" class="button">
+            <i class="fa-solid fa-arrow-left"></i> Torna agli ingredienti
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

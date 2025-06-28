@@ -2,34 +2,40 @@ package it.uniroma3.siw.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-
 @Entity
 public class Recipe {
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank
 	private String name;
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private User creator;
-	
-	@ManyToMany
-	private List<User> savers;
-	
-	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true) //orphanRemoval to delete gradings when is removed from the collection
+
+	@ManyToMany(mappedBy = "savedRecipes")
+	private Set<User> savers;
+
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Grading> gradings;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "recipes")
 	private List<RecipeCategory> categories;
 
 	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Image> images;
+
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	private Set<ProcedureStep> procedures;
+
+	@ManyToMany(mappedBy = "recipes", fetch = FetchType.LAZY)
+	private List<Ingredient> ingredients;
 
 	public Long getId() {
 		return id;
@@ -55,11 +61,11 @@ public class Recipe {
 		this.creator = creator;
 	}
 
-	public List<User> getSavers() {
+	public Set<User> getSavers() {
 		return savers;
 	}
 
-	public void setSavers(List<User> savers) {
+	public void setSavers(Set<User> savers) {
 		this.savers = savers;
 	}
 
@@ -83,39 +89,48 @@ public class Recipe {
 		return images;
 	}
 
-	public void setImage(Image image) {
-		this.images.add(image);
-	}
-
 	public void setImages(List<Image> images) {
 		this.images = images;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(categories, creator, gradings, id, name, savers);
+	public Set<ProcedureStep> getProcedures() {
+		return procedures;
+	}
+
+	public void setProcedures(Set<ProcedureStep> procedures) {
+		this.procedures = procedures;
+	}
+
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(Object o) {
+		if (this == o)
 			return true;
-		if (obj == null)
+		if (o == null || getClass() != o.getClass())
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Recipe other = (Recipe) obj;
-		return Objects.equals(categories, other.categories) && Objects.equals(creator, other.creator)
-				&& Objects.equals(gradings, other.gradings) && Objects.equals(id, other.id)
-				&& Objects.equals(name, other.name) && Objects.equals(savers, other.savers);
+		Recipe recipe = (Recipe) o;
+		return Objects.equals(id, recipe.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
 	}
 
 	@Override
 	public String toString() {
-		return "Recipe [id=" + id + ", name=" + name + ", creator=" + creator + ", savers=" + savers + ", grading="
-				+ gradings + ", categories=" + categories + "]";
+		return "Recipe{id=" + id + ", name='" + name + "'}";
 	}
-	
-	
+
+    public void addImage(Image image) {
+        this.images.add(image);
+    }
 
 }

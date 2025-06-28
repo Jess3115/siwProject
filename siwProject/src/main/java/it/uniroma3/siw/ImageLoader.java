@@ -4,20 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.transaction.annotation.Transactional;
+
 import it.uniroma3.siw.model.Image;
 import it.uniroma3.siw.model.Recipe;
 import it.uniroma3.siw.repository.RecipeRepository;
 import it.uniroma3.siw.service.ImageService;
-import java.io.File;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Component
+@Transactional
 public class ImageLoader implements ApplicationListener<ApplicationReadyEvent> {
 
     @Autowired
@@ -29,49 +30,105 @@ public class ImageLoader implements ApplicationListener<ApplicationReadyEvent> {
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         try {
-            String recipeFolderPath = "src/main/resources/databaseImage/recipeImages";
-
+            String recipeFolderPath = "recipeImages";
+            System.out.println("Inizio caricamento immagini da: " + recipeFolderPath);
             assignImagesToRecipes(recipeFolderPath);
-
         } catch (IOException e) {
-            System.err.println("Errore nel caricamento delle immagini.");
+            System.err.println("ERRORE nel caricamento delle immagini: " + e.getMessage());
         }
     }
 
+    @Transactional
     private void assignImagesToRecipes(String folderPath) throws IOException {
-        List<Recipe> recipes = (List<Recipe>) recipeRepository.findAll();
-        List<File> imageFiles = getImageFilesFromFolder(folderPath);
+        Map<Long, List<Resource>> recipeImagesMap = new HashMap<>();
+        List<Resource> imageResources = getImageResourcesFromFolder(folderPath);
 
-        for (int i = 0; i < recipes.size() && i < imageFiles.size(); i++) {
-            Recipe recipe = recipes.get(i);
-            File imageFile = imageFiles.get(i);
-            processImage(recipe::setImage, imageFile);
-            recipeRepository.save(recipe);
+        System.out.println("Trovati " + imageResources.size() + " file immagine nella cartella: " + folderPath);
+
+        // Raggruppa le immagini per ID ricetta (estratto da nome file)
+        for (Resource resource : imageResources) {
+            String fileName = resource.getFilename();
+            System.out.println("Elaborazione file: " + fileName);
+            String[] parts = fileName.split("_");
+
+            if (parts.length >= 1) {
+                try {
+                    Long recipeId = Long.parseLong(parts[0]);
+                    System.out.println(" → ID ricetta estratto: " + recipeId);
+                    recipeImagesMap.computeIfAbsent(recipeId, k -> new ArrayList<>()).add(resource);
+                } catch (NumberFormatException e) {
+                    System.err.println("ERRORE: ID non valido nel file: " + fileName);
+                }
+            } else {
+                System.err.println("ERRORE: nome file non conforme (manca '_'): " + fileName);
+            }
         }
-        System.out.println("Immagini ricette associate con successo!");
+
+        // Assegna le immagini alle ricette
+        for (Map.Entry<Long, List<Resource>> entry : recipeImagesMap.entrySet()) {
+            Long recipeId = entry.getKey();
+            List<Resource> resources = entry.getValue();
+
+            System.out.println("→ Assegnazione immagini a ricetta ID: " + recipeId + " (" + resources.size() + " file)");
+
+            Optional<Recipe> recipeOpt = recipeRepository.findById(recipeId);
+
+            if (recipeOpt.isPresent()) {
+                Recipe recipe = recipeOpt.get();
+
+                for (Resource resource : resources) {
+                    System.out.println("  → Caricamento immagine: " + resource.getFilename());
+
+                    Image image = processImage(resource);
+
+                    if (image == null) {
+                        System.err.println("    ERRORE: Immagine null per file: " + resource.getFilename());
+                        continue;
+                    }
+
+                    recipe.addImage(image);
+                    image.setRecipe(recipe);
+
+                    imageService.saveImage(image);
+                    System.out.println("    Immagine salvata: " + image.getName());
+                }
+
+                recipeRepository.save(recipe);
+                System.out.println("✔ Ricetta " + recipe.getId() + " salvata con " + recipe.getImages().size() + " immagini.");
+            } else {
+                System.err.println("ERRORE: ricetta non trovata per ID: " + recipeId);
+            }
+        }
+
+        System.out.println("✅ Associazione immagini completata.");
     }
 
-    private List<File> getImageFilesFromFolder(String folderPath) throws IOException {
-        return Files.list(Paths.get(folderPath))
-                   .filter(Files::isRegularFile)
-                   .map(Path::toFile)
-                   .collect(Collectors.toList());
+    private List<Resource> getImageResourcesFromFolder(String folderPath) throws IOException {
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        Resource[] resources = resolver.getResources("classpath:/static/" + folderPath + "/*");
+        return Arrays.asList(resources);
     }
 
-    private void processImage(java.util.function.Consumer<Image> setter, File imageFile) {
-        Optional<Image> existingImage = imageService.findByName(imageFile.getName());
-        Image image = existingImage.orElseGet(() -> createNewImage(imageFile));
-        setter.accept(image);
-    }
-
-    private Image createNewImage(File imageFile) {
-        Image newImage = new Image();
-        newImage.setName(imageFile.getName());
+    private Image processImage(Resource resource) {
         try {
-            newImage.setData(Files.readAllBytes(imageFile.toPath()));
+            Optional<Image> existingImage = imageService.findByName(resource.getFilename());
+
+            if (existingImage.isPresent()) {
+                System.out.println("    → Immagine già esistente: " + resource.getFilename());
+                return existingImage.get();
+            } else {
+                return createImageFromResource(resource);
+            }
         } catch (IOException e) {
-            System.err.println("Errore nella lettura del file: " + imageFile.getName());
+            System.err.println("    ERRORE nel processing immagine: " + resource.getFilename());
+            return null;
         }
-        return imageService.saveImage(newImage);
+    }
+
+    private Image createImageFromResource(Resource resource) throws IOException {
+        Image newImage = new Image();
+        newImage.setName(resource.getFilename());
+        newImage.setData(resource.getInputStream().readAllBytes());
+        return newImage;
     }
 }
