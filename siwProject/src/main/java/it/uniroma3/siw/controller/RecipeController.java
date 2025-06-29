@@ -1,8 +1,8 @@
 package it.uniroma3.siw.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +20,7 @@ import it.uniroma3.siw.model.Recipe;
 import it.uniroma3.siw.model.RecipeCategory;
 import it.uniroma3.siw.model.RecipeIngredient;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.GradingService;
 import it.uniroma3.siw.service.ImageService;
 import it.uniroma3.siw.service.IngredientService;
@@ -27,6 +28,7 @@ import it.uniroma3.siw.service.ProcedureService;
 import it.uniroma3.siw.service.RecipeCategoryService;
 import it.uniroma3.siw.service.RecipeIngredientService;
 import it.uniroma3.siw.service.RecipeService;
+import it.uniroma3.siw.utils.SecurityUtils;
 
 @Controller
 public class RecipeController {
@@ -45,6 +47,10 @@ public class RecipeController {
     ProcedureService procedureService;
     @Autowired
     RecipeIngredientService recipeIngredientService;
+    @Autowired
+    SecurityUtils securityUtils;
+    @Autowired
+    CredentialsService credentialsService;
 
     @GetMapping("/recipe")
     public String showRecipes(Model model) {
@@ -64,71 +70,125 @@ public class RecipeController {
         return "recipe.html";
     }
 
-    @GetMapping("/default/newRecipe")
+    // Sostituisci il metodo formNewRecipe esistente con questo
+    @GetMapping("/default/newRecipe/building")
     public String formNewRecipe(Model model) {
-        model.addAttribute("newRecipe", new Recipe());
         model.addAttribute("categories", categoryService.getAllCategories());
-        model.addAttribute("ingredients", ingredientService.getAllIngredients());
-        return "authenticated/formNewRecipe.html";
+        return "authenticated/formNewRecipeStep1.html";
     }
 
-    @PostMapping("/default/newRecipe")
-    public String newRecipe(
-        @RequestParam("name") String name,
-        @RequestParam(value = "categories", required = false) List<Long> categoryIds,
-        @RequestParam("ingredientId") List<Long> ingredientIds,
-        @RequestParam("quantity") List<Double> quantities,
-        @RequestParam("unit") List<String> units,
-        @RequestParam("stepDescription") List<String> stepDescriptions,
-        @RequestParam("stepNote") List<String> stepNotes,
-        @RequestParam("images") List<MultipartFile> imageFiles,
-        Model model) throws IOException {
+    // Aggiungi questi nuovi endpoint al controller
+    @PostMapping("/default/newRecipe/building")
+    public String saveBasicRecipe(
+            @RequestParam("name") String name,
+            @RequestParam(value = "categories", required = false) List<Long> categoryIds) {
 
-        // 1. Crea la ricetta base
         Recipe recipe = new Recipe();
         recipe.setName(name);
+
+        // Imposta l'utente corrente come creatore
+        User currentUser = securityUtils.getCurrentCredentials(credentialsService).getUser();
+        recipe.setCreator(currentUser);
+        currentUser.getCreatedRecipes().add(recipe);
+
         recipeService.saveRecipe(recipe);
 
-        // 2. Aggiungi categorie
-        if (categoryIds != null) {
+        // Aggiungi categorie
+        if (categoryIds != null && !categoryIds.isEmpty()) {
+            List<RecipeCategory> categories = new ArrayList<>();
             for (Long categoryId : categoryIds) {
                 RecipeCategory category = categoryService.getCategoryById(categoryId);
-                recipe.getCategories().add(category);
+                categories.add(category);
                 category.getRecipes().add(recipe);
                 categoryService.saveCategory(category);
             }
+            recipe.setCategories(categories);
+            recipeService.saveRecipe(recipe);
         }
 
-        // 3. Aggiungi ingredienti con quantità
+        return "redirect:/default/newRecipe/building/addIngredient/" + recipe.getId();
+    }
+
+    @GetMapping("/default/newRecipe/building/addIngredient/{recipeId}")
+    public String formAddIngredients(@PathVariable Long recipeId, Model model) {
+        model.addAttribute("recipeId", recipeId);
+        model.addAttribute("ingredients", ingredientService.getAllIngredients());
+        return "authenticated/formNewRecipeStep2.html";
+    }
+
+    @PostMapping("/default/newRecipe/building/addIngredient/{recipeId}")
+    public String addIngredientsToRecipe(
+            @PathVariable Long recipeId,
+            @RequestParam("ingredientId") List<Long> ingredientIds,
+            @RequestParam("quantity") List<Double> quantities,
+            @RequestParam("unit") List<String> units) {
+
+        Recipe recipe = recipeService.getRecipeById(recipeId);
+
+        // Aggiungi ingredienti
         for (int i = 0; i < ingredientIds.size(); i++) {
             Ingredient ingredient = ingredientService.getIngredientById(ingredientIds.get(i));
-            
+
             RecipeIngredient ri = new RecipeIngredient();
             ri.setRecipe(recipe);
             ri.setIngredient(ingredient);
             ri.setQuantity(quantities.get(i));
             ri.setUnit(units.get(i));
-            
-            // Servizio per salvare RecipeIngredient (da implementare)
             recipeIngredientService.save(ri);
-            
-            // Collega ingrediente alla ricetta
-            recipe.getIngredients().add(ingredient);
+
             ingredient.getRecipes().add(recipe);
             ingredientService.saveIngredient(ingredient);
         }
 
-        // 4. Aggiungi passaggi del procedimento
+        return "redirect:/default/newRecipe/building/addStep/" + recipeId;
+    }
+
+    @GetMapping("/default/newRecipe/building/addStep/{recipeId}")
+    public String formAddSteps(@PathVariable Long recipeId, Model model) {
+        model.addAttribute("recipeId", recipeId);
+        return "authenticated/formNewRecipeStep3.html";
+    }
+
+    @PostMapping("/default/newRecipe/building/addStep/{recipeId}")
+    public String addStepsToRecipe(
+            @PathVariable Long recipeId,
+            @RequestParam("stepDescription") List<String> stepDescriptions,
+            @RequestParam(value = "stepNote", required = false) List<String> stepNotes) {
+
+        Recipe recipe = recipeService.getRecipeById(recipeId);
+
+        if (stepNotes == null) {
+            stepNotes = new ArrayList<>();
+        }
+
+        // Aggiungi passaggi
         for (int i = 0; i < stepDescriptions.size(); i++) {
             ProcedureStep step = new ProcedureStep();
             step.setDescription(stepDescriptions.get(i));
-            step.setNote(stepNotes.get(i));
+            String note = i < stepNotes.size() ? stepNotes.get(i) : null;
+            step.setNote(note);
             step.setStep(i + 1);
             step.setRecipe(recipe);
             procedureService.save(step);
         }
 
-        // 5. Salva immagini
+        return "redirect:/default/newRecipe/building/addImage/" + recipeId;
+    }
+
+    @GetMapping("/default/newRecipe/building/addImage/{recipeId}")
+    public String formAddImages(@PathVariable Long recipeId, Model model) {
+        model.addAttribute("recipeId", recipeId);
+        return "authenticated/formNewRecipeStep4.html";
+    }
+
+    @PostMapping("/default/newRecipe/building/addImage/{recipeId}")
+    public String addImagesToRecipe(
+            @PathVariable Long recipeId,
+            @RequestParam("images") MultipartFile[] imageFiles) throws IOException {
+
+        Recipe recipe = recipeService.getRecipeById(recipeId);
+
+        // Salva immagini
         for (MultipartFile file : imageFiles) {
             if (!file.isEmpty()) {
                 Image image = new Image();

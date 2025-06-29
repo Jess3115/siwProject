@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Aggiungi Nuova Ricetta - Step 4</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/main-style.css}">
+    <link rel="stylesheet" th:href="@{/css/authenticated/formNewRecipe.css}">
+</head>
+<body>
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <section>
+        <div class="form-container">
+            <div class="form-card">
+                <h1 class="form-title"><i class="fas fa-image"></i> Nuova Ricetta - Step 4: Immagini</h1>
+
+                <form th:action="@{/default/newRecipe/building/addImage/{recipeId}(recipeId=${recipeId})}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="recipeId" th:value="${recipeId}">
+
+                    <div class="form-section">
+                        <div id="images-container">
+                            <div class="form-group">
+                                <label class="form-label">Carica immagine</label>
+                                <input type="file" class="form-control" name="images" accept="image/*">
+                            </div>
+                        </div>
+                        <button type="button" class="add-btn" onclick="addImage()">
+                            <i class="fas fa-plus"></i> Aggiungi Immagine
+                        </button>
+                    </div>
+
+                    <div class="form-navigation">
+                        <button type="button" class="btn prev-btn" th:onclick="'location.href=\'/default/newRecipe/building/addStep/' + ${recipeId} + '\''">Indietro</button>
+                        <button type="submit" class="btn submit-btn">
+                            <i class="fas fa-save"></i> Completa Ricetta
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <div th:insert="~{fragments/footer :: footer}"></div>
+
+    <script>
+    function addImage() {
+        const container = document.getElementById('images-container');
+        const newImageInput = document.createElement('div');
+        newImageInput.className = 'image-field-group';
+        newImageInput.innerHTML = `
+            <div class="form-group">
+                <label class="form-label">Carica immagine</label>
+                <input type="file" class="form-control" name="images" accept="image/*">
+            </div>
+            <button type="button" class="remove-btn" onclick="this.closest('.image-field-group').remove()">
+                <i class="fas fa-trash"></i> Rimuovi
+            </button>
+        `;
+        container.appendChild(newImageInput);
+    }
+</script>
+</body>
+</html>
