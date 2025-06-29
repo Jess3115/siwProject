@@ -33,4 +33,8 @@ public class RecipeCategoryService {
     public void deleteCategoryById(Long categoryID) {
 		recipeCategoryRepository.deleteById(categoryID);
     }
+
+    public void saveCategory(RecipeCategory category) {
+        this.recipeCategoryRepository.save(category);
+    }
 }
