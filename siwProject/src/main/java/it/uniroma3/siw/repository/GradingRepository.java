@@ -1,5 +1,6 @@
 package it.uniroma3.siw.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +19,7 @@ public interface GradingRepository extends CrudRepository<Grading, Long> {
     Optional<Grading> findByRecipeAndVoter(Recipe recipe, User voter);
 
 	Iterable<Grading> findAllByValue(int value);
+
+    List<Grading> findByRecipeId(Long recipeID);
 
 }

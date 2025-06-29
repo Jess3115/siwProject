@@ -1,5 +1,7 @@
 package it.uniroma3.siw.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +34,14 @@ public class GradingService {
 
         grading.setValue(value);  // Aggiorna il voto
         gradingRepository.save(grading);
+    }
+
+	public List<Grading> getGradingByRecipeId(Long recipeID) {
+		return this.gradingRepository.findByRecipeId(recipeID);
+	}
+
+    public void deleteByRecipeId(Long recipeID) {
+        List<Grading> gradings = this.gradingRepository.findByRecipeId(recipeID);
+		this.gradingRepository.deleteAll(gradings);
     }
 }
