@@ -75,6 +75,9 @@ public class AuthConfiguration {
                                 "/favicon.ico",
                                 "/webjars/**")
                         .permitAll()
+                        
+                        // Accesso solo per utenti autenticati
+                        .requestMatchers("/personalArea/**", "/authenticated/**").hasAnyAuthority("DEFAULT", "ADMIN")
 
                         // Accesso solo per ADMIN
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
