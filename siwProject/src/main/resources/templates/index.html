@@ -3,30 +3,30 @@
 <head>
     <title>Home</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/main-style.css?version=2}">
+    <link rel="stylesheet" th:href="@{/css/main-style.css?version}">
 </head>
 <body>
     <!-- Header -->
     <div th:insert="~{fragments/header :: header}"></div>
 
     <!-- Main Content -->
-    <section>
-        <h1>Benvenuto nella Piattaforma di Ricette</h1>
+    <section class="home-section">
+        <h1 class="home-title">Benvenuto nella Piattaforma di Ricette</h1> 
         
-        <div class="card-container">
-            <a th:href="@{/recipe}" class="card">
-                <i class="fa-solid fa-book-open"></i>
-                <h2>Ricette</h2>
+        <div class="home-card-container">
+            <a th:href="@{/recipe}" class="home-card">
+                <i class="fa-solid fa-book-open card-icon"></i>
+                <h2 class="card-title">Ricette</h2>
             </a>
 
-            <a th:href="@{/ingredient}" class="card">
-                <i class="fa-solid fa-carrot"></i>
-                <h2>Ingredienti</h2>
+            <a th:href="@{/ingredient}" class="home-card">
+                <i class="fa-solid fa-carrot card-icon"></i>
+                <h2 class="card-title">Ingredienti</h2>
             </a>
 
-            <a th:href="@{/category}" class="card">
-                <i class="fa-solid fa-tags"></i>
-                <h2>Categorie</h2>
+            <a th:href="@{/category}" class="home-card">
+                <i class="fa-solid fa-tags card-icon"></i>
+                <h2 class="card-title">Categorie</h2>
             </a>
         </div>
     </section>

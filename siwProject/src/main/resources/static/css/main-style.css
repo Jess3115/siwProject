@@ -1,91 +1,402 @@
-/*
------------------------------------------------HEADER-------------------------------------------------------------------------
-*/
+/* main-style.css - Versione 4 */
 
-header, .headerNavbar {
-    display: flex;                 /* Dispone gli elementi figli in riga */
-    padding: 15px;                /* Spaziatura interna */
-    background-color: slateblue;  /* Colore di sfondo */
-    margin: 10px;                 /* Spaziatura esterna */
+/* Variabili colore */
+:root {
+    --vanilla-cream: #f5e8d0;
+    --light-orange: #ffb366;
+    --vivid-orange: #ff8000;
+    --basil-green: #669966;
+    --deep-gray: #333333;
+    --white: #ffffff;
+    --light-gray: #f9f7f0;
+    --shadow: rgba(0, 0, 0, 0.1);
 }
 
-/* Lista dei menu nella barra di navigazione */
+/* Reset e stili globali */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--light-gray);
+    color: var(--deep-gray);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header,
+.headerNavbar {
+    display: flex;
+    padding: 15px;
+    background-color: var(--basil-green);
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--shadow);
+    position: relative;
+    z-index: 100;
+}
+
 .menu {
-    list-style: none;             /* Rimuove i punti elenco */
-    display: flex;                /* Dispone gli <li> in riga */
-    width: 100%;                  /* Occupa tutta la larghezza disponibile */
+    list-style: none;
+    display: flex;
+    width: 100%;
     margin: 0;
     padding: 0;
 }
 
-/* Ogni voce del menu */
 .menu li {
-    flex: 1;                      /* Ogni voce occupa spazio uguale */
-    text-align: center;           /* Centra il testo */
-    position: relative;           /* Permette il posizionamento assoluto dei dropdown */
-}
-
-/* Collegamenti di navigazione */
-.navigationButton {
-    display: inline-block;
-    font-size: 1.3em;
-    color: white;
-    text-decoration: none;        /* Rimuove la sottolineatura */
-    padding: 15px 0;
-    width: 100%;                  /* Si estende per tutta la larghezza della <li> */
-}
-
-/* Effetto hover sui collegamenti */
-.navigationButton:hover {
-    background-color: #555;       /* Cambia colore al passaggio del mouse */
-}
-
-/* Menu a tendina (nascosto di default) */
-.dropdown-menu {
-    display: none;                /* Inizialmente nascosto */
-    position: absolute;           /* Posizionato rispetto al contenitore .menu li */
-    top: 100%;                    /* Appena sotto la voce di menu principale */
-    left: 0;
-    background-color: #444;
-    min-width: 160px;
-    align-items: center;          /* Centra verticalmente (utile se visibile) */
-    flex-direction: column;       /* Le voci del dropdown in colonna */
-    z-index: 1;                   /* Si posiziona sopra altri elementi */
-}
-
-/* Stile dei link all'interno del dropdown */
-.dropdown-menu li a {
-    color: white;
-    padding: 10px 15px;
-    text-decoration: none;
-    display: block;
-    width: 100%;
+    flex: 1;
     text-align: center;
+    position: relative;
 }
 
-/* Mostra il dropdown al passaggio del mouse */
+.navigationButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--white);
+    text-decoration: none;
+    padding: 12px 0;
+    width: 100%;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    gap: 8px;
+}
+
+.navigationButton:hover {
+    background-color: var(--vivid-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--basil-green);
+    min-width: 160px;
+    flex-direction: column;
+    z-index: 100;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px var(--shadow);
+}
+
+.dropdown-menu li a {
+    color: var(--white);
+    padding: 12px 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu li a:hover {
+    background-color: var(--vivid-orange);
+}
+
 .dropdown:hover .dropdown-menu {
     display: flex;
 }
 
-/*
------------------------------------------------SECTION-------------------------------------------------------------------------
-*/
+/* Header specific styles */
+.home-link i { color: var(--vanilla-cream); }
+.trending-link i { color: #ff6b6b; }
+.search-link i { color: #4ecdc4; }
+.user-link i { color: #ffd166; }
 
+/* Contenuto principale */
 section {
-  height: 900px;
-  background-color: cornflowerblue;
-  margin: 10px;
+    flex: 1;
+    padding: 20px;
+    margin: 10px;
+    background-color: var(--vanilla-cream);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px var(--shadow);
 }
 
-/*
------------------------------------------------FOOTER-------------------------------------------------------------------------
-*/
+/* Home section */
+.home-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
 
+.home-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--basil-green);
+    position: relative;
+}
+
+.home-title::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: var(--vivid-orange);
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+/* Card container */
+.home-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+/* Home cards */
+.home-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    background: linear-gradient(135deg, var(--light-orange), var(--vivid-orange));
+    color: var(--white);
+    border-radius: 16px;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s ease;
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.home-card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 70%);
+    transform: rotate(30deg);
+    transition: transform 0.5s ease;
+}
+
+.home-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.home-card:hover::before {
+    transform: rotate(30deg) translate(10%, 10%);
+}
+
+.card-icon {
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.home-card:hover .card-icon {
+    transform: scale(1.1);
+}
+
+.card-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--white);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border: none;
+}
+
+/* Footer */
 .footerBar {
-  display: flex;
-  justify-content: space-around;
-  height: 50px;
-  margin: 10px;
-  background-color: blueviolet;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    margin: 10px;
+    background-color: var(--basil-green);
+    color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 -4px 8px var(--shadow);
+    font-size: 1rem;
+}
+
+/* Footer specific */
+.copyright {
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+/* Elementi comuni */
+h1,
+h2,
+h3 {
+    color: var(--deep-gray);
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    color: var(--vivid-orange);
+}
+
+h2 {
+    font-size: 1.6rem;
+    margin: 20px 0 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--light-orange);
+    color: var(--basil-green);
+}
+
+/* Pulsanti */
+.button {
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(to right, var(--vivid-orange), var(--light-orange));
+    color: var(--white);
+    padding: 10px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px var(--shadow);
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(255, 128, 0, 0.3);
+}
+
+/* Form */
+input,
+textarea,
+select {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: var(--white);
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--vivid-orange);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 128, 0, 0.2);
+}
+
+/* Card generiche */
+.card {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 6px 15px var(--shadow);
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Messaggi */
+.message {
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-weight: 500;
+}
+
+.message.success {
+    background-color: rgba(102, 153, 102, 0.2);
+    border-left: 4px solid var(--basil-green);
+}
+
+.message.error {
+    background-color: rgba(255, 128, 0, 0.15);
+    border-left: 4px solid var(--vivid-orange);
+}
+
+/* Layout responsive */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+@media (max-width: 768px) {
+    .menu {
+        flex-direction: column;
+    }
+
+    .menu li {
+        margin-bottom: 10px;
+    }
+
+    .dropdown-menu {
+        position: static;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+    
+    .home-title {
+        font-size: 2rem;
+    }
+    
+    .home-card {
+        height: 220px;
+    }
+    
+    .card-icon {
+        font-size: 3.5rem;
+    }
+    
+    .card-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-card-container {
+        grid-template-columns: 1fr;
+        max-width: 350px;
+    }
 }

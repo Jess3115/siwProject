@@ -2,17 +2,16 @@
 <html>
 <body>
   <header th:fragment="header" class="headerNavbar">
-    <!-- Aggiunta classe "menu" qui -->
     <ul class="menu">
-			<li><a class="navigationButton" th:href="@{'/'}"><i class="fas fa-home"></i> Home</a></li>
-			<li><a class="navigationButton" th:href="@{'/trending'}"><i class="fas fa-fire"></i> In Tendenza</a></li>
-			<li><a class="navigationButton" th:href="@{'/search'}"><i class="fas fa-search"></i> Ricerca</a></li>
+			<li><a class="navigationButton home-link" th:href="@{'/'}"><i class="fas fa-home"></i> Home</a></li>
+			<li><a class="navigationButton trending-link" th:href="@{'/trending'}"><i class="fas fa-fire"></i> In Tendenza</a></li>
+			<li><a class="navigationButton search-link" th:href="@{'/search'}"><i class="fas fa-search"></i> Ricerca</a></li>
 			<li class="dropdown">
-				<a class="navigationButton" id="menu" th:href="@{'/personalArea'}"><i class="fas fa-user"></i> Area Personale</a>
+				<a class="navigationButton user-link" id="menu" th:href="@{'/personalArea'}"><i class="fas fa-user"></i> Area Personale</a>
 				<ul class="dropdown-menu">
-					<li sec:authorize="isAnonymous()"><a th:href="@{'/login'}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-					<li sec:authorize="isAnonymous()"><a th:href="@{'/register'}"><i class="fas fa-user-plus"></i> Register</a></li>
-					<li sec:authorize="hasAnyAuthority('ADMIN','DEFAULT')"><a th:href="@{'/logout'}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+					<li sec:authorize="isAnonymous()"><a class="login-link" th:href="@{'/login'}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+					<li sec:authorize="isAnonymous()"><a class="register-link" th:href="@{'/register'}"><i class="fas fa-user-plus"></i> Register</a></li>
+					<li sec:authorize="hasAnyAuthority('ADMIN','DEFAULT')"><a class="logout-link" th:href="@{'/logout'}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
 				</ul>
 			</li>
 		</ul>
