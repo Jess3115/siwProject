@@ -2,50 +2,56 @@
 
 <html>
 
-	<head>
-		<title>Categoria</title>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-		<link rel="stylesheet" th:href="@{/css/main-style.css?version=2}">
-	</head>
+<head>
+	<title>Categoria</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<link rel="stylesheet" th:href="@{/css/main-style.css?version=2}">
+</head>
 
-	<body>
-		<!-- barra superiore -->
-		<div th:insert="~{fragments/header :: header}"></div>
+<body>
+	<!-- barra superiore -->
+	<div th:insert="~{fragments/header :: header}"></div>
 
-		<!-- parte centrale del sito -->
-		<section>
-			<h1 >Ricette con categoria: <span th:text="${category.name}"></span></h1>
-			<div th:if="${recipes.isEmpty()}">
-				<h2>Non ci sono ricette per questa categoria nel sistema</h2>
-			</div>
-			<ul>
-				<li th:each="recipe : ${recipes}">
-					<a th:href="@{'/recipe' + '/' + ${recipe.id}}">
-						<span th:text="${recipe.name}"></span>
-					</a>
-				</li>
-			</ul>
+	<!-- parte centrale del sito -->
+	<section>
+		<h1>Ricette con categoria: <span th:text="${category.name}"></span></h1>
 
-			<!-- Pulsanti per tornare indietro -->
-			<a th:href="@{${backUrl}}" class="button">
-				<i class="fa-solid fa-arrow-left"></i>
-				<span th:text="${backUrl == '/category' ? 'Torna alle categorie' : 'Torna indietro'}"></span>
-			</a>
-			<!-- Pulsante per modificare la categoria -->
-			<a th:href="@{'/admin/editCategory/' + ${category.id}}"  class="button">
-				<i class="fa-solid fa-pen"></i> Modifica Informazioni
-			</a>
-			<!-- Pulsante per eliminare la categoria -->
-			<form th:action="@{'/admin/deleteCategory/' + ${category.id}'}" th:object="${newCategory}" method="post" >
-                <button type="submit">
-                    <i class="fa-solid fa-trash-can"></i>Elimina Categoria
-                </button>
-            </form>
+		<p class="info-text">
+			<i class="fa-solid fa-list"></i>
+			Ricette totali: <span th:text="${recipes.size()}"></span>
+		</p>
 
-		</section>
+		<div th:if="${recipes.isEmpty()}">
+			<h2>Non ci sono ricette per questa categoria nel sistema</h2>
+		</div>
+		<ul>
+			<li th:each="recipe : ${recipes}">
+				<a th:href="@{'/recipe' + '/' + ${recipe.id}}">
+					<span th:text="${recipe.name}"></span>
+				</a>
+			</li>
+		</ul>
 
-		<!-- riga in fondo -->
-		<div th:insert="~{fragments/footer :: footer}"></div>
-	</body>
+		<!-- Pulsanti per tornare indietro -->
+		<a th:href="@{${backUrl}}" class="button">
+			<i class="fa-solid fa-arrow-left"></i>
+			<span th:text="${backUrl == '/category' ? 'Torna alle categorie' : 'Torna indietro'}"></span>
+		</a>
+		<!-- Pulsante per modificare la categoria -->
+		<a th:href="@{'/admin/editCategory/' + ${category.id}}" class="button">
+			<i class="fa-solid fa-pen"></i> Modifica Informazioni
+		</a>
+		<!-- Pulsante per eliminare la categoria -->
+		<form th:action="@{'/admin/deleteCategory/' + ${category.id}'}" th:object="${newCategory}" method="post">
+			<button type="submit">
+				<i class="fa-solid fa-trash-can"></i>Elimina Categoria
+			</button>
+		</form>
+
+	</section>
+
+	<!-- riga in fondo -->
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
 
 </html>
