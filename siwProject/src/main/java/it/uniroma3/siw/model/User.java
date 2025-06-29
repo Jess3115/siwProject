@@ -106,19 +106,11 @@ public class User {
 		this.email = email;
 	}
 
-	public List<Recipe> getOtherRecipe() {
-		return savedRecipes;
-	}
-
-	public void setOtherRecipe(List<Recipe> otherRecipe) {
-		this.savedRecipes = otherRecipe;
-	}
-
-	public List<Recipe> getMyRecipe() {
+	public List<Recipe> getCreatedRecipes() {
 		return createdRecipes;
 	}
 
-	public void setMyRecipe(List<Recipe> createdRecipes) {
+	public void setCreatedRecipes(List<Recipe> createdRecipes) {
 		this.createdRecipes = createdRecipes;
 	}
 

@@ -32,7 +32,7 @@ public class Recipe {
 	private List<Image> images;
 
 	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	private Set<ProcedureStep> procedures;
+	private List<ProcedureStep> procedures;
 
 	@ManyToMany(mappedBy = "recipes", fetch = FetchType.LAZY)
 	private List<Ingredient> ingredients;
@@ -93,11 +93,11 @@ public class Recipe {
 		this.images = images;
 	}
 
-	public Set<ProcedureStep> getProcedures() {
+	public List<ProcedureStep> getProcedures() {
 		return procedures;
 	}
 
-	public void setProcedures(Set<ProcedureStep> procedures) {
+	public void setProcedures(List<ProcedureStep> procedures) {
 		this.procedures = procedures;
 	}
 
