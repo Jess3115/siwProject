@@ -3,23 +3,54 @@
 <head>
     <title>Ricette</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/main-style.css?version=2}">
+    <link rel="stylesheet" th:href="@{/css/main-style.css?version=4}">
+    <link rel="stylesheet" th:href="@{/css/recipes.css}">
 </head>
 <body>
     <!-- Header -->
     <div th:insert="~{fragments/header :: header}"></div>
 
     <!-- Main Content -->
-    <section>
-        <h1>Ricette Disponibili</h1>
-        <div th:if="${recipes.isEmpty()}">Nessuna ricetta disponibile</div>
-        <ul>
-            <li th:each="recipe : ${recipes}">
-                <a th:href="@{'/recipe/' + ${recipe.id}}" 
-                   th:text="${recipe.name}"></a>
-                <span th:text="' (Creatore: ' + ${recipe.creator.name} + ')'"></span>
-            </li>
-        </ul>
+    <section class="recipe-section">
+        <h1 class="recipe-page-title">Ricette Disponibili</h1>
+
+        <div th:if="${recipes.isEmpty()}" class="recipe-empty-message">
+            <i class="fas fa-utensils recipe-empty-icon"></i>
+            <p>Nessuna ricetta disponibile</p>
+        </div>
+
+        <div class="recipe-grid-container">
+            <div th:each="recipe : ${recipes}" class="recipe-card">
+                <a th:href="@{'/recipe/' + ${recipe.id}}" class="recipe-link">
+                    <!-- Contenitore immagine con fallback -->
+                    <div class="recipe-image-container">
+                        <div th:if="${recipe.images != null and not recipe.images.empty}">
+                            <img th:if="${recipe.images[0] != null}" 
+                                 th:src="@{'/images/' + ${recipe.images[0].id}}"
+                                 alt="Immagine della ricetta" 
+                                 class="recipe-image">
+                            <div th:unless="${recipe.images[0] != null}" class="recipe-icon-placeholder">
+                                <i class="fa-solid fa-book-open card-icon"></i>
+                            </div>
+                        </div>
+                        <div th:unless="${recipe.images != null and not recipe.images.empty}" class="recipe-icon-placeholder">
+                            <i class="fa-solid fa-book-open card-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="recipe-info">
+                        <div class="recipe-name-container">
+                            <i class="fa-solid fa-book-open card-icon recipe-name-icon"></i>
+                            <h2 class="recipe-name" th:text="${recipe.name}"></h2>
+                        </div>
+                        <p class="recipe-creator">
+                            <i class="fas fa-user recipe-creator-icon"></i>
+                            <span th:text="${recipe.creator.name}"></span>
+                        </p>
+                    </div>
+                </a>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->

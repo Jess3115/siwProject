@@ -84,4 +84,8 @@ public class ImageService {
         return this.imageRepository.findByRecipeId(recipeID);
     }
 
+    public Iterable<Image> getAllImages() {
+        return this.imageRepository.findAll();
+    }
+
 }

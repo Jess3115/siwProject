@@ -4,7 +4,8 @@
 <head>
     <title>Ricetta</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/main-style.css?version=2}">
+    <link rel="stylesheet" th:href="@{/css/main-style.css?version=4}">
+    <link rel="stylesheet" th:href="@{/css/recipe.css?version=3}">
 </head>
 
 <body>
@@ -13,43 +14,90 @@
 
     <!-- Main Content -->
     <section>
-        <h1 th:text="${recipe.name}"></h1>
-        <p th:text="'Creatore: ' + ${recipe.creator.name} + ' ' + ${recipe.creator.surname}"></p>
+        <div class="recipe-container">
+            <div class="recipe-card">
+                <div class="recipe-header">
+                    <h1 class="recipe-title" th:text="${recipe.name}"></h1>
+                    <p class="recipe-creator"
+                        th:text="'Creatore: ' + ${recipe.creator.name} + ' ' + ${recipe.creator.surname}"></p>
+                </div>
 
-        <h2>Immagini:</h2>
-        <div th:if="${images != null and !images.isEmpty()}">
-            <div class="image-gallery">
-                <div th:each="image : ${images}">
-                    <img th:src="@{'/images/' + ${image.id}}" alt="Immagine ricetta" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="left-column">
+                        <!-- Sezione Immagini -->
+                        <div class="recipe-section">
+                            <h2 class="section-title"><i class="fas fa-images"></i> Immagini</h2>
+                            <div th:if="${images != null and !images.isEmpty()}">
+                                <div class="image-gallery">
+                                    <div th:each="image : ${images}">
+                                        <img th:src="@{'/images/' + ${image.id}}" alt="Immagine ricetta"
+                                            class="recipe-image">
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:if="${images == null or images.isEmpty()}">
+                                <p class="no-images">Nessuna immagine disponibile per questa ricetta</p>
+                            </div>
+                        </div>
+
+                        <!-- Sezione Valutazione -->
+                        <div class="recipe-section">
+                            <div class="rating-section">
+                                <h2 class="section-title"><i class="fas fa-star"></i> Valutazione</h2>
+                                
+                                <div th:if="${averageRating > 0}">
+                                    <p class="rating-info">
+                                        <span class="rating-value"
+                                            th:text="${#numbers.formatDecimal(averageRating, 1, 1)}"></span>/5
+                                    </p>
+                                    <div class="stars">
+                                        <!-- Stelle dinamiche basate sulla valutazione -->
+                                        <span th:each="i : ${#numbers.sequence(1, 5)}">
+                                            <i th:class="|${i <= averageRating} ? 'fas fa-star' : 
+                ${(i > averageRating) and (i - 0.5 <= averageRating)} ? 'fas fa-star-half-alt' : 'far fa-star'|"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div th:unless="${averageRating > 0}" class="no-rating">
+                                    <i class="far fa-star rating-empty-icon"></i>
+                                    <p>Ancora nessuna valutazione</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-column">
+                        <!-- Sezione Ingredienti -->
+                        <div class="recipe-section">
+                            <h2 class="section-title"><i class="fas fa-carrot"></i> Ingredienti</h2>
+                            <ul class="ingredients-list">
+                                <li th:each="ing : ${recipe.ingredients}">
+                                    <span th:text="${ing.name}"></span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Sezione Procedimento -->
+                        <div class="recipe-section">
+                            <h2 class="section-title"><i class="fas fa-mortar-pestle"></i> Procedimento</h2>
+                            <ol class="procedures-list">
+                                <li th:each="step : ${recipe.procedures}">
+                                    <span th:text="${step.description}"></span>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back Button -->
+                <div class="button-container">
+                    <a th:href="@{/recipe}" class="back-button">
+                        <i class="fa-solid fa-arrow-left"></i> Torna alle ricette
+                    </a>
                 </div>
             </div>
         </div>
-        <div th:if="${images == null or images.isEmpty()}">
-            <p>Nessuna immagine disponibile per questa ricetta</p>
-        </div>
-
-        <h2>Ingredienti:</h2>
-        <ul>
-            <li th:each="ing : ${recipe.ingredients}">
-                <span th:text="${ing.name}"></span>
-            </li>
-        </ul>
-
-        <h2>Procedimento:</h2>
-        <ol>
-            <li th:each="step : ${recipe.procedures}">
-                <span th:text="${step.description}"></span>
-            </li>
-        </ol>
-
-        <h2>Valutazione Media:
-            <span th:text="${#numbers.formatDecimal(averageRating, 1, 1)}"></span>/5
-        </h2>
-
-        <!-- Back Button -->
-        <a th:href="@{/recipe}" class="button">
-            <i class="fa-solid fa-arrow-left"></i> Torna alle ricette
-        </a>
     </section>
 
     <!-- Footer -->

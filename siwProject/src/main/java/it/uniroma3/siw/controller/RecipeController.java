@@ -29,6 +29,7 @@ public class RecipeController {
     @GetMapping("/recipe")
     public String showRecipes(Model model) {
         model.addAttribute("recipes", recipeService.getAllRecipes());
+        model.addAttribute("images", imageService.getAllImages());
         return "recipes.html";
     }
 
