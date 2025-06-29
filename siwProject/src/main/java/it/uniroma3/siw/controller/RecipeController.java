@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.model.Recipe;
+import it.uniroma3.siw.service.ImageService;
 import it.uniroma3.siw.service.IngredientService;
 import it.uniroma3.siw.service.RecipeCategoryService;
 import it.uniroma3.siw.service.RecipeService;
@@ -17,12 +18,13 @@ import it.uniroma3.siw.service.RecipeService;
 @Controller
 public class RecipeController {
 
-    @Autowired
-    RecipeService recipeService;
-    @Autowired
-    RecipeCategoryService categoryService;
-    @Autowired
-    IngredientService ingredientService;
+    
+
+    @Autowired RecipeService recipeService;
+    @Autowired RecipeCategoryService categoryService;
+    @Autowired IngredientService ingredientService;
+    @Autowired ImageService imageService;
+
 
     @GetMapping("/recipe")
     public String showRecipes(Model model) {
@@ -37,6 +39,7 @@ public class RecipeController {
         model.addAttribute("recipe", recipe);
         model.addAttribute("averageRating", recipeService.calculateAverageRating(recipe));
         model.addAttribute("backUrl", from);
+        model.addAttribute("images", imageService.getImagesByRecipeId(recipeID));
         return "recipe.html";
     }
 

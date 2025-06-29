@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,5 +79,9 @@ public class ImageService {
 	public Optional<Image> findByName(String name) {
 		return this.imageRepository.findByName(name);
 	}
+
+    public List<Image> getImagesByRecipeId(Long recipeID) {
+        return this.imageRepository.findByRecipeId(recipeID);
+    }
 
 }

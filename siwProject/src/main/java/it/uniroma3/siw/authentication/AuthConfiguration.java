@@ -53,6 +53,7 @@ public class AuthConfiguration {
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/",
+                                "/images/**",
                                 "/index",
                                 "/recipe",
                                 "/recipe/**",
