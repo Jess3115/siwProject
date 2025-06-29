@@ -88,4 +88,13 @@ public class ImageService {
         return this.imageRepository.findAll();
     }
 
+    public void deleteByRecipeId(Long recipeID) {
+        List<Image> images = this.imageRepository.findByRecipeId(recipeID);
+        this.imageRepository.deleteAll(images);
+    }
+
+    public void save(Image image) {
+       this.imageRepository.save(image);
+    }
+
 }

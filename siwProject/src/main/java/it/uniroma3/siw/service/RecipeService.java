@@ -45,4 +45,5 @@ public class RecipeService {
     public List<Recipe> searchRecipes(String query) {
         return this.recipeRepository.searchRecipes(query);
     }
+    
 }
