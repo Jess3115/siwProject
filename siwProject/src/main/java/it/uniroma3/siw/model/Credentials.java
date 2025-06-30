@@ -5,8 +5,6 @@ import java.util.Objects;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,8 +25,7 @@ public class Credentials {
 	@NotBlank
 	private String password;
 
-	@Enumerated(EnumType.STRING)
-	private Role role;
+	private String role;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private User user;
@@ -65,11 +62,11 @@ public class Credentials {
 		this.password = password;
 	}
 
-	public Role getRole() {
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 
