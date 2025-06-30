@@ -81,9 +81,6 @@ public class AuthenticationController {
 	}
 
 	/*
-	 * ADD USER
-	 */
-	/*
 	 * REGISTRAZIONE
 	 */
 	@PostMapping(value = { "/register" })
@@ -96,15 +93,36 @@ public class AuthenticationController {
 			Model model) {
 
 		if (!credentials.checkPassword(confirmPassword)) {
+			System.out.println("Password mismatch!");
 			credentialsBindingResult.rejectValue("password", "error.credentials", "Le password non coincidono");
 		}
 
+		System.out.println("User errors: " + userBindingResult.hasErrors());
+		System.out.println("Credentials errors: " + credentialsBindingResult.hasErrors());
+
+		if (userBindingResult.hasErrors()) {
+			System.out.println("User validation errors: " + userBindingResult.getAllErrors());
+		}
+
+		if (credentialsBindingResult.hasErrors()) {
+			System.out.println("Credentials validation errors: " + credentialsBindingResult.getAllErrors());
+		}
+
 		if (!userBindingResult.hasErrors() && !credentialsBindingResult.hasErrors()) {
-			userService.saveUser(user);
-			credentials.setUser(user);
-			credentialsService.saveCredentials(credentials);
-			model.addAttribute("user", user);
-			return "formLogin";
+			try {
+				User savedUser = userService.saveUser(user);
+				System.out.println("User saved: " + savedUser);
+
+				credentials.setUser(savedUser);
+				Credentials savedCredentials = credentialsService.saveCredentials(credentials);
+				System.out.println("Credentials saved: " + savedCredentials);
+
+				model.addAttribute("user", savedUser);
+				return "formLogin";
+			} catch (Exception e) {
+				System.out.println("Error saving user/credentials: " + e.getMessage());
+				e.printStackTrace();
+			}
 		}
 
 		model.addAttribute("user", user);

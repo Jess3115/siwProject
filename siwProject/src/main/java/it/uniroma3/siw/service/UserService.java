@@ -8,14 +8,15 @@ import it.uniroma3.siw.repository.UserRepository;
 import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class UserService {
 
 	@Autowired UserRepository userRepository;
 
-    @Transactional
-    public void saveUser(User user) {
-       this.userRepository.save(user);
-    }
+	@Transactional
+	public User saveUser(User user) {
+		return this.userRepository.save(user);
+	}
 
     @Transactional
 	public User getUser(Long id) {
