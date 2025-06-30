@@ -81,4 +81,8 @@ public class RecipeService {
         }
     }
 
+    public List<Recipe> getLastCreatedRecipes() {
+        return this.recipeRepository.findTop5ByOrderByIdDesc();
+    }
+
 }

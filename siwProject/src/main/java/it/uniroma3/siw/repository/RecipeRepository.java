@@ -20,4 +20,7 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
     @Query("SELECT r FROM Recipe r WHERE LOWER(r.name) LIKE LOWER(CONCAT('%', :query, '%'))")
     List<Recipe> searchRecipes(@Param("query") String query);
 
+    List<Recipe> findTop5ByOrderByIdDesc();
+
+
 }

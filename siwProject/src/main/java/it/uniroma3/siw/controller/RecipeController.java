@@ -315,24 +315,18 @@ public String toggleSaveRecipe(@PathVariable Long recipeId) {
         return "redirect:/recipe/" + existingRecipe.getId();
     }
 
-    @GetMapping("/trending")
+    @GetMapping("/default/trending")
     public String showTrendingRecipes(Model model) {
         model.addAttribute("topRecipes", recipeService.getTopRatedRecipes());
         model.addAttribute("recipeService", recipeService);
         return "authenticated/trending.html";
     }
 
-    @GetMapping("/search")
-    public String searchRecipes(
-            @RequestParam(value = "query", required = false) String query,
-            Model model) {
-
-        if (query != null && !query.trim().isEmpty()) {
-            model.addAttribute("results", recipeService.searchRecipes(query));
-        }
-
-        model.addAttribute("query", query);
-        model.addAttribute("recipeService", recipeService);
-        return "authenticated/search.html";
+    @GetMapping("/default/lastRecipe")
+    public String showLastRecipes(Model model) {
+        List<Recipe> lastRecipes = recipeService.getLastCreatedRecipes();
+        model.addAttribute("recipes", lastRecipes);
+        model.addAttribute("images", imageService.getImagesByRecipes(lastRecipes));
+        return "authenticated/lastRecipe.html";
     }
 }

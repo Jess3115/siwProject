@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Image;
+import it.uniroma3.siw.model.Recipe;
 import it.uniroma3.siw.repository.ImageRepository;
 import jakarta.transaction.Transactional;
 
@@ -95,6 +97,14 @@ public class ImageService {
 
     public void save(Image image) {
        this.imageRepository.save(image);
+    }
+
+    public Object getImagesByRecipes(List<Recipe> recipes) {
+		List<Image> images = new LinkedList<>();
+        for (Recipe recipe : recipes){
+			images.addAll(this.imageRepository.findByRecipeId(recipe.getId()));
+		}
+		return images;
     }
 
 }
