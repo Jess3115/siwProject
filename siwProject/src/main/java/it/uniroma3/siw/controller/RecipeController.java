@@ -70,7 +70,9 @@ public class RecipeController {
         return "recipe.html";
     }
 
-    // Sostituisci il metodo formNewRecipe esistente con questo
+    /*
+     *          FORM CREAZIONE RICETTA
+     */
     @GetMapping("/default/newRecipe/building")
     public String formNewRecipe(Model model) {
         model.addAttribute("categories", categoryService.getAllCategories());
@@ -201,34 +203,48 @@ public class RecipeController {
 
         return "redirect:/recipe/" + recipe.getId();
     }
+    /*
+     *          FINE FORM CREAZIONE RICETTA
+     */
+
+    /*
+     *          ELIMINAZIONE RICETTA
+     */
 
     @PostMapping("/admin/recipe/delete/{recipeID}")
     public String deleteRecipe(@PathVariable Long recipeID, Model model) {
-        // 1. Rimuovi la ricetta dalle categorie
         Recipe recipe = recipeService.getRecipeById(recipeID);
+
+        // 1. Rimuovi gli RecipeIngredient associati
+        recipeIngredientService.deleteByRecipeId(recipeID);
+
+        // 2. Rimuovi la ricetta dalle categorie
         for (RecipeCategory category : recipe.getCategories()) {
             category.getRecipes().remove(recipe);
         }
         recipe.getCategories().clear();
 
-        // 2. Rimuovi la ricetta dagli ingredienti
+        // 3. Rimuovi la ricetta dagli ingredienti
         for (Ingredient ingredient : recipe.getIngredients()) {
             ingredient.getRecipes().remove(recipe);
         }
         recipe.getIngredients().clear();
 
-        // 3. Rimuovi la ricetta dagli utenti che l'hanno salvata
+        // 4. Rimuovi la ricetta dagli utenti che l'hanno salvata
         for (User saver : recipe.getSavers()) {
             saver.getSavedRecipes().remove(recipe);
         }
         recipe.getSavers().clear();
 
-        // 4. Elimina le dipendenze
+        // 5. Elimina le dipendenze
         imageService.deleteByRecipeId(recipeID);
         gradingService.deleteByRecipeId(recipeID);
         procedureService.deleteByRecipeId(recipeID);
 
-        // 5. Elimina la ricetta
+        // 6. Rimuovi gli RecipeIngredient associati
+        recipeIngredientService.deleteByRecipeId(recipeID);
+
+        // 7. Elimina la ricetta
         recipeService.deleteRecipeById(recipeID);
         return "redirect:/recipe";
     }

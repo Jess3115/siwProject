@@ -28,4 +28,8 @@ public class RecipeIngredientService {
     public void deleteById(Long id) {
         this.recipeIngredientRepository.deleteById(id);
     }
+
+    public void deleteByRecipeId(Long recipeId) {
+        recipeIngredientRepository.deleteByRecipeId(recipeId);
+    }
 }
