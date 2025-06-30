@@ -19,12 +19,15 @@ import jakarta.validation.Valid;
 @Controller
 public class AuthenticationController {
 
-	@Autowired private CredentialsService credentialsService;
-	@Autowired private UserService userService;
-	@Autowired private SecurityUtils securityUtils;
+	@Autowired
+	CredentialsService credentialsService;
+	@Autowired
+	UserService userService;
+	@Autowired
+	SecurityUtils securityUtils;
 
 	/*
-			REGISTER FORM
+	 * REGISTER FORM
 	 */
 	@GetMapping(value = "/register")
 	public String showRegisterForm(Model model) {
@@ -34,7 +37,7 @@ public class AuthenticationController {
 	}
 
 	/*
-			LOGIN FORM
+	 * LOGIN FORM
 	 */
 	@GetMapping(value = "/login")
 	public String showLoginForm(Model model) {
@@ -42,24 +45,15 @@ public class AuthenticationController {
 	}
 
 	/*
-			INDEX
+	 * INDEX
 	 */
 	@GetMapping(value = "/")
 	public String index(Model model) {
-//		if (!securityUtils.isAuthenticated()) {
-//			return "index.html";
-//		}
-//
-//		Credentials credentials = securityUtils.getCurrentCredentials(credentialsService);
-//		if (credentials.getRole().equals(Role.ADMIN)) {
-//			return "index.html";
-//		}
-
 		return "index.html";
 	}
 
 	/*
-			LOGIN/REGISTER SUCCESS
+	 * LOGIN/REGISTER SUCCESS
 	 */
 	@GetMapping(value = "/success")
 	public String defaultAfterLogin(Model model) {
@@ -71,7 +65,7 @@ public class AuthenticationController {
 	}
 
 	/*
-			PERSONAL AREA
+	 * PERSONAL AREA
 	 */
 	@GetMapping("/personalArea")
 	public String personalArea(Model model) {
@@ -87,10 +81,14 @@ public class AuthenticationController {
 	}
 
 	/*
-			ADD USER 
+	 * ADD USER
+	 */
+	/*
+	 * REGISTRAZIONE
 	 */
 	@PostMapping(value = { "/register" })
-	public String registerUser(@Valid @ModelAttribute("user") User user,
+	public String registerUser(
+			@Valid @ModelAttribute("user") User user,
 			BindingResult userBindingResult,
 			@Valid @ModelAttribute("credentials") Credentials credentials,
 			@RequestParam("confirmPassword") String confirmPassword,
@@ -113,5 +111,4 @@ public class AuthenticationController {
 		model.addAttribute("credentials", credentials);
 		return "formRegisterUser.html";
 	}
-
 }

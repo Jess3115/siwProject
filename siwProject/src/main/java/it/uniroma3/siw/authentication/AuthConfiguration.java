@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import it.uniroma3.siw.model.Role;
 import javax.sql.DataSource;
 
 @Configuration
@@ -76,10 +77,10 @@ public class AuthConfiguration {
                         .permitAll()
                         
                         // Accesso solo per utenti autenticati
-                        .requestMatchers("/personalArea/**", "/authenticated/**").hasAnyAuthority("DEFAULT", "ADMIN")
+                        .requestMatchers("/personalArea/**", "/authenticated/**").hasAnyAuthority(Role.DEFAULT.name(), Role.ADMIN.name())
 
                         // Accesso solo per ADMIN
-                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/admin/**").hasAnyAuthority(Role.ADMIN.name())
 
                         // Tutte le altre richieste richiedono autenticazione
                         .anyRequest().authenticated())

@@ -1,10 +1,7 @@
 package it.uniroma3.siw.model;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -19,10 +16,6 @@ public class User {
 	private String name;
 	@NotBlank
 	private String surname;
-	@NotNull
-	@PastOrPresent
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dateOfBirth;
 
 	@NotNull
 	@Email
@@ -55,14 +48,6 @@ public class User {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-
-	public LocalDate getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
 	}
 
 	public List<Grading> getGradings() {

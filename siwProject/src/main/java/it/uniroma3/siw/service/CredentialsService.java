@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.uniroma3.siw.model.Credentials;
+import it.uniroma3.siw.model.Role;
 import it.uniroma3.siw.repository.CredentialsRepository;
 
 @Service
@@ -27,12 +28,13 @@ public class CredentialsService {
 
     @Transactional
     public Credentials getCredentials(String username) {
-        return this.credentialsRepository.findByUsername(username).orElse(null);
+        Optional<Credentials> result = this.credentialsRepository.findByUsername(username);
+        return result.orElse(null);
     }
 
     @Transactional
     public Credentials saveCredentials(Credentials credentials) {
-        credentials.setRole("DEFAULT");
+        credentials.setRole(Role.DEFAULT);
         credentials.setPassword(this.passwordEncoder.encode(credentials.getPassword()));
         return this.credentialsRepository.save(credentials);
     }

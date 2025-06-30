@@ -27,7 +27,7 @@
 
                     <div class="grid-container">
                         <div th:each="ingredient : ${ingredients}" class="data-card">
-                            <a th:href="@{'/ingredient/' + ${ingredient.id}}" class="card-link">
+                            <a th:href="@{'/ingredient/' + ${ingredient.id} + '?from=/ingredient-category'}" class="card-link">
                                 <div class="icon-container"
                                     style="--gradient-start: var(--light-orange); --gradient-end: var(--vivid-orange);">
                                     <div class="icon-placeholder">
@@ -57,7 +57,7 @@
 
                     <div class="grid-container">
                         <div th:each="category : ${categories}" class="data-card">
-                            <a th:href="@{'/category/' + ${category.id} + '?from=/category'}" class="card-link">
+                            <a th:href="@{'/category/' + ${category.id} + '?from=/ingredient-category'}" class="card-link">
                                 <div class="icon-container"
                                     style="--gradient-start: var(--basil-green); --gradient-end: var(--forest-green);">
                                     <div class="icon-placeholder">

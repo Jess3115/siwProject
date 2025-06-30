@@ -1,14 +1,16 @@
 --=======================================================================================================
 -- =========================== User
 --=======================================================================================================
-INSERT INTO users (name, surname, date_of_birth, email) VALUES ('Francesco', 'Di Gianvincenzo', '2002-07-28', 'fra.digianvincenzo@stud.uniroma3.it');
-INSERT INTO users (name, surname, date_of_birth, email) VALUES ('Admin', 'Admin', '2000-01-01', 'admin@gmail.com');
+-- =========================== User
+--=======================================================================================================
+INSERT INTO users (name, surname, email) VALUES ('Francesco', 'Di Gianvincenzo', 'fra.digianvincenzo@stud.uniroma3.it');
+INSERT INTO users (name, surname, email) VALUES ('Admin', 'Admin', 'admin@gmail.com');
 
-INSERT INTO users (name, surname, date_of_birth, email) VALUES('Mario', 'Rossi', '1990-05-15', 'mario.rossi@example.com');
-INSERT INTO users (name, surname, date_of_birth, email) VALUES('Laura', 'Bianchi', '1985-08-22', 'laura.bianchi@example.com');
-INSERT INTO users (name, surname, date_of_birth, email) VALUES('Luca', 'Verdi', '1978-11-30', 'luca.verdi@example.com');
-INSERT INTO users (name, surname, date_of_birth, email) VALUES('Giulia', 'Russo', '1995-02-10', 'giulia.russo@example.com');
-INSERT INTO users (name, surname, date_of_birth, email) VALUES('Paolo', 'Ferrari', '1982-07-18', 'paolo.ferrari@example.com');
+INSERT INTO users (name, surname, email) VALUES('Mario', 'Rossi', 'mario.rossi@example.com');
+INSERT INTO users (name, surname, email) VALUES('Laura', 'Bianchi', 'laura.bianchi@example.com');
+INSERT INTO users (name, surname, email) VALUES('Luca', 'Verdi', 'luca.verdi@example.com');
+INSERT INTO users (name, surname, email) VALUES('Giulia', 'Russo', 'giulia.russo@example.com');
+INSERT INTO users (name, surname, email) VALUES('Paolo', 'Ferrari', 'paolo.ferrari@example.com');
 
 --=======================================================================================================
 -- =========================== Credentials
