@@ -2,6 +2,7 @@ package it.uniroma3.siw.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -119,31 +120,50 @@ public class RecipeController {
     }
 
     @PostMapping("/default/newRecipe/building/addIngredient/{recipeId}")
-    public String addIngredientsToRecipe(
-            @PathVariable Long recipeId,
-            @RequestParam("ingredientId") List<Long> ingredientIds,
-            @RequestParam("quantity") List<Double> quantities,
-            @RequestParam("unit") List<String> units) {
+public String addIngredientsToRecipe(
+        @PathVariable Long recipeId,
+        @RequestParam("ingredientId") List<Long> ingredientIds,
+        @RequestParam(value = "newIngredientName", required = false) List<String> newIngredientNames,
+        @RequestParam("quantity") List<Double> quantities,
+        @RequestParam("unit") List<String> units) {
 
-        Recipe recipe = recipeService.getRecipeById(recipeId);
+    Recipe recipe = recipeService.getRecipeById(recipeId);
 
-        // Aggiungi ingredienti
-        for (int i = 0; i < ingredientIds.size(); i++) {
-            Ingredient ingredient = ingredientService.getIngredientById(ingredientIds.get(i));
+    for (int i = 0; i < ingredientIds.size(); i++) {
+        Ingredient ingredient;
+        Long ingredientId = ingredientIds.get(i);
 
-            RecipeIngredient ri = new RecipeIngredient();
-            ri.setRecipe(recipe);
-            ri.setIngredient(ingredient);
-            ri.setQuantity(quantities.get(i));
-            ri.setUnit(units.get(i));
-            recipeIngredientService.save(ri);
-
-            ingredient.getRecipes().add(recipe);
-            ingredientService.saveIngredient(ingredient);
+        // Se è stato selezionato "Altro..." e fornito un nuovo nome
+        if (ingredientId == -1 && newIngredientNames != null && i < newIngredientNames.size()) {
+            String newName = newIngredientNames.get(i);
+            if (newName != null && !newName.trim().isEmpty()) {
+                // Crea un nuovo ingrediente
+                ingredient = new Ingredient();
+                ingredient.setName(newName.trim());
+                ingredient.setRecipes(new LinkedList<Recipe>());
+                ingredient = ingredientService.saveNewIngredient(ingredient);
+            } else {
+                // Salta se non è stato fornito un nome
+                continue;
+            }
+        } else {
+            // Usa l'ingrediente esistente
+            ingredient = ingredientService.getIngredientById(ingredientId);
         }
 
-        return "redirect:/default/newRecipe/building/addStep/" + recipeId;
+        RecipeIngredient ri = new RecipeIngredient();
+        ri.setRecipe(recipe);
+        ri.setIngredient(ingredient);
+        ri.setQuantity(quantities.get(i));
+        ri.setUnit(units.get(i));
+        recipeIngredientService.save(ri);
+
+        ingredient.getRecipes().add(recipe);
+        ingredientService.saveIngredient(ingredient);
     }
+
+    return "redirect:/default/newRecipe/building/addStep/" + recipeId;
+}
 
     @GetMapping("/default/newRecipe/building/addStep/{recipeId}")
     public String formAddSteps(@PathVariable Long recipeId, Model model) {

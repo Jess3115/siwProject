@@ -30,6 +30,10 @@ public class IngredientService {
         this.ingredientRepository.save(newIngredient);
     }
 
+    public Ingredient saveNewIngredient(Ingredient ingredient) {
+        return this.ingredientRepository.save(ingredient);
+    }
+
     public void deleteIngredientById(Long ingredientID) {
         this.ingredientRepository.deleteById(ingredientID);
     }
