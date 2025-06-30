@@ -39,6 +39,12 @@ INSERT INTO ingredient (name) VALUES('Pepe');
 INSERT INTO ingredient (name) VALUES('Latte');
 INSERT INTO ingredient (name) VALUES('Burro');
 INSERT INTO ingredient (name) VALUES('Formaggio');
+INSERT INTO ingredient (name) VALUES('Pancetta');
+INSERT INTO ingredient (name) VALUES('Panna');
+INSERT INTO ingredient (name) VALUES('Cioccolato Fondente');
+INSERT INTO ingredient (name) VALUES('Mandorle');
+INSERT INTO ingredient (name) VALUES('Funghi Champignon');
+
 
 --=======================================================================================================
 -- =========================== RecipeCategory 
@@ -48,6 +54,13 @@ INSERT INTO recipe_category (name) VALUES('Primi Piatti');
 INSERT INTO recipe_category (name) VALUES('Secondi Piatti');
 INSERT INTO recipe_category (name) VALUES('Dolci');
 INSERT INTO recipe_category (name) VALUES('Contorni');
+INSERT INTO recipe_category (name) VALUES('Zuppe e Minestre');
+INSERT INTO recipe_category (name) VALUES('Piatti Vegetariani');
+INSERT INTO recipe_category (name) VALUES('Street Food');
+INSERT INTO recipe_category (name) VALUES('Piatti Internazionali');
+INSERT INTO recipe_category (name) VALUES('Piatti da Forno');
+INSERT INTO recipe_category (name) VALUES('Insalate e Piatti Freddi');
+
 
 --=======================================================================================================
 -- =========================== Recipe
@@ -57,6 +70,10 @@ INSERT INTO recipe (name, creator_id) VALUES('Tiramisù Classico', 2);
 INSERT INTO recipe (name, creator_id) VALUES('Spaghetti al Pomodoro', 3);
 INSERT INTO recipe (name, creator_id) VALUES('Lasagna alla Bolognese', 4);
 INSERT INTO recipe (name, creator_id) VALUES('Bruschette al Pomodoro', 5);
+INSERT INTO recipe (name, creator_id) VALUES('Carbonara Classica', 1);
+INSERT INTO recipe (name, creator_id) VALUES('Risotto ai Funghi', 2);
+INSERT INTO recipe (name, creator_id) VALUES('Torta al Cioccolato', 3);
+
 
 --=======================================================================================================
 -- =========================== RecipeIngredient
@@ -71,8 +88,18 @@ INSERT INTO recipe_ingredient (quantity, unit,  recipe_id, ingredient_id) VALUES
 INSERT INTO recipe_ingredient (quantity, unit,  recipe_id, ingredient_id) VALUES(200, 'ml', 2, 10);
 INSERT INTO recipe_ingredient (quantity, unit,  recipe_id, ingredient_id) VALUES(1, 'pizzico', 2, 7);
 INSERT INTO recipe_ingredient (quantity, unit,  recipe_id, ingredient_id) VALUES(150, 'g', 3, 3);
-
-
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(200, 'g', 6, 1); -- Farina
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(2, 'uova', 6, 2);
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(100, 'g', 6, 13); -- Pancetta
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(50, 'ml', 6, 14); -- Panna
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(250, 'g', 7, 15); -- Funghi
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(1, 'l', 7, 10); -- Latte
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(30, 'g', 7, 12); -- Formaggio
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(200, 'g', 8, 11); -- Burro
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(100, 'g', 8, 6); -- Zucchero
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(150, 'g', 8, 16); -- Cioccolato
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(2, 'unità', 8, 2); -- Uova
+INSERT INTO recipe_ingredient (quantity, unit, recipe_id, ingredient_id) VALUES(50, 'g', 8, 17); -- Mandorle
 
 --=======================================================================================================
 -- =========================== ProcedureStep 
@@ -87,6 +114,16 @@ INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Friggere
 INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Decorare con erbe fresche', 4, 'Servire immediatamente', 5);
 INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Setacciare la farina', 1, 'Per evitare grumi', 5);
 INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Infornare per 40 minuti', 3, 'Controllare la cottura', 5);
+INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Cuocere la pancetta', 1, 'Fino a doratura', 6);
+INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Mescolare uova e panna', 2, NULL, 6);
+INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Aggiungere il tutto alla pasta', 3, 'A fuoco spento', 6);
+INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Soffriggere i funghi', 1, 'Con burro e cipolla', 7);
+INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Cuocere il riso nel latte', 2, NULL, 7);
+INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Aggiungere il formaggio a fine cottura', 3, 'Mantecare bene', 7);
+INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Sciogliere il cioccolato e burro', 1, 'A bagnomaria', 8);
+INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Unire uova, zucchero e farina', 2, NULL, 8);
+INSERT INTO procedure_step (description, step, note, recipe_id) VALUES('Infornare a 180°', 3, 'Per 35 minuti', 8);
+
 
 --=======================================================================================================
 -- =========================== Saved Recipes
@@ -97,6 +134,10 @@ INSERT INTO users_saved_recipes (savers_id, saved_recipes_id) VALUES (2, 1);  --
 INSERT INTO users_saved_recipes (savers_id, saved_recipes_id) VALUES (3, 4);  -- User 3 saved Recipe 4
 INSERT INTO users_saved_recipes (savers_id, saved_recipes_id) VALUES (4, 5);  -- User 4 saved Recipe 5
 INSERT INTO users_saved_recipes (savers_id, saved_recipes_id) VALUES (5, 1);  -- User 5 saved Recipe 1
+INSERT INTO users_saved_recipes (savers_id, saved_recipes_id) VALUES (2, 6);  -- Admin salva Carbonara
+INSERT INTO users_saved_recipes (savers_id, saved_recipes_id) VALUES (5, 7);  -- Paolo salva Risotto
+INSERT INTO users_saved_recipes (savers_id, saved_recipes_id) VALUES (3, 8);  -- Luca salva Torta
+
 
 --=======================================================================================================
 -- =========================== Recipe Categories (Many-to-Many Relationship)
@@ -106,6 +147,17 @@ INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (4, 2);  
 INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (2, 3);  -- Primi Piatti -> Spaghetti
 INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (2, 4);  -- Primi Piatti -> Lasagna
 INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (1, 5);  -- Antipasti -> Bruschette
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (2, 6); -- Carbonara -> Primi Piatti
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (2, 7); -- Risotto -> Primi Piatti
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (4, 8); -- Torta al Cioccolato -> Dolci
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (7, 3); -- Spaghetti al Pomodoro
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (7, 5); -- Bruschette al Pomodoro
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (8, 5); -- Bruschette al Pomodoro
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (8, 6); -- Carbonara Classica (può essere reinventata in versione street con pasta in cestini)
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (9, 2); -- Tiramisù Classico
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (10, 1); -- Pizza Margherita
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (10, 4); -- Lasagna alla Bolognese
+INSERT INTO recipe_category_recipes (categories_id, recipes_id) VALUES (10, 8); -- Torta al Cioccolato
 
 --=======================================================================================================
 -- =========================== Grading
@@ -115,6 +167,10 @@ INSERT INTO grading (value, recipe_id, voter_id) VALUES (4, 1, 3);
 INSERT INTO grading (value, recipe_id, voter_id) VALUES (5, 2, 2);
 INSERT INTO grading (value, recipe_id, voter_id) VALUES (3, 3, 4);
 INSERT INTO grading (value, recipe_id, voter_id) VALUES (4, 4, 5);
+INSERT INTO grading (value, recipe_id, voter_id) VALUES (5, 6, 4);  -- Carbonara
+INSERT INTO grading (value, recipe_id, voter_id) VALUES (4, 7, 2);  -- Risotto
+INSERT INTO grading (value, recipe_id, voter_id) VALUES (5, 8, 1);  -- Torta al Cioccolato
+
 
 --=======================================================================================================
 -- =========================== ingredient_recipes 
@@ -134,3 +190,21 @@ INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (7, 2); -- Sa
 
 -- Ingredienti per Spaghetti al Pomodoro (recipe_id = 3)
 INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (3, 3); -- Pomodoro
+
+-- Carbonara
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (1, 6); -- Farina
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (2, 6); -- Uova
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (13, 6); -- Pancetta
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (14, 6); -- Panna
+
+-- Risotto ai Funghi
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (15, 7); -- Funghi Champignon
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (10, 7); -- Latte
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (12, 7); -- Formaggio
+
+-- Torta al Cioccolato
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (11, 8); -- Burro
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (6, 8);  -- Zucchero
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (16, 8); -- Cioccolato Fondente
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (2, 8);  -- Uova
+INSERT INTO ingredient_recipes (ingredients_id, recipes_id) VALUES (17, 8); -- Mandorle
