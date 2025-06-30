@@ -1,5 +1,7 @@
 package it.uniroma3.siw.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,8 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class RecipeCategoryService {
 
-	@Autowired RecipeCategoryRepository recipeCategoryRepository;
+	@Autowired
+	RecipeCategoryRepository recipeCategoryRepository;
 
 	public Iterable<RecipeCategory> getAllCategories() {
 		return this.recipeCategoryRepository.findAll();
@@ -30,11 +33,15 @@ public class RecipeCategoryService {
 		return this.recipeCategoryRepository.findRecipesByCategoryId(categoryID);
 	}
 
-    public void deleteCategoryById(Long categoryID) {
+	public void deleteCategoryById(Long categoryID) {
 		recipeCategoryRepository.deleteById(categoryID);
-    }
+	}
 
-    public void saveCategory(RecipeCategory category) {
-        this.recipeCategoryRepository.save(category);
-    }
+	public void saveCategory(RecipeCategory category) {
+		this.recipeCategoryRepository.save(category);
+	}
+
+	public List<RecipeCategory> searchCategories(String query) {
+		return recipeCategoryRepository.findByNameContainingIgnoreCase(query);
+	}
 }

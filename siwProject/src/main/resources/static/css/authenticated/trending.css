@@ -1,45 +1,86 @@
+:root {
+    --vanilla-cream: #f5f2e9;
+    --basil-green: #4a6f4a;
+    --vivid-orange: #ff8c42;
+    --light-orange: #ffb366;
+    --forest-green: #3a5a3a;
+    --light-gray: #e0e0e0;
+    --medium-gray: #777;
+    --deep-gray: #333;
+    --white: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --golden-yellow: #ffc107;
+}
+
 .recipe-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--light-gray);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    background-color: var(--white);
+    box-shadow: 0 4px 12px var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .recipe-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 15px;
 }
 
 .recipe-title {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--basil-green);
     text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.recipe-title:hover {
+    color: var(--vivid-orange);
+    text-decoration: underline;
 }
 
 .recipe-rating {
-    background-color: #f8f9fa;
-    padding: 5px 10px;
+    background-color: var(--vanilla-cream);
+    padding: 6px 14px;
     border-radius: 20px;
     font-weight: bold;
-    color: #e67e22;
+    color: var(--vivid-orange);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.1rem;
+}
+
+.recipe-rating i {
+    color: var(--golden-yellow);
 }
 
 .recipe-meta {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
-    color: #666;
-    font-size: 0.9em;
+    margin-top: 15px;
+    color: var(--medium-gray);
+    font-size: 0.95rem;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .recipe-category {
     display: inline-block;
-    background-color: #e9ecef;
-    padding: 3px 8px;
-    border-radius: 4px;
-    margin-right: 5px;
-    font-size: 0.85em;
+    background: linear-gradient(135deg, var(--basil-green), var(--forest-green));
+    color: var(--white);
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-right: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

@@ -1,5 +1,7 @@
 package it.uniroma3.siw.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +38,9 @@ public class IngredientService {
 
     public void deleteIngredientById(Long ingredientID) {
         this.ingredientRepository.deleteById(ingredientID);
+    }
+
+    public List<Ingredient> searchIngredients(String query) {
+        return ingredientRepository.findByNameContainingIgnoreCase(query);
     }
 }

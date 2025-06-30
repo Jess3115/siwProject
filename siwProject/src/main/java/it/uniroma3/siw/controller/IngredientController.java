@@ -1,5 +1,7 @@
 package it.uniroma3.siw.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.model.Ingredient;
+import it.uniroma3.siw.model.RecipeCategory;
 import it.uniroma3.siw.service.IngredientService;
 import it.uniroma3.siw.service.RecipeCategoryService;
 
@@ -20,9 +23,26 @@ public class IngredientController {
     @Autowired RecipeCategoryService recipeCategoryService;
 
     @GetMapping("/ingredient-category")
-    public String showIngredients(Model model) {
-        model.addAttribute("ingredients", ingredientService.getAllIngredients());
-        model.addAttribute("categories", this.recipeCategoryService.getAllCategories());
+    public String showIngredients(
+        @RequestParam(name = "search", required = false) String searchQuery, 
+        Model model) {
+        
+        List<Ingredient> ingredients;
+        List<RecipeCategory> categories;
+
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            // Filtra gli ingredienti e le categorie
+            ingredients = ingredientService.searchIngredients(searchQuery);
+            categories = recipeCategoryService.searchCategories(searchQuery);
+        } else {
+            // Mostra tutti gli elementi
+            ingredients = (List<Ingredient>) ingredientService.getAllIngredients();
+            categories = (List<RecipeCategory>) this.recipeCategoryService.getAllCategories();
+        }
+
+        model.addAttribute("ingredients", ingredients);
+        model.addAttribute("categories", categories);
+        model.addAttribute("searchQuery", searchQuery); // Per mantenere il testo nella barra di ricerca
         return "ingredients-categories.html";
     }
 

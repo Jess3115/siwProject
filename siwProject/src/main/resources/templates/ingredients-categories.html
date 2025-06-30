@@ -14,6 +14,22 @@
 
     <!-- Main Content -->
     <section>
+
+        <div class="search-container" sec:authorize="hasAnyAuthority('ADMIN', 'DEFAULT')">
+            <form th:action="@{/ingredient-category}" method="get" class="search-form">
+                <div class="search-bar">
+                    <input type="text" name="search" th:value="${searchQuery}"
+                        placeholder="Cerca ingredienti o categorie..." id="searchInput">
+                    <button type="button" class="clear-btn" onclick="clearSearch()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
         <div class="two-columns-section">
             <div class="column-wrapper">
                 <!-- Colonna Ingredienti -->
@@ -27,15 +43,15 @@
 
                     <div class="grid-container">
                         <div th:each="ingredient : ${ingredients}" class="data-card">
-                            <a th:href="@{'/ingredient/' + ${ingredient.id} + '?from=/ingredient-category'}" class="card-link">
-                                <div class="icon-container"
-                                    style="--gradient-start: var(--light-orange); --gradient-end: var(--vivid-orange);">
-                                    <div class="icon-placeholder">
-                                        <i class="fa-solid fa-carrot card-icon"></i>
-                                    </div>
-                                </div>
+                            <a th:href="@{'/ingredient/' + ${ingredient.id} + '?from=/ingredient-category'}"
+                                class="card-link">
                                 <div class="card-info">
-                                    <h3 class="card-name" th:text="${ingredient.name}"></h3>
+                                    <div class="title-with-icon">
+                                        <div class="small-icon-container">
+                                            <i class="fa-solid fa-carrot card-icon"></i>
+                                        </div>
+                                        <h3 class="card-name" th:text="${ingredient.name}"></h3>
+                                    </div>
                                     <div class="recipe-count">
                                         <i class="fa-solid fa-book-open"></i>
                                         <span th:text="${ingredient.recipes.size()} + ' ricette'"></span>
@@ -57,15 +73,15 @@
 
                     <div class="grid-container">
                         <div th:each="category : ${categories}" class="data-card">
-                            <a th:href="@{'/category/' + ${category.id} + '?from=/ingredient-category'}" class="card-link">
-                                <div class="icon-container"
-                                    style="--gradient-start: var(--basil-green); --gradient-end: var(--forest-green);">
-                                    <div class="icon-placeholder">
-                                        <i class="fa-solid fa-folder-open card-icon"></i>
-                                    </div>
-                                </div>
+                            <a th:href="@{'/category/' + ${category.id} + '?from=/ingredient-category'}"
+                                class="card-link">
                                 <div class="card-info">
-                                    <h2 class="card-name" th:text="${category.name}"></h2>
+                                    <div class="title-with-icon">
+                                        <div class="small-icon-container">
+                                            <i class="fa-solid fa-folder-open card-icon"></i>
+                                        </div>
+                                        <h2 class="card-name" th:text="${category.name}"></h2>
+                                    </div>
                                     <div class="recipe-count">
                                         <i class="fa-solid fa-book-open"></i>
                                         <span th:text="${category.recipes.size()} + ' ricette'"></span>
@@ -81,6 +97,14 @@
 
     <!-- Footer -->
     <div th:insert="~{fragments/footer :: footer}"></div>
+
+    <script>
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.querySelector('.search-form').submit();
+        }
+    </script>
+
 </body>
 
 </html>

@@ -1,5 +1,7 @@
 package it.uniroma3.siw.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +13,8 @@ public interface RecipeCategoryRepository extends CrudRepository<RecipeCategory,
 
 	@Query("SELECT c.recipes FROM RecipeCategory c WHERE c.id = :categoryID")
 	Iterable<Recipe> findRecipesByCategoryId(@Param("categoryID") Long categoryID);
+
+    List<RecipeCategory> findByNameContainingIgnoreCase(String name);
 
 	
 }
