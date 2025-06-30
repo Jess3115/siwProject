@@ -14,8 +14,9 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class GradingService {
-	
+
 	@Autowired GradingRepository gradingRepository;
+	@Autowired RecipeService recipeService;
 
 	public Iterable<Grading> getAllGradingByValue(int value) {
 		return this.gradingRepository.findAllByValue(value);
@@ -29,19 +30,33 @@ public class GradingService {
 		return this.gradingRepository.findRecipesByGradingId(gradingId);
 	}
 
-	public void addOrUpdateGrading(Recipe recipe, User user, int value) {
-        Grading grading = gradingRepository.findByRecipeAndVoter(recipe, user).orElse(new Grading(recipe, user, value));
+	public void saveOrUpdateGrading(Recipe recipe, User user, int value) {
+		Grading existingGrading = getGradingByRecipeAndUser(recipe, user);
 
-        grading.setValue(value);  // Aggiorna il voto
-        gradingRepository.save(grading);
-    }
+		if (existingGrading != null) {
+			existingGrading.setValue(value);
+		} else {
+			existingGrading = new Grading(recipe, user, value);
+		}
+
+		gradingRepository.save(existingGrading);
+
+	}
 
 	public List<Grading> getGradingByRecipeId(Long recipeID) {
 		return this.gradingRepository.findByRecipeId(recipeID);
 	}
 
-    public void deleteByRecipeId(Long recipeID) {
-        List<Grading> gradings = this.gradingRepository.findByRecipeId(recipeID);
+	public void deleteByRecipeId(Long recipeID) {
+		List<Grading> gradings = this.gradingRepository.findByRecipeId(recipeID);
 		this.gradingRepository.deleteAll(gradings);
-    }
+	}
+
+	public void save(Grading newGrading) {
+		this.gradingRepository.save(newGrading);
+	}
+
+	public Grading getGradingByRecipeAndUser(Recipe recipe, User currentUser) {
+		return this.gradingRepository.findByRecipeAndVoter(recipe, currentUser).orElse(null);
+	}
 }

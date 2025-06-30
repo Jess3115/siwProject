@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.uniroma3.siw.model.Grading;
 import it.uniroma3.siw.model.Image;
 import it.uniroma3.siw.model.Ingredient;
 import it.uniroma3.siw.model.ProcedureStep;
@@ -34,24 +36,15 @@ import it.uniroma3.siw.utils.SecurityUtils;
 @Controller
 public class RecipeController {
 
-    @Autowired
-    RecipeService recipeService;
-    @Autowired
-    RecipeCategoryService categoryService;
-    @Autowired
-    IngredientService ingredientService;
-    @Autowired
-    ImageService imageService;
-    @Autowired
-    GradingService gradingService;
-    @Autowired
-    ProcedureService procedureService;
-    @Autowired
-    RecipeIngredientService recipeIngredientService;
-    @Autowired
-    SecurityUtils securityUtils;
-    @Autowired
-    CredentialsService credentialsService;
+    @Autowired RecipeService recipeService;
+    @Autowired RecipeCategoryService categoryService;
+    @Autowired IngredientService ingredientService;
+    @Autowired ImageService imageService;
+    @Autowired GradingService gradingService;
+    @Autowired ProcedureService procedureService;
+    @Autowired RecipeIngredientService recipeIngredientService;
+    @Autowired SecurityUtils securityUtils;
+    @Autowired CredentialsService credentialsService;
 
     @GetMapping("/recipe")
     public String showRecipes(Model model) {
@@ -68,11 +61,47 @@ public class RecipeController {
         model.addAttribute("averageRating", recipeService.calculateAverageRating(recipe));
         model.addAttribute("backUrl", from);
         model.addAttribute("images", imageService.getImagesByRecipeId(recipeID));
+
+        // Recupera il voto dell'utente corrente se esiste
+        if (securityUtils.isAuthenticated()) {
+            User currentUser = securityUtils.getCurrentCredentials(credentialsService).getUser();
+            Grading userGrading = gradingService.getGradingByRecipeAndUser(recipe, currentUser);
+            model.addAttribute("userGrading", userGrading != null ? userGrading.getValue() : 0);
+            boolean isSaved = recipeService.isRecipeSavedByUser(recipeID, currentUser.getId());
+        model.addAttribute("isSaved", isSaved);
+        }
+
         return "recipe.html";
     }
 
+    @PostMapping("/default/recipe/{recipeId}/rate")
+    public String rateRecipe(
+            @PathVariable Long recipeId,
+            @RequestParam("rating") int ratingValue,
+            RedirectAttributes redirectAttributes) {
+
+        if (!securityUtils.isAuthenticated()) {
+            return "redirect:/login";
+        }
+
+        User currentUser = securityUtils.getCurrentCredentials(credentialsService).getUser();
+        Recipe recipe = recipeService.getRecipeById(recipeId);
+
+        // Salva o aggiorna il voto
+        gradingService.saveOrUpdateGrading(recipe, currentUser, ratingValue);
+
+        return "redirect:/recipe/" + recipeId;
+    }
+
+    @PostMapping("/user/saveRecipe/{recipeId}")
+public String toggleSaveRecipe(@PathVariable Long recipeId) {
+    User currentUser = securityUtils.getCurrentCredentials(credentialsService).getUser();
+    recipeService.toggleSaveRecipe(recipeId, currentUser.getId());
+    return "redirect:/recipe/" + recipeId;
+}
+
     /*
-     *          FORM CREAZIONE RICETTA
+     * FORM CREAZIONE RICETTA
      */
     @GetMapping("/default/newRecipe/building")
     public String formNewRecipe(Model model) {
@@ -120,50 +149,50 @@ public class RecipeController {
     }
 
     @PostMapping("/default/newRecipe/building/addIngredient/{recipeId}")
-public String addIngredientsToRecipe(
-        @PathVariable Long recipeId,
-        @RequestParam("ingredientId") List<Long> ingredientIds,
-        @RequestParam(value = "newIngredientName", required = false) List<String> newIngredientNames,
-        @RequestParam("quantity") List<Double> quantities,
-        @RequestParam("unit") List<String> units) {
+    public String addIngredientsToRecipe(
+            @PathVariable Long recipeId,
+            @RequestParam("ingredientId") List<Long> ingredientIds,
+            @RequestParam(value = "newIngredientName", required = false) List<String> newIngredientNames,
+            @RequestParam("quantity") List<Double> quantities,
+            @RequestParam("unit") List<String> units) {
 
-    Recipe recipe = recipeService.getRecipeById(recipeId);
+        Recipe recipe = recipeService.getRecipeById(recipeId);
 
-    for (int i = 0; i < ingredientIds.size(); i++) {
-        Ingredient ingredient;
-        Long ingredientId = ingredientIds.get(i);
+        for (int i = 0; i < ingredientIds.size(); i++) {
+            Ingredient ingredient;
+            Long ingredientId = ingredientIds.get(i);
 
-        // Se è stato selezionato "Altro..." e fornito un nuovo nome
-        if (ingredientId == -1 && newIngredientNames != null && i < newIngredientNames.size()) {
-            String newName = newIngredientNames.get(i);
-            if (newName != null && !newName.trim().isEmpty()) {
-                // Crea un nuovo ingrediente
-                ingredient = new Ingredient();
-                ingredient.setName(newName.trim());
-                ingredient.setRecipes(new LinkedList<Recipe>());
-                ingredient = ingredientService.saveNewIngredient(ingredient);
+            // Se è stato selezionato "Altro..." e fornito un nuovo nome
+            if (ingredientId == -1 && newIngredientNames != null && i < newIngredientNames.size()) {
+                String newName = newIngredientNames.get(i);
+                if (newName != null && !newName.trim().isEmpty()) {
+                    // Crea un nuovo ingrediente
+                    ingredient = new Ingredient();
+                    ingredient.setName(newName.trim());
+                    ingredient.setRecipes(new LinkedList<Recipe>());
+                    ingredient = ingredientService.saveNewIngredient(ingredient);
+                } else {
+                    // Salta se non è stato fornito un nome
+                    continue;
+                }
             } else {
-                // Salta se non è stato fornito un nome
-                continue;
+                // Usa l'ingrediente esistente
+                ingredient = ingredientService.getIngredientById(ingredientId);
             }
-        } else {
-            // Usa l'ingrediente esistente
-            ingredient = ingredientService.getIngredientById(ingredientId);
+
+            RecipeIngredient ri = new RecipeIngredient();
+            ri.setRecipe(recipe);
+            ri.setIngredient(ingredient);
+            ri.setQuantity(quantities.get(i));
+            ri.setUnit(units.get(i));
+            recipeIngredientService.save(ri);
+
+            ingredient.getRecipes().add(recipe);
+            ingredientService.saveIngredient(ingredient);
         }
 
-        RecipeIngredient ri = new RecipeIngredient();
-        ri.setRecipe(recipe);
-        ri.setIngredient(ingredient);
-        ri.setQuantity(quantities.get(i));
-        ri.setUnit(units.get(i));
-        recipeIngredientService.save(ri);
-
-        ingredient.getRecipes().add(recipe);
-        ingredientService.saveIngredient(ingredient);
+        return "redirect:/default/newRecipe/building/addStep/" + recipeId;
     }
-
-    return "redirect:/default/newRecipe/building/addStep/" + recipeId;
-}
 
     @GetMapping("/default/newRecipe/building/addStep/{recipeId}")
     public String formAddSteps(@PathVariable Long recipeId, Model model) {
@@ -224,11 +253,11 @@ public String addIngredientsToRecipe(
         return "redirect:/recipe/" + recipe.getId();
     }
     /*
-     *          FINE FORM CREAZIONE RICETTA
+     * FINE FORM CREAZIONE RICETTA
      */
 
     /*
-     *          ELIMINAZIONE RICETTA
+     * ELIMINAZIONE RICETTA
      */
 
     @PostMapping("/admin/recipe/delete/{recipeID}")

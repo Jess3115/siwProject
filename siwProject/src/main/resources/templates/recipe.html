@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <title>Ricetta</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/main-style.css?version=4}">
-    <link rel="stylesheet" th:href="@{/css/recipe.css?version=4}">
+    <link rel="stylesheet" th:href="@{/css/recipe.css?version=5}">
+
 </head>
 
 <body>
@@ -19,8 +20,19 @@
                 <div class="recipe-header">
                     <h1 class="recipe-title" th:text="${recipe.name}"></h1>
                     <p class="recipe-creator"
-                        th:text="'Creatore: ' + ${recipe.creator.name} + ' ' + ${recipe.creator.surname}"></p>
-                    
+                        th:text="'Creatore: ' + ${recipe.creator.name} + ' ' + ${recipe.creator.surname}">
+                    </p>
+
+                    <!-- Pulsante Salva Ricetta -->
+                    <div class="save-recipe-container" sec:authorize="hasAuthority('DEFAULT')">
+                        <form th:action="@{'/user/saveRecipe/' + ${recipe.id}}" method="post">
+                            <button type="submit" class="save-button">
+                                <i class="fas fa-bookmark"></i>
+                                <span th:text="${isSaved ? 'Rimuovi dai salvati' : 'Salva ricetta'}"></span>
+                            </button>
+                        </form>
+                    </div>
+
                     <!-- Pulsanti Admin -->
                     <div class="admin-buttons" sec:authorize="hasAuthority('ADMIN')">
                         <a th:href="@{'/admin/recipe/edit/' + ${recipe.id}}" class="admin-button edit-button">
@@ -52,29 +64,50 @@
                             </div>
                         </div>
 
-                        <!-- Sezione Valutazione -->
-                        <div class="recipe-section">
-                            <div class="rating-section">
-                                <h2 class="section-title"><i class="fas fa-star"></i> Valutazione</h2>
-                                
-                                <div th:if="${averageRating > 0}">
-                                    <p class="rating-info">
-                                        <span class="rating-value"
-                                            th:text="${#numbers.formatDecimal(averageRating, 1, 1)}"></span>/5
-                                    </p>
-                                    <div class="stars">
-                                        <!-- Stelle dinamiche basate sulla valutazione -->
-                                        <span th:each="i : ${#numbers.sequence(1, 5)}">
-                                            <i th:class="|${i <= averageRating} ? 'fas fa-star' : 
-                ${(i > averageRating) and (i - 0.5 <= averageRating)} ? 'fas fa-star-half-alt' : 'far fa-star'|"></i>
-                                        </span>
+                        <!-- Sezione Valutazione Personale (solo utenti loggati) -->
+                        <div class="recipe-section" sec:authorize="hasAuthority('DEFAULT')">
+                            <h2 class="section-title"><i class="fas fa-star"></i> La tua valutazione</h2>
+
+                            <form th:action="@{'/default/recipe/' + ${recipe.id} + '/rate'}" method="post">
+                                <div class="star-rating">
+                                    <!-- Genera 5 stelle con il voto corrente preselezionato -->
+                                    <div th:each="i : ${#numbers.sequence(5, 1, -1)}">
+                                        <input type="radio" th:id="'star' + ${i}" th:name="rating" th:value="${i}"
+                                            th:checked="${userGrading} == ${i}">
+                                        <label th:for="'star' + ${i}">☆</label>
                                     </div>
                                 </div>
-                                
-                                <div th:unless="${averageRating > 0}" class="no-rating">
-                                    <i class="far fa-star rating-empty-icon"></i>
-                                    <p>Ancora nessuna valutazione</p>
+                                <button type="submit" class="submit-rating">
+                                    <span th:text="${userGrading > 0} ? 'Aggiorna voto' : 'Invia voto'"></span>
+                                </button>
+                            </form>
+
+                            <!-- Messaggio se l'utente ha già votato -->
+                            <div class="user-rating-info" th:if="${userGrading > 0}">
+                                <i class="fas fa-check-circle"></i>
+                                Hai votato: <strong th:text="${userGrading}"></strong>/5
+                            </div>
+                        </div>
+
+                        <!-- Sezione Valutazione Media -->
+                        <div class="recipe-section">
+                            <h2 class="section-title"><i class="fas fa-star"></i> Valutazione</h2>
+
+                            <div th:if="${averageRating > 0}">
+                                <p class="rating-info">
+                                    Media: <span class="rating-value"
+                                        th:text="${#numbers.formatDecimal(averageRating, 1, 1)}"></span>/5
+                                    (da <span th:text="${voteCount}"></span> voti)
+                                </p>
+                                <div class="rating-stars">
+                                    <i class="fas fa-star" th:each="i : ${#numbers.sequence(1, 5)}"
+                                        th:classappend="${i <= averageRating} ? 'active' : 'inactive'"></i>
                                 </div>
+                            </div>
+
+                            <div th:unless="${averageRating > 0}" class="no-rating">
+                                <i class="far fa-star rating-empty-icon"></i>
+                                <p>Ancora nessuna valutazione</p>
                             </div>
                         </div>
                     </div>
