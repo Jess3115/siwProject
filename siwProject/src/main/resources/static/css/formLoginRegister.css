@@ -1,0 +1,206 @@
+/* Stile generale del form */
+.boxForm {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.92);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px var(--shadow);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.boxForm::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(
+        to right, 
+        var(--light-orange), 
+        var(--vivid-orange)
+    );
+}
+
+.boxForm h1 {
+    font-size: 2.5rem;
+    margin-bottom: 35px;
+    color: var(--basil-green);
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--light-orange);
+    position: relative;
+}
+
+/* Stile form */
+.formLoginUser {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin: 30px 0;
+}
+
+.formLoginUser > div {
+    position: relative;
+}
+
+.formLoginUser label {
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: var(--deep-gray);
+    font-weight: 500;
+    padding-left: 5px;
+}
+
+.formLoginUser input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid var(--vanilla-cream);
+    border-radius: 12px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    background-color: var(--light-gray);
+    color: var(--deep-gray);
+    box-sizing: border-box;
+}
+
+.formLoginUser input:focus {
+    border-color: var(--vivid-orange);
+    background-color: var(--white);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 128, 0, 0.15);
+}
+
+.formLoginUser input::placeholder {
+    color: #aaa;
+}
+
+/* Stile bottone */
+.formLoginUser button {
+    background: linear-gradient(
+        to right, 
+        var(--light-orange), 
+        var(--vivid-orange)
+    );
+    color: white;
+    border: none;
+    padding: 16px 30px;
+    font-size: 1.2rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(255, 128, 0, 0.25);
+}
+
+.formLoginUser button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 128, 0, 0.35);
+}
+
+/* Messaggio errore */
+.error {
+    background-color: rgba(255, 128, 0, 0.15);
+    color: #d9534f;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 1.1rem;
+    border-left: 4px solid #d9534f;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Link registrazione */
+.boxForm p {
+    font-size: 1.1rem;
+    color: var(--deep-gray);
+    margin-top: 30px;
+}
+
+.boxForm a {
+    color: var(--vivid-orange);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.boxForm a::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--vivid-orange);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.boxForm a:hover {
+    color: var(--light-orange);
+}
+
+.boxForm a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .boxForm {
+        padding: 30px 25px;
+        margin: 40px 20px;
+    }
+    
+    .boxForm h1 {
+        font-size: 2.2rem;
+    }
+    
+    .formLoginUser {
+        gap: 22px;
+    }
+    
+    .formLoginUser input {
+        padding: 14px 18px;
+        font-size: 1rem;
+    }
+    
+    .formLoginUser button {
+        padding: 14px 25px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .boxForm {
+        padding: 25px 20px;
+        margin: 30px 15px;
+    }
+    
+    .boxForm h1 {
+        font-size: 2rem;
+    }
+    
+    .formLoginUser label {
+        font-size: 1rem;
+    }
+    
+    .boxForm p {
+        font-size: 1rem;
+    }
+}

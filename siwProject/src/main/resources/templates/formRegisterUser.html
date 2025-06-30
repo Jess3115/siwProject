@@ -32,6 +32,12 @@
 				</div>
 
 				<div>
+					<label for="birthDate">Data di Nascita</label>
+					<input id="birthDate" type="date" placeholder="dateOfBirth" required th:field="${user.dateOfBirth}" />
+					<div class="error" th:if="${#fields.hasErrors('user.dateOfBirth')}" th:errors="${user.dateOfBirth}"></div>
+				</div>
+
+				<div>
 					<label for="email">Email</label>
 					<input id="email" type="text" placeholder="email" required th:field="${user.email}" />
 					<div class="error" th:if="${#fields.hasErrors('user.email')}" th:errors="${user.email}"></div>
