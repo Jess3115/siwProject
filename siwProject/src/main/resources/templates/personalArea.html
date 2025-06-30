@@ -2,36 +2,121 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-	<title>Home</title>
-	<link rel="icon" th:href="@{/library.ico?v=1}">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-	<link rel="stylesheet" th:href="@{/css/main-style.css}">
-	<link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>Profilo Utente</title>
+    <link rel="icon" th:href="@{/library.ico?v=1}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/main-style.css}">
+	<link rel="stylesheet" th:href="@{/css/personal-area.css}">
 </head>
 
 <body>
-	<!-- HEADER importato -->
-	<div th:insert="~{fragments/header :: header}"></div>
+    <!-- HEADER importato -->
+    <div th:insert="~{fragments/header :: header}"></div>
 
-	<!-- SECTION -->
-	<section>
-		<div>
-			<h1 th:text="${credentials.username}"></h1>
+    <!-- SECTION -->
+    <section>
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1>Benvenuto, <span th:text="${credentials.username}"></span>!</h1>
+                <p>Questa è la tua area personale dove puoi gestire le tue informazioni e le ricette preferite</p>
+            </div>
+            
+            <div class="profile-grid">
+                <div class="user-info-card">
+                    <div class="user-detail">
+                        <div class="detail-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Nome</div>
+                            <div class="detail-value" th:text="${user.name}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-detail">
+                        <div class="detail-icon">
+                            <i class="fas fa-user-tag"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Cognome</div>
+                            <div class="detail-value" th:text="${user.surname}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-detail">
+                        <div class="detail-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="detail-content">
+                            <div class="detail-label">Email</div>
+                            <div class="detail-value" th:text="${user.email}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-button">
+                        <a th:href="@{/default/newRecipe/building}" class="button">
+                            <i class="fas fa-plus-circle"></i> Aggiungi Nuova Ricetta
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <h3>Le Tue Statistiche</h3>
+                    <div class="stat-item">
+                        <div class="stat-value"><span th:text="${user.createdRecipes.size()}"></span></div>
+                        <div class="stat-label">Ricette Create</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value"><span th:text="${user.savedRecipes.size()}"></span></div>
+                        <div class="stat-label">Ricette Salvate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value"><span th:text="${likes}"></span></div>
+                        <div class="stat-label">Valutazione media</div>
+                    </div>
+                </div>
+            </div>
 
-			<p>Nome: <span th:text="${user.name}"></span></p>
-			<p>Cognome: <span th:text="${user.surname}"></span></p>
-			<p>Email: <span th:text="${user.email}"></span></p>
+            <div class="saved-recipes">
+                <h2>Le tue Ricette Salvate</h2>
+                <div th:if="${!user.savedRecipes.isEmpty()}">
+                    <ul class="recipe-list">
+                        <li th:each="recipe : ${user.savedRecipes}" class="recipe-item">
+                            <a th:href="@{/default/recipe/{id}(id=${recipe.id})}">
+                                <i class="fas fa-book"></i>
+                                <span th:text="${recipe.name}"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div th:unless="${!user.savedRecipes.isEmpty()}" class="no-recipes">
+                    <p>Non hai ancora salvato nessuna ricetta.</p>
+                    <p>Inizia a esplorare la nostra collezione e salva le tue preferite!</p>
+                </div>
+            </div>
 
-			<a th:href="@{/default/newRecipe/building}" class="button">
-				<i class="fas fa-plus-circle"></i> Aggiungi Nuova Ricetta
-			</a>
+			<div class="saved-recipes">
+                <h2>Le tue Ricette Create</h2>
+                <div th:if="${!user.createdRecipes.isEmpty()}">
+                    <ul class="recipe-list">
+                        <li th:each="recipe : ${user.createdRecipes}" class="recipe-item">
+                            <a th:href="@{/default/recipe/{id}(id=${recipe.id})}">
+                                <i class="fas fa-book"></i>
+                                <span th:text="${recipe.name}"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div th:unless="${!user.savedRecipes.isEmpty()}" class="no-recipes">
+                    <p>Non hai ancora salvato nessuna ricetta.</p>
+                    <p>Inizia a esplorare la nostra collezione e salva le tue preferite!</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-		</div>
-	</section>
-
-
-	<!-- FOOTER importato -->
-	<div th:insert="~{fragments/footer :: footer}"></div>
+    <!-- FOOTER importato -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
 </body>
 
 </html>

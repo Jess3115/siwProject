@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.service.RecipeService;
 import it.uniroma3.siw.service.UserService;
 import it.uniroma3.siw.utils.SecurityUtils;
 import jakarta.validation.Valid;
@@ -25,6 +26,8 @@ public class AuthenticationController {
 	UserService userService;
 	@Autowired
 	SecurityUtils securityUtils;
+	@Autowired
+	RecipeService recipeService;
 
 	/*
 	 * REGISTER FORM
@@ -76,6 +79,7 @@ public class AuthenticationController {
 		Credentials credentials = securityUtils.getCurrentCredentials(credentialsService);
 		model.addAttribute("credentials", credentials);
 		model.addAttribute("user", credentials.getUser());
+		model.addAttribute("likes", userService.getAverage(credentials.getUser().getId()));
 
 		return "personalArea.html";
 	}
