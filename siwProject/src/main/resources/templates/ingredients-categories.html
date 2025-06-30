@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ingredienti e Categorie</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/main-style.css?version=2}">
+    <link rel="stylesheet" th:href="@{/css/ingredients-categories.css}">
+</head>
+
+<body>
+    <!-- Header -->
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <!-- Main Content -->
+    <section>
+        <div class="two-columns-section">
+            <div class="column-wrapper">
+                <!-- Colonna Ingredienti -->
+                <div class="content-column ingredient-column">
+                    <h1 class="page-title">Lista Ingredienti</h1>
+
+                    <div th:if="${ingredients.isEmpty()}" class="empty-message">
+                        <i class="fas fa-carrot empty-icon"></i>
+                        <p>Nessun ingrediente disponibile</p>
+                    </div>
+
+                    <div class="grid-container">
+                        <div th:each="ingredient : ${ingredients}" class="data-card">
+                            <a th:href="@{'/ingredient/' + ${ingredient.id}}" class="card-link">
+                                <div class="icon-container"
+                                    style="--gradient-start: var(--light-orange); --gradient-end: var(--vivid-orange);">
+                                    <div class="icon-placeholder">
+                                        <i class="fa-solid fa-carrot card-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <h3 class="card-name" th:text="${ingredient.name}"></h3>
+                                    <div class="recipe-count">
+                                        <i class="fa-solid fa-book-open"></i>
+                                        <span th:text="${ingredient.recipes.size()} + ' ricette'"></span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonna Categorie -->
+                <div class="content-column category-column">
+                    <h1 class="page-title">Esplora le Categorie</h1>
+
+                    <div th:if="${categories.isEmpty()}" class="empty-message">
+                        <i class="fas fa-folder-open empty-icon"></i>
+                        <p>Nessuna categoria disponibile</p>
+                    </div>
+
+                    <div class="grid-container">
+                        <div th:each="category : ${categories}" class="data-card">
+                            <a th:href="@{'/category/' + ${category.id} + '?from=/category'}" class="card-link">
+                                <div class="icon-container"
+                                    style="--gradient-start: var(--basil-green); --gradient-end: var(--forest-green);">
+                                    <div class="icon-placeholder">
+                                        <i class="fa-solid fa-folder-open card-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <h2 class="card-name" th:text="${category.name}"></h2>
+                                    <div class="recipe-count">
+                                        <i class="fa-solid fa-book-open"></i>
+                                        <span th:text="${category.recipes.size()} + ' ricette'"></span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

@@ -17,12 +17,6 @@ public class RecipeCategoryController {
 
 	@Autowired RecipeCategoryService recipeCategoryService;
 	
-	@GetMapping("/category")
-	public String showCategories(Model model) {
-		model.addAttribute("categories", this.recipeCategoryService.getAllCategories());
-		return "categories.html";
-	}
-	
 	@GetMapping("/category/{categoryID}")
 	public String getCategory(@PathVariable Long categoryID, @RequestParam(defaultValue = "/book") String from, Model model) {
 		model.addAttribute("category", this.recipeCategoryService.getCategoryById(categoryID));

@@ -57,9 +57,8 @@ public class AuthConfiguration {
                                 "/index",
                                 "/recipe",
                                 "/recipe/**",
-                                "/category",
                                 "/category/**",
-                                "/ingredient",
+                                "/ingredient-category",
                                 "/ingredient/**",
                                 "/login",
                                 "/register")

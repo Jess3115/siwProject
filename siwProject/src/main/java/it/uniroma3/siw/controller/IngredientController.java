@@ -11,16 +11,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.model.Ingredient;
 import it.uniroma3.siw.service.IngredientService;
+import it.uniroma3.siw.service.RecipeCategoryService;
 
 @Controller
 public class IngredientController {
 
     @Autowired IngredientService ingredientService;
+    @Autowired RecipeCategoryService recipeCategoryService;
 
-    @GetMapping("/ingredient")
+    @GetMapping("/ingredient-category")
     public String showIngredients(Model model) {
         model.addAttribute("ingredients", ingredientService.getAllIngredients());
-        return "ingredients.html";
+        model.addAttribute("categories", this.recipeCategoryService.getAllCategories());
+        return "ingredients-categories.html";
     }
 
     @GetMapping("/ingredient/{ingredientID}")
