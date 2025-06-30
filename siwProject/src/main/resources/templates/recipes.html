@@ -21,7 +21,7 @@
 
         <div class="recipe-grid-container">
             <div th:each="recipe : ${recipes}" class="recipe-card">
-                <a th:href="@{'/recipe/' + ${recipe.id}}" class="recipe-link">
+                <a th:href="@{'/recipe/' + ${recipe.id} + '?from=/recipe'}" class="recipe-link">
                     <!-- Contenitore immagine con fallback -->
                     <div class="recipe-image-container">
                         <div th:if="${recipe.images != null and not recipe.images.empty}">

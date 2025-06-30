@@ -137,10 +137,12 @@
 
                 <!-- Back Button -->
                 <div class="button-container">
-                    <a th:href="@{/recipe}" class="back-button">
-                        <i class="fa-solid fa-arrow-left"></i> Torna alle ricette
+                    <a th:href="@{${backUrl}}" class="back-button">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span th:text="${backUrl == '/recipe'} ? 'Torna alle ricette' : 'Torna indietro'"></span>
                     </a>
                 </div>
+
             </div>
         </div>
     </section>

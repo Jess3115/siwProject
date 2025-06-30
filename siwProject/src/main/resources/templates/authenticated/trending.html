@@ -20,7 +20,7 @@
         
         <div th:each="recipe : ${topRecipes}" class="recipe-card">
             <div class="recipe-header">
-                <a th:href="@{'/recipe/' + ${recipe.id}}" 
+                <a th:href="@{'/recipe/' + ${recipe.id} + '?from=/default/trending'}"
                    th:text="${recipe.name}" class="recipe-title"></a>
                 <div class="recipe-rating">
                     <span th:text="${recipeService.calculateAverageRating(recipe)}"></span>

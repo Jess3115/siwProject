@@ -71,7 +71,7 @@
                         <div class="stat-label">Ricette Salvate</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value"><span th:text="${likes}"></span></div>
+                        <div class="stat-value"><span th:text="${#numbers.formatDecimal(likes, 1, 1)}"></span></div>
                         <div class="stat-label">Valutazione media</div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                 <div th:if="${!user.savedRecipes.isEmpty()}">
                     <ul class="recipe-list">
                         <li th:each="recipe : ${user.savedRecipes}" class="recipe-item">
-                            <a th:href="@{/default/recipe/{id}(id=${recipe.id})}">
+                            <a th:href="@{'/recipe/' + ${recipe.id} + '?from=/personalArea'}">
                                 <i class="fas fa-book"></i>
                                 <span th:text="${recipe.name}"></span>
                             </a>
@@ -100,7 +100,7 @@
                 <div th:if="${!user.createdRecipes.isEmpty()}">
                     <ul class="recipe-list">
                         <li th:each="recipe : ${user.createdRecipes}" class="recipe-item">
-                            <a th:href="@{/default/recipe/{id}(id=${recipe.id})}">
+                            <a th:href="@{'/recipe/' + ${recipe.id} + '?from=/personalArea'}">
                                 <i class="fas fa-book"></i>
                                 <span th:text="${recipe.name}"></span>
                             </a>
