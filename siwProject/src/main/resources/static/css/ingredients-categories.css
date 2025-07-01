@@ -56,6 +56,58 @@
     border-bottom: 3px solid var(--light-orange);
 }
 
+/* Stili per i pulsanti "Aggiungi nuova..." */
+.add-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.add-button {
+    background-color: var(--basil-green);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-button:hover {
+    background-color: var(--forest-green);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-button i {
+    margin-right: 8px;
+    font-size: 0.9em;
+}
+
+/* Stili specifici per colonna ingredienti */
+.ingredient-column .add-button {
+    background-color: var(--vivid-orange);
+}
+
+.ingredient-column .add-button:hover {
+    background-color: var(--light-orange);
+}
+
+/* Stili specifici per colonna categorie */
+.category-column .add-button {
+    background-color: var(--basil-green);
+}
+
+.category-column .add-button:hover {
+    background-color: var(--forest-green);
+}
+
 .empty-message {
     display: flex;
     flex-direction: column;
@@ -351,6 +403,12 @@
     .clear-btn {
         right: 50px;
     }
+
+    /* Adattamento pulsanti per dispositivi mobili */
+    .add-button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -405,6 +463,12 @@
     .clear-btn {
         right: 45px;
         font-size: 0.9rem;
+    }
+
+    /* Adattamento pulsanti per schermi piccoli */
+    .add-button {
+        padding: 7px 12px;
+        font-size: 13px;
     }
 }
 

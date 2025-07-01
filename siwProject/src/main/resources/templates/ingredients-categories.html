@@ -35,6 +35,13 @@
                 <!-- Colonna Ingredienti -->
                 <div class="content-column ingredient-column">
                     <h1 class="page-title">Lista Ingredienti</h1>
+                    
+                    <!-- Pulsante Aggiungi Ingrediente -->
+                    <div class="add-button-container" sec:authorize="hasAuthority('ADMIN')">
+                        <a th:href="@{/admin/newIngredient}" class="add-button">
+                            <i class="fas fa-plus"></i> Aggiungi nuovo ingrediente
+                        </a>
+                    </div>
 
                     <div th:if="${ingredients.isEmpty()}" class="empty-message">
                         <i class="fas fa-carrot empty-icon"></i>
@@ -65,6 +72,13 @@
                 <!-- Colonna Categorie -->
                 <div class="content-column category-column">
                     <h1 class="page-title">Esplora le Categorie</h1>
+                    
+                    <!-- Pulsante Aggiungi Categoria -->
+                    <div class="add-button-container" sec:authorize="hasAuthority('ADMIN')">
+                        <a th:href="@{/admin/newCategory}" class="add-button">
+                            <i class="fas fa-plus"></i> Aggiungi nuova categoria
+                        </a>
+                    </div>
 
                     <div th:if="${categories.isEmpty()}" class="empty-message">
                         <i class="fas fa-folder-open empty-icon"></i>
