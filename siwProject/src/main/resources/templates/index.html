@@ -4,6 +4,7 @@
     <title>Home</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/main-style.css?version}">
+	<link rel="stylesheet" th:href="@{/css/index.css?version}">
 </head>
 <body>
     <!-- Header -->
@@ -11,17 +12,17 @@
 
     <!-- Main Content -->
     <section class="home-section">
-        <h1 class="home-title">Benvenuto nella Piattaforma di Ricette</h1> 
+        <h1 class="home-title"> Inizia il tuo viaggio tra sapori e idee culinarie</h1> 
         
         <div class="home-card-container">
             <a th:href="@{/recipe}" class="home-card">
                 <i class="fa-solid fa-book-open card-icon"></i>
-                <h2 class="card-title">Ricette</h2>
+                <h2 class="card-title">Le Nostre Ricette</h2>
             </a>
 
             <a th:href="@{/ingredient-category}" class="home-card">
                 <i class="fa-solid fa-carrot card-icon"></i>
-                <h2 class="card-title">Ingredienti e Categorie</h2>
+                <h2 class="card-title">Trova Ingredienti e Categorie</h2>
             </a>
         </div>
     </section>
