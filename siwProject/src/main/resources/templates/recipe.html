@@ -35,9 +35,11 @@
 
                     <!-- Pulsanti Admin -->
                     <div class="admin-buttons" sec:authorize="hasAuthority('ADMIN')">
+                        <!--
                         <a th:href="@{'/admin/recipe/edit/' + ${recipe.id}}" class="admin-button edit-button">
                             <i class="fas fa-edit"></i> Modifica Informazioni
                         </a>
+                        -->
                         <form th:action="@{'/admin/recipe/delete/' + ${recipe.id}}" method="post" class="delete-form">
                             <button type="submit" class="admin-button delete-button">
                                 <i class="fas fa-trash-alt"></i> Elimina Ricetta
