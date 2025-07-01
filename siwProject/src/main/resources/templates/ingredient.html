@@ -31,8 +31,9 @@
         </ul>
 
         <!-- Back Button -->
-        <a th:href="@{/ingredient}" class="button">
-            <i class="fa-solid fa-arrow-left"></i> Torna agli ingredienti
+        <a th:href="@{${backUrl}}" class="button">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span th:text="${backUrl == '/ingredient-category'} ? 'Torna agli ingredienti' : 'Torna indietro'"></span>
         </a>
     </section>
 

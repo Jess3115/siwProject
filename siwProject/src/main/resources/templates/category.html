@@ -34,9 +34,9 @@
 
 		<!-- Pulsanti per tornare indietro -->
 		<a th:href="@{${backUrl}}" class="button">
-			<i class="fa-solid fa-arrow-left"></i>
-			<span th:text="${backUrl == '/category' ? 'Torna alle categorie' : 'Torna indietro'}"></span>
-		</a>
+            <i class="fa-solid fa-arrow-left"></i>
+            <span th:text="${backUrl == '/ingredient-category'} ? 'Torna alle categorie' : 'Torna indietro'"></span>
+        </a>
 		<!-- Pulsante per modificare la categoria -->
 		<a th:href="@{'/admin/editCategory/' + ${category.id}}" class="button">
 			<i class="fa-solid fa-pen"></i> Modifica Informazioni
