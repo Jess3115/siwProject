@@ -34,17 +34,17 @@
 
 		<!-- Pulsanti per tornare indietro -->
 		<a th:href="@{${backUrl}}" class="button">
-            <i class="fa-solid fa-arrow-left"></i>
-            <span th:text="${backUrl == '/ingredient-category'} ? 'Torna alle categorie' : 'Torna indietro'"></span>
-        </a>
+			<i class="fa-solid fa-arrow-left"></i>
+			<span th:text="${backUrl == '/ingredient-category'} ? 'Torna alle categorie' : 'Torna indietro'"></span>
+		</a>
 		<!-- Pulsante per modificare la categoria -->
-		<a th:href="@{'/admin/editCategory/' + ${category.id}}" class="button">
+		<a th:href="@{'/admin/editCategory/' + ${category.id}}" class="button" sec:authorize="hasAuthority('ADMIN')" > 
 			<i class="fa-solid fa-pen"></i> Modifica Informazioni
 		</a>
 		<!-- Pulsante per eliminare la categoria -->
-		<form th:action="@{'/admin/deleteCategory/' + ${category.id}'}" th:object="${newCategory}" method="post">
+		<form th:action="@{'/admin/deleteCategory/' + ${category.id}}" method="post" sec:authorize="hasAuthority('ADMIN')">
 			<button type="submit">
-				<i class="fa-solid fa-trash-can"></i>Elimina Categoria
+				<i class="fa-solid fa-trash-can"></i> Elimina Categoria
 			</button>
 		</form>
 

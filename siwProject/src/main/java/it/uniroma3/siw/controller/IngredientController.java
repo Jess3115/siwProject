@@ -12,18 +12,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.model.Ingredient;
+import it.uniroma3.siw.model.Recipe;
 import it.uniroma3.siw.model.RecipeCategory;
+import it.uniroma3.siw.model.RecipeIngredient;
 import it.uniroma3.siw.service.IngredientService;
 import it.uniroma3.siw.service.RecipeCategoryService;
+import it.uniroma3.siw.service.RecipeIngredientService;
+import it.uniroma3.siw.service.RecipeService;
 
 @Controller
 public class IngredientController {
 
-    @Autowired
-    IngredientService ingredientService;
-    @Autowired
-    RecipeCategoryService recipeCategoryService;
 
+    @Autowired IngredientService ingredientService;
+    @Autowired RecipeCategoryService recipeCategoryService;
+    @Autowired RecipeService recipeService;
+    @Autowired RecipeIngredientService recipeIngredientService;
+ 
     @GetMapping("/ingredient-category")
     public String showIngredients(
             @RequestParam(name = "search", required = false) String searchQuery,
@@ -72,7 +77,18 @@ public class IngredientController {
 
     @PostMapping("/admin/deleteIngredient/{ingredientID}")
     public String deleteIngredient(@PathVariable Long ingredientID, Model model) {
+        Ingredient ingredient = this.ingredientService.getIngredientById(ingredientID);
+        for(Recipe recipe : ingredient.getRecipes()){
+            recipe.getIngredients().remove(ingredient);
+            recipeService.saveRecipe(recipe);
+        }
+
+        for (RecipeIngredient ri : recipeIngredientService.getByIngredientId(ingredientID)){
+            recipeIngredientService.deleteById(ri.getId());
+        }
+
         ingredientService.deleteIngredientById(ingredientID);
+
         return "redirect:/ingredient-category";
     }
 

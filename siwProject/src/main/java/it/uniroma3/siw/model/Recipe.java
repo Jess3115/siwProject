@@ -3,7 +3,6 @@ package it.uniroma3.siw.model;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -36,6 +35,9 @@ public class Recipe {
 
 	@ManyToMany(mappedBy = "recipes", fetch = FetchType.LAZY)
 	private List<Ingredient> ingredients;
+
+	@OneToMany(mappedBy = "recipe")
+	private List<RecipeIngredient> recipeIngredients;
 
 	public Long getId() {
 		return id;
@@ -107,6 +109,14 @@ public class Recipe {
 
 	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
+	}
+
+	public List<RecipeIngredient> getRecipeIngredients(){
+		return this.recipeIngredients;
+	}
+
+	public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients){
+		this.recipeIngredients = recipeIngredients;
 	}
 
 	@Override

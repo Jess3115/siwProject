@@ -24,7 +24,7 @@
                     </p>
 
                     <!-- Pulsante Salva Ricetta -->
-                    <div class="save-recipe-container" sec:authorize="hasAuthority('DEFAULT')">
+                    <div class="save-recipe-container" sec:authorize="hasAnyAuthority('DEFAULT', 'ADMIN')">
                         <form th:action="@{'/user/saveRecipe/' + ${recipe.id}}" method="post">
                             <button type="submit" class="save-button">
                                 <i class="fas fa-bookmark"></i>
@@ -65,7 +65,7 @@
                         </div>
 
                         <!-- Sezione Valutazione Personale (solo utenti loggati) -->
-                        <div class="recipe-section" sec:authorize="hasAuthority('DEFAULT')">
+                        <div class="recipe-section" sec:authorize="hasAnyAuthority('DEFAULT', 'ADMIN')">
                             <h2 class="section-title"><i class="fas fa-star"></i> La tua valutazione</h2>
 
                             <form th:action="@{'/default/recipe/' + ${recipe.id} + '/rate'}" method="post">

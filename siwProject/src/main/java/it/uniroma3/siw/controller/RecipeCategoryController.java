@@ -9,14 +9,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.uniroma3.siw.model.Recipe;
 import it.uniroma3.siw.model.RecipeCategory;
 import it.uniroma3.siw.service.RecipeCategoryService;
+import it.uniroma3.siw.service.RecipeService;
 
 @Controller
 public class RecipeCategoryController {
 
 	@Autowired
 	RecipeCategoryService recipeCategoryService;
+	@Autowired
+	RecipeService recipeService;
 
 	@GetMapping("/category/{categoryID}")
 	public String getCategory(
@@ -42,11 +46,18 @@ public class RecipeCategoryController {
 		return "redirect:/category/" + newCategory.getId();
 	}
 
-	// da controllare eliminazione bidirezionale
 	@PostMapping("/admin/deleteCategory/{categoryID}")
 	public String deleteCategory(@PathVariable Long categoryID, Model model) {
-		this.recipeCategoryService.deleteCategoryById(categoryID);
-		model.addAttribute("categories", this.recipeCategoryService.getAllCategories());
+		RecipeCategory category = recipeCategoryService.getCategoryById(categoryID);
+
+		// Rimuovi la categoria da tutte le ricette associate
+		for (Recipe recipe : category.getRecipes()) {
+			recipe.getCategories().remove(category);
+			recipeService.saveRecipe(recipe); // Salva le modifiche
+		}
+
+		recipeCategoryService.deleteCategoryById(categoryID);
+
 		return "redirect:/ingredient-category";
 	}
 
@@ -60,8 +71,7 @@ public class RecipeCategoryController {
 	@PostMapping("/admin/editCategory/{categoryID}")
 	public String editCategory(
 			@PathVariable Long categoryID,
-			@ModelAttribute RecipeCategory updatedCategory
-			) {
+			@ModelAttribute RecipeCategory updatedCategory) {
 		RecipeCategory existingCategory = recipeCategoryService.getCategoryById(categoryID);
 		existingCategory.setName(updatedCategory.getName());
 		recipeCategoryService.save(existingCategory);
