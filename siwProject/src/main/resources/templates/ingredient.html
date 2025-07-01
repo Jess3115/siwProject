@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Ingrediente</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/main-style.css?version=2}">
+    <link rel="stylesheet" th:href="@{/css/main-style.css}">
+	<link rel="stylesheet" th:href="@{/css/ingredientCategory.css?version=2}">
 </head>
-
 <body>
     <!-- Header -->
     <div th:insert="~{fragments/header :: header}"></div>
 
     <!-- Main Content -->
-    <section>
-        <h1 th:text="'Ingrediente: ' + ${ingredient.name}"></h1>
+    <section class="common-section">
+        <h1 class="common-title" th:text="'Ingrediente: ' + ${ingredient.name}"></h1>
 
         <p class="info-text">
             <i class="fa-solid fa-list"></i>
@@ -21,34 +20,43 @@
         </p>
 
         <h2>Ricette che usano questo ingrediente:</h2>
+        
         <div th:if="${recipes.isEmpty()}">
-            Nessuna ricetta trovata
+            <div class="empty-message">
+                <i class="fa-solid fa-ban"></i>
+                <p>Nessuna ricetta trovata</p>
+            </div>
         </div>
-        <ul>
-            <li th:each="recipe : ${recipes}">
-                <a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+        
+        <ul class="recipe-list" th:unless="${recipes.isEmpty()}">
+            <li th:each="recipe : ${recipes}" class="recipe-item">
+                <a th:href="@{'/recipe/' + ${recipe.id}}">
+                    <i class="fas fa-book"></i>
+                    <span th:text="${recipe.name}"></span>
+                </a>
             </li>
         </ul>
 
         <!-- Back Button -->
-        <a th:href="@{${backUrl}}" class="button">
-            <i class="fa-solid fa-arrow-left"></i>
-            <span th:text="${backUrl == '/ingredient-category'} ? 'Torna agli ingredienti' : 'Torna indietro'"></span>
-        </a>
-		<!-- Pulsante per modificare l'ingrediente -->
-		<a th:href="@{'/admin/editIngredient/' + ${ingredient.id}}" class="button" sec:authorize="hasAuthority('ADMIN')" >
-			<i class="fa-solid fa-pen"></i> Modifica Informazioni
-		</a>
-		<!-- Pulsante per eliminare la categoria -->
-		<form th:action="@{'/admin/deleteIngredient/' + ${ingredient.id}}" method="post" sec:authorize="hasAuthority('ADMIN')">
-			<button type="submit">
-				<i class="fa-solid fa-trash-can"></i>Elimina Ingrediente
-			</button>
-		</form>
+        <div class="button-container">
+            <a th:href="@{${backUrl}}" class="common-button">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span th:text="${backUrl == '/ingredient-category'} ? 'Torna agli ingredienti' : 'Torna indietro'"></span>
+            </a>
+            <!-- Pulsante per modificare l'ingrediente -->
+            <a th:href="@{'/admin/editIngredient/' + ${ingredient.id}}" class="common-button edit" sec:authorize="hasAuthority('ADMIN')">
+                <i class="fa-solid fa-pen"></i> Modifica Informazioni
+            </a>
+            <!-- Pulsante per eliminare la categoria -->
+            <form th:action="@{'/admin/deleteIngredient/' + ${ingredient.id}}" method="post" sec:authorize="hasAuthority('ADMIN')">
+                <button type="submit" class="common-button delete">
+                    <i class="fa-solid fa-trash-can"></i> Elimina Ingrediente
+                </button>
+            </form>
+        </div>
     </section>
 
     <!-- Footer -->
     <div th:insert="~{fragments/footer :: footer}"></div>
 </body>
-
 </html>

@@ -1,57 +1,60 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
-	<title>Categoria</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-	<link rel="stylesheet" th:href="@{/css/main-style.css?version=2}">
+    <title>Categoria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/main-style.css}">
+	<link rel="stylesheet" th:href="@{/css/ingredientCategory.css?version=2}">
 </head>
-
 <body>
-	<!-- barra superiore -->
-	<div th:insert="~{fragments/header :: header}"></div>
+    <!-- barra superiore -->
+    <div th:insert="~{fragments/header :: header}"></div>
 
-	<!-- parte centrale del sito -->
-	<section>
-		<h1>Ricette con categoria: <span th:text="${category.name}"></span></h1>
+    <!-- parte centrale del sito -->
+    <section class="common-section">
+        <h1 class="common-title">Ricette con categoria: <span th:text="${category.name}"></span></h1>
 
-		<p class="info-text">
-			<i class="fa-solid fa-list"></i>
-			Ricette totali: <span th:text="${recipes.size()}"></span>
-		</p>
+        <p class="info-text">
+            <i class="fa-solid fa-list"></i>
+            Ricette totali: <span th:text="${recipes.size()}"></span>
+        </p>
 
-		<div th:if="${recipes.isEmpty()}">
-			<h2>Non ci sono ricette per questa categoria nel sistema</h2>
-		</div>
-		<ul>
-			<li th:each="recipe : ${recipes}">
-				<a th:href="@{'/recipe' + '/' + ${recipe.id}}">
-					<span th:text="${recipe.name}"></span>
-				</a>
-			</li>
-		</ul>
+        <div th:if="${recipes.isEmpty()}">
+            <div class="empty-message">
+                <i class="fa-solid fa-ban"></i>
+                <p>Non ci sono ricette per questa categoria nel sistema</p>
+            </div>
+        </div>
+        
+        <ul class="recipe-list" th:unless="${recipes.isEmpty()}">
+            <li th:each="recipe : ${recipes}" class="recipe-item">
+                <a th:href="@{'/recipe' + '/' + ${recipe.id}}">
+                    <i class="fas fa-book"></i>
+                    <span th:text="${recipe.name}"></span>
+                </a>
+            </li>
+        </ul>
 
-		<!-- Pulsanti per tornare indietro -->
-		<a th:href="@{${backUrl}}" class="button">
-			<i class="fa-solid fa-arrow-left"></i>
-			<span th:text="${backUrl == '/ingredient-category'} ? 'Torna alle categorie' : 'Torna indietro'"></span>
-		</a>
-		<!-- Pulsante per modificare la categoria -->
-		<a th:href="@{'/admin/editCategory/' + ${category.id}}" class="button" sec:authorize="hasAuthority('ADMIN')" > 
-			<i class="fa-solid fa-pen"></i> Modifica Informazioni
-		</a>
-		<!-- Pulsante per eliminare la categoria -->
-		<form th:action="@{'/admin/deleteCategory/' + ${category.id}}" method="post" sec:authorize="hasAuthority('ADMIN')">
-			<button type="submit">
-				<i class="fa-solid fa-trash-can"></i> Elimina Categoria
-			</button>
-		</form>
+        <!-- Pulsanti per tornare indietro -->
+        <div class="button-container">
+            <a th:href="@{${backUrl}}" class="common-button">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span th:text="${backUrl == '/ingredient-category'} ? 'Torna alle categorie' : 'Torna indietro'"></span>
+            </a>
+            <!-- Pulsante per modificare la categoria -->
+            <a th:href="@{'/admin/editCategory/' + ${category.id}}" class="common-button edit" sec:authorize="hasAuthority('ADMIN')" > 
+                <i class="fa-solid fa-pen"></i> Modifica Informazioni
+            </a>
+            <!-- Pulsante per eliminare la categoria -->
+            <form th:action="@{'/admin/deleteCategory/' + ${category.id}}" method="post" sec:authorize="hasAuthority('ADMIN')">
+                <button type="submit" class="common-button delete">
+                    <i class="fa-solid fa-trash-can"></i> Elimina Categoria
+                </button>
+            </form>
+        </div>
+    </section>
 
-	</section>
-
-	<!-- riga in fondo -->
-	<div th:insert="~{fragments/footer :: footer}"></div>
+    <!-- riga in fondo -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
 </body>
-
 </html>
