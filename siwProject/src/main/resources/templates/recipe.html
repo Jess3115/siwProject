@@ -117,8 +117,8 @@
                         <div class="recipe-section">
                             <h2 class="section-title"><i class="fas fa-carrot"></i> Ingredienti</h2>
                             <ul class="ingredients-list">
-                                <li th:each="ing : ${recipe.ingredients}">
-                                    <span th:text="${ing.name}"></span>
+                                <li th:each="ing : ${recipe.recipeIngredients}">
+									<span th:text="${ing.ingredient.name + ' ' + ing.quantity + ' ' + ing.unit}"></span>
                                 </li>
                             </ul>
                         </div>
