@@ -15,10 +15,14 @@ import it.uniroma3.siw.service.RecipeCategoryService;
 @Controller
 public class RecipeCategoryController {
 
-	@Autowired RecipeCategoryService recipeCategoryService;
-	
+	@Autowired
+	RecipeCategoryService recipeCategoryService;
+
 	@GetMapping("/category/{categoryID}")
-	public String getCategory(@PathVariable Long categoryID, @RequestParam(defaultValue = "/book") String from, Model model) {
+	public String getCategory(
+			@PathVariable Long categoryID,
+			@RequestParam(defaultValue = "/ingredient-category") String from,
+			Model model) {
 		model.addAttribute("category", this.recipeCategoryService.getCategoryById(categoryID));
 		model.addAttribute("recipes", this.recipeCategoryService.findRecipesByCategoryId(categoryID));
 		model.addAttribute("backUrl", from);
@@ -38,7 +42,7 @@ public class RecipeCategoryController {
 		return "redirect:/category/" + newCategory.getId();
 	}
 
-	//da controllare eliminazione bidirezionale
+	// da controllare eliminazione bidirezionale
 	@PostMapping("/admin/deleteCategory/{categoryID}")
 	public String deleteCategory(@PathVariable Long categoryID, Model model) {
 		this.recipeCategoryService.deleteCategoryById(categoryID);
@@ -50,7 +54,7 @@ public class RecipeCategoryController {
 	public String formEditCategory(@PathVariable Long categoryID, Model model) {
 		model.addAttribute("category", this.recipeCategoryService.getCategoryById(categoryID));
 		return "admin/formEditCategory.html";
-		
+
 	}
 
 	@PostMapping("/admin/editCategory/{categoryID}")
