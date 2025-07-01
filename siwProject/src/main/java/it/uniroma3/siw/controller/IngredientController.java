@@ -48,7 +48,7 @@ public class IngredientController {
 
     @GetMapping("/ingredient/{ingredientID}")
     public String getIngredient(@PathVariable Long ingredientID, 
-                               @RequestParam(defaultValue = "/ingredient") String from, 
+                               @RequestParam(defaultValue = "/ingredient-category") String from, 
                                Model model) {
         model.addAttribute("ingredient", ingredientService.getIngredientById(ingredientID));
         model.addAttribute("recipes", ingredientService.findRecipesByIngredientId(ingredientID));
