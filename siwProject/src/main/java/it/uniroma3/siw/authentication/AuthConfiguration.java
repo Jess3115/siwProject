@@ -56,6 +56,7 @@ public class AuthConfiguration {
                                                                 "/",
                                                                 "/images/**",
                                                                 "/index",
+                                                                "/background/**",
                                                                 "/recipe",
                                                                 "/recipe/**",
                                                                 "/category/**",
