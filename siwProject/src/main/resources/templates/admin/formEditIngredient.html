@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="it">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Modifica Categoria | Admin</title>
+    <title>Modifica Ingrediente | Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/main-style.css?version=2}" />
     <link rel="stylesheet" th:href="@{/css/admin/formNewIngredientCategory.css?version=2}" />
 </head>
-
 <body>
     <!-- Barra superiore -->
     <div th:insert="~{fragments/header :: header}"></div>
@@ -17,15 +15,20 @@
     <!-- Contenitore principale -->
     <main class="container">
         <section class="form-card">
-            <h1>Modifica Categoria</h1>
-            <form th:action="@{'/admin/editCategory/' + ${category.id}}" th:object="${category}" method="post">
+            <h1>Modifica Ingrediente</h1>
+            <form th:action="@{/admin/editIngredient/{id}(id=${ingredient.id})}" th:object="${ingredient}" method="POST">
+                  
+                <!-- Campo nascosto per l'ID -->
+                <input type="hidden" th:field="*{id}" />
+                
                 <div class="form-group">
-                    <label for="name">Nome Categoria</label>
-                    <input type="text" th:field="*{name}" placeholder="Inserisci il nome della categoria" />
+                    <label for="name">Nome Ingrediente</label>
+                    <input type="text" id="name" th:field="*{name}" 
+                           placeholder="Inserisci il nome dell'ingrediente" required>
                 </div>
-                <div class="form-buttons">
+                <div class="form-bottons">
                     <button type="submit">Salva Modifiche</button>
-                    <a th:href="@{'/category/' + ${category.id}}" class="button">Annulla</a>
+                    <a th:href="@{/ingredient/{id}(id=${ingredient.id})}" class="button">Annulla</a>
                 </div>
             </form>
         </section>
@@ -34,5 +37,4 @@
     <!-- Footer -->
     <div th:insert="~{fragments/footer :: footer}"></div>
 </body>
-
 </html>

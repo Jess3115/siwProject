@@ -47,7 +47,7 @@ public class RecipeCategoryController {
 	public String deleteCategory(@PathVariable Long categoryID, Model model) {
 		this.recipeCategoryService.deleteCategoryById(categoryID);
 		model.addAttribute("categories", this.recipeCategoryService.getAllCategories());
-		return "redirect:/category";
+		return "redirect:/ingredient-category";
 	}
 
 	@GetMapping("/admin/editCategory/{categoryID}")
@@ -58,11 +58,13 @@ public class RecipeCategoryController {
 	}
 
 	@PostMapping("/admin/editCategory/{categoryID}")
-	public String editCategory(@PathVariable Long categoryID, @ModelAttribute RecipeCategory category, Model model) {
-		RecipeCategory existingCategory = this.recipeCategoryService.getCategoryById(categoryID);
-		existingCategory.setName(category.getName());
-		this.recipeCategoryService.save(existingCategory);
-		model.addAttribute("category", this.recipeCategoryService.getAllCategories());
-		return "redirect:/category/" + existingCategory.getId();
+	public String editCategory(
+			@PathVariable Long categoryID,
+			@ModelAttribute RecipeCategory updatedCategory
+			) {
+		RecipeCategory existingCategory = recipeCategoryService.getCategoryById(categoryID);
+		existingCategory.setName(updatedCategory.getName());
+		recipeCategoryService.save(existingCategory);
+		return "redirect:/category/" + categoryID;
 	}
 }

@@ -19,14 +19,16 @@ import it.uniroma3.siw.service.RecipeCategoryService;
 @Controller
 public class IngredientController {
 
-    @Autowired IngredientService ingredientService;
-    @Autowired RecipeCategoryService recipeCategoryService;
+    @Autowired
+    IngredientService ingredientService;
+    @Autowired
+    RecipeCategoryService recipeCategoryService;
 
     @GetMapping("/ingredient-category")
     public String showIngredients(
-        @RequestParam(name = "search", required = false) String searchQuery, 
-        Model model) {
-        
+            @RequestParam(name = "search", required = false) String searchQuery,
+            Model model) {
+
         List<Ingredient> ingredients;
         List<RecipeCategory> categories;
 
@@ -47,9 +49,9 @@ public class IngredientController {
     }
 
     @GetMapping("/ingredient/{ingredientID}")
-    public String getIngredient(@PathVariable Long ingredientID, 
-                               @RequestParam(defaultValue = "/ingredient-category") String from, 
-                               Model model) {
+    public String getIngredient(@PathVariable Long ingredientID,
+            @RequestParam(defaultValue = "/ingredient-category") String from,
+            Model model) {
         model.addAttribute("ingredient", ingredientService.getIngredientById(ingredientID));
         model.addAttribute("recipes", ingredientService.findRecipesByIngredientId(ingredientID));
         model.addAttribute("backUrl", from);
@@ -71,7 +73,7 @@ public class IngredientController {
     @PostMapping("/admin/deleteIngredient/{ingredientID}")
     public String deleteIngredient(@PathVariable Long ingredientID, Model model) {
         ingredientService.deleteIngredientById(ingredientID);
-        return "redirect:/ingredient";
+        return "redirect:/ingredient-category";
     }
 
     @GetMapping("/admin/editIngredient/{ingredientID}")
@@ -81,11 +83,11 @@ public class IngredientController {
     }
 
     @PostMapping("/admin/editIngredient/{ingredientID}")
-    public String editIngredient(@PathVariable Long ingredientID, 
-                                @ModelAttribute Ingredient ingredient, 
-                                Model model) {
+    public String editIngredient(
+            @PathVariable Long ingredientID,
+            @ModelAttribute Ingredient updatedIngredient) {
         Ingredient existingIngredient = ingredientService.getIngredientById(ingredientID);
-        existingIngredient.setName(ingredient.getName());
+        existingIngredient.setName(updatedIngredient.getName());
         ingredientService.saveIngredient(existingIngredient);
         return "redirect:/ingredient/" + existingIngredient.getId();
     }

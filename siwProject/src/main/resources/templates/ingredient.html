@@ -35,6 +35,16 @@
             <i class="fa-solid fa-arrow-left"></i>
             <span th:text="${backUrl == '/ingredient-category'} ? 'Torna agli ingredienti' : 'Torna indietro'"></span>
         </a>
+		<!-- Pulsante per modificare l'ingrediente -->
+		<a th:href="@{'/admin/editIngredient/' + ${ingredient.id}}" class="button">
+			<i class="fa-solid fa-pen"></i> Modifica Informazioni
+		</a>
+		<!-- Pulsante per eliminare la categoria -->
+		<form th:action="@{'/admin/deleteIngrediente/' + ${ingredient.id}'}" th:object="${newCategory}" method="post">
+			<button type="submit">
+				<i class="fa-solid fa-trash-can"></i>Elimina Ingrediente
+			</button>
+		</form>
     </section>
 
     <!-- Footer -->
